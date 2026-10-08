@@ -76,7 +76,7 @@ Editá `cv/cv.json` con los datos de LinkedIn. Si subís el PDF de LinkedIn (Má
 ## Formulario de contacto (sin mostrar tu email)
 
 1. Entrá a **https://web3forms.com**, escribí tu email y pedí la "Access Key" (gratis, 250 mensajes por mes).
-2. Pegá la clave en `config.json`:
+2. Pegá la clave en `config.json` (ya está cargada):
    ```json
    "contacto": { "servicio": "web3forms", "clave": "TU-CLAVE" }
    ```

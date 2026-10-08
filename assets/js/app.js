@@ -209,7 +209,7 @@ function hito(h) {
   const hasta = /^actual/i.test(h.hasta || '') ? t('actualidad') : h.hasta;
   const fechas = h.desde && hasta && h.desde !== hasta ? `${h.desde} – ${hasta}` : (h.desde || hasta || '');
   return `
-    <li class="hito">
+    <li class="hito revela">
       <div class="hito__fechas">${esc(fechas)}</div>
       <div>
         <h3 class="hito__puesto">${esc(L(h.puesto))}</h3>
@@ -224,11 +224,11 @@ function ficha(it, alta = false) {
   const segunda = imgs.find((i) => i.ruta !== it.portada);
   const meta = [anio(it), imgs.length ? n('foto', imgs.length) : ''].filter(Boolean).join(', ');
   return `
-    <a class="ficha${alta ? ' ficha--alta' : ''}" href="${enlace(it.ruta)}">
-      <div class="ficha__imagen">
+    <a class="ficha revela${alta ? ' ficha--alta' : ''}" href="${enlace(it.ruta)}">
+      <div class="ficha__imagen"><div class="ficha__mover" data-paralaje>
         ${it.portada ? `<img src="${url(it.portada)}" alt="" loading="lazy">` : ''}
         ${segunda ? `<img src="${url(segunda.ruta)}" alt="" loading="lazy">` : ''}
-      </div>
+      </div></div>
       <div class="ficha__texto"><h3 class="ficha__nombre">${esc(tituloDe(it))}</h3><span class="ficha__meta">${esc(meta)}</span></div>
     </a>`;
 }
@@ -243,7 +243,7 @@ function pie() {
   return `
   <footer class="pie liso-negro grano" id="contacto">
     <div class="envoltura">
-      <p class="pie__frase">${esc(t('frase_final'))}</p>
+      <button class="pie__frase" type="button" data-abrir-contacto><span data-desliza>${esc(t('frase_final'))}</span></button>
       <div class="pie__grilla">
         <div>
           <h3>${esc(t('contacto'))}</h3>
@@ -302,25 +302,29 @@ function vistaInicio() {
 
   ${cinta([t('proyectos'), t('viajes'), t('trabajos'), t('experiencia'), t('estudios')])}
 
-  <section class="mensaje liso-grafito" id="mensaje">
-    <div class="envoltura">
-      <span class="etiqueta">${esc(t('mensaje_de'))}<b>${esc(config.firma || config.nombre)}</b></span>
-      <p class="frase" data-frase>${fraseConPalabras(L(config.frase))}</p>
-      <span class="mensaje__firma" aria-hidden="true">${esc(config.firma || config.nombre)}</span>
+  <section class="mensaje grano" id="mensaje">
+    <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="envoltura mensaje__grilla">
+      <div class="mensaje__lado">
+        <span class="mensaje__comilla" aria-hidden="true">“</span>
+        <span class="etiqueta">${esc(t('mensaje_de'))}</span>
+        <span class="mensaje__firma">${esc(config.firma || config.nombre)}</span>
+      </div>
+      <blockquote class="frase" data-frase>${fraseConPalabras(L(config.frase))}</blockquote>
     </div>
   </section>
 
   <section class="proyectos liso-negro" id="proyectos" data-proyectos>
     <div class="proyectos__fijo">
       <div class="envoltura proyectos__cabeza">
-        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('proyectos'))}</span></h2>
+        <h2 data-titulo-desliza class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('proyectos'))}</span></h2>
         <p class="bajada">${esc(t('proyectos_bajada'))}</p>
       </div>
       ${proyectos.length ? `
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
-          <a class="proyecto" href="${enlace(p.ruta)}">
-            <div class="proyecto__foto">${p.portada ? `<img src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}</div>
+          <a class="proyecto revela" href="${enlace(p.ruta)}">
+            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}</div>
             <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(t('ver_proyecto'))}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
@@ -332,7 +336,7 @@ function vistaInicio() {
   <section class="salon carbono" id="viajes">
     <div class="envoltura">
       <div class="salon__cabeza">
-        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('viajes_l1'))}</span><span>${esc(t('viajes_l2'))}</span></h2>
+        <h2 data-titulo-desliza class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('viajes_l1'))}</span><span>${esc(t('viajes_l2'))}</span></h2>
         <p class="bajada">${esc(t('viajes_bajada'))}</p>
       </div>
       ${viajes.length ? `<div class="salon__grilla">${viajes.map((v) => ficha(v)).join('')}</div>` : vacio('Trips')}
@@ -342,7 +346,7 @@ function vistaInicio() {
   <section class="salon puntos" id="trabajos">
     <div class="envoltura">
       <div class="salon__cabeza">
-        <h2 class="titulo-seccion"><span>${esc(t('trabajos_l1'))}</span><span>${esc(t('trabajos_l2'))}</span></h2>
+        <h2 data-titulo-desliza class="titulo-seccion"><span>${esc(t('trabajos_l1'))}</span><span>${esc(t('trabajos_l2'))}</span></h2>
         <p class="bajada">${esc(t('trabajos_bajada'))}</p>
       </div>
       ${trabajos.length ? `<div class="salon__grilla">${trabajos.map((w) => ficha(w, true)).join('')}</div>` : vacio('Works')}
@@ -351,14 +355,14 @@ function vistaInicio() {
 
   <section class="liso-negro" id="experiencia">
     <div class="envoltura trayectoria">
-      <article class="panel liso-naranja">
-        <h2 class="titulo-seccion"><span>${esc(t('exp_l1'))}</span><span>${esc(t('exp_l2'))}</span></h2>
+      <article class="panel liso-naranja revela">
+        <h2 data-titulo-desliza class="titulo-seccion"><span>${esc(t('exp_l1'))}</span><span>${esc(t('exp_l2'))}</span></h2>
         <p class="bajada">${esc(t('exp_bajada'))}</p>
         <ol class="hitos">${exp.slice(0, 4).map(hito).join('')}</ol>
         ${botonFlecha('#/cv', t('ver_cv'))}
       </article>
-      <article class="panel rayas" id="estudios">
-        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('est_l1'))}</span><span>${esc(t('est_l2'))}</span></h2>
+      <article class="panel rayas revela" id="estudios">
+        <h2 data-titulo-desliza class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('est_l1'))}</span><span>${esc(t('est_l2'))}</span></h2>
         <p class="bajada">${esc(t('est_bajada'))}</p>
         <ol class="hitos">${est.slice(0, 4).map(hito).join('')}</ol>
         ${botonFlecha('#/cv', t('ver_cv'))}
@@ -376,7 +380,7 @@ function galeria(it, imgs) {
   return `<div class="album">${imgs.map((img) => {
     const d = descFoto(it, img);
     return `
-    <button class="album__foto" type="button" data-foto="${esc(img.ruta)}" aria-label="${esc(d || limpiarNombre(img.nombre))}">
+    <button class="album__foto revela" type="button" data-foto="${esc(img.ruta)}" aria-label="${esc(d || limpiarNombre(img.nombre))}">
       <img src="${url(img.ruta)}" alt="${esc(d)}" loading="lazy" decoding="async">
       ${d ? `<span class="album__leyenda">${esc(d)}</span>` : ''}
     </button>`;
@@ -391,7 +395,7 @@ function estante(it, docs, imgs) {
       ? `<div class="libro__tapa" data-miniatura="${esc(d.ruta)}"><span class="libro__tipo">${et}</span></div>`
       : `<div class="libro__tapa libro__tapa--texto"><span class="libro__tipo">${et}</span><b>${esc(limpiarNombre(d.nombre))}</b><small>${esc(tituloDe(it))}</small></div>`;
     return `
-      <button class="libro" type="button" data-leer="${i}">
+      <button class="libro revela" type="button" data-leer="${i}">
         ${tapa}
         <span class="libro__nombre">${esc(limpiarNombre(d.nombre))}</span>
         <span class="libro__meta" data-meta="${esc(d.ruta)}">${et}</span>
@@ -569,11 +573,23 @@ const visor = {
    ========================================================================== */
 const efectos = {
   activo: false,
+  medirLigero() {
+    if (this.activo) return;
+    this.titulos = $$('[data-titulo-desliza], .pie__frase');
+    this.paralajes = $$('[data-paralaje]');
+    this.paralajesX = [];
+    this.palabras = [];
+    this.proyectos = null;
+    this.actualizar();
+  },
   medir() {
     this.proyectos = $('[data-proyectos]');
     this.pista = $('[data-pista]');
     this.frase = $('[data-frase]');
     this.palabras = this.frase ? $$('.palabra', this.frase) : [];
+    this.titulos = $$('[data-titulo-desliza], .pie__frase');
+    this.paralajes = $$('[data-paralaje]');
+    this.paralajesX = $$('[data-paralaje-x]');
     if (this.proyectos) {
       this.proyectos.style.height = '';
       const libre = !this.pista || reduceMotion() || window.innerWidth < 760;
@@ -596,18 +612,43 @@ const efectos = {
       const p = Math.min(1, Math.max(0, -r.top / (r.height - vh)));
       this.pista.style.transform = `translate3d(${-p * this.desborde}px,0,0)`;
     }
+    if (!reduceMotion()) {
+      const vw = window.innerWidth;
+      for (const el of this.titulos) {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -50 || r.top > vh + 50) continue;
+        const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.75)));
+        const lineas = el.children.length ? Array.from(el.children) : [el];
+        lineas.forEach((l, i) => {
+          const dir = i % 2 ? 1 : -1;
+          l.style.transform = `translate3d(${(dir * (1 - p) * 14).toFixed(2)}vw,0,0)`;
+        });
+      }
+      for (const el of this.paralajes) {
+        const r = el.parentElement.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) continue;
+        const d = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.transform = `translate3d(0,${(d * -9).toFixed(2)}%,0) scale(1.18)`;
+      }
+      for (const el of this.paralajesX) {
+        const r = el.parentElement.getBoundingClientRect();
+        if (r.right < 0 || r.left > vw) continue;
+        const d = (r.left + r.width / 2 - vw / 2) / vw;
+        el.style.transform = `translate3d(${(d * -12).toFixed(2)}%,0,0) scale(1.2)`;
+      }
+    }
     if (this.palabras.length && !reduceMotion()) {
       const r = this.frase.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.9 - vh * 0.2 + r.height * 0.4)));
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.55 + r.height * 0.3)));
       const total = this.palabras.length;
       this.palabras.forEach((w, i) => {
-        const o = Math.min(1, Math.max(0.18, p * total * 1.15 - i + 1));
+        const o = Math.min(1, Math.max(0.12, p * total * 1.1 - i + 1));
         w.style.setProperty('--o', o.toFixed(2));
       });
     }
   },
   alDesplazar() {
-    if (efectos.pendiente || !efectos.activo) return;
+    if (efectos.pendiente) return;
     efectos.pendiente = true;
     requestAnimationFrame(() => efectos.actualizar());
   },
@@ -643,7 +684,7 @@ function activarVista(ctx) {
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
       ajustarNombre();
       efectos.medir();
-      requestAnimationFrame(() => document.body.classList.add('cargado'));
+      cargadorListo.then(() => requestAnimationFrame(() => document.body.classList.add('cargado')));
       if (ctx.ancla) {
         const destino = document.getElementById(ctx.ancla);
         if (destino) destino.scrollIntoView({ behavior: ctx.suave ? 'smooth' : 'auto' });
@@ -652,6 +693,8 @@ function activarVista(ctx) {
     $$('img', $('[data-pista]') || document.createElement('div')).forEach((img) => img.addEventListener('load', () => efectos.medir(), { once: true }));
   }
 
+  revelar();
+  efectos.medirLigero();
   $$('.album__foto img').forEach((img) => {
     if (img.complete) img.classList.add('listo');
     else img.addEventListener('load', () => img.classList.add('listo'), { once: true });
@@ -676,6 +719,24 @@ function activarVista(ctx) {
 
   const bCV = $('[data-leer-cv]');
   if (bCV) bCV.addEventListener('click', () => lector.abrir({ titulo: t('cv'), sub: nombreCompleto(), tipo: 'pdf', url: url(estado.manifest.cv.pdf), descarga: url(estado.manifest.cv.pdf) }));
+}
+
+let observadorRevela;
+function revelar() {
+  const els = $$('.revela');
+  if (!('IntersectionObserver' in window) || reduceMotion()) { els.forEach((e) => e.classList.add('visible')); return; }
+  if (observadorRevela) observadorRevela.disconnect();
+  observadorRevela = new IntersectionObserver((entradas) => {
+    // Escalonado: los que entran juntos aparecen uno tras otro.
+    let k = 0;
+    entradas.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.style.setProperty('--d', `${Math.min(k++, 6) * 80}ms`);
+      e.target.classList.add('visible');
+      observadorRevela.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  els.forEach((e) => observadorRevela.observe(e));
 }
 
 function miniaturas() {
@@ -755,6 +816,24 @@ async function navegar(opciones = {}) {
 }
 
 /* ==========================================================================
+   Pantalla de carga HAG
+   ========================================================================== */
+let liberarCargador;
+const cargadorListo = new Promise((r) => { liberarCargador = r; });
+const inicioCarga = performance.now();
+function ocultarCargador() {
+  const el = $('[data-cargador]');
+  const minimo = reduceMotion() ? 0 : 1500;
+  const espera = Math.max(0, minimo - (performance.now() - inicioCarga));
+  setTimeout(() => {
+    if (!el) return liberarCargador();
+    el.classList.add('saliendo');
+    setTimeout(liberarCargador, reduceMotion() ? 0 : 380);
+    setTimeout(() => el.remove(), 1100);
+  }, espera);
+}
+
+/* ==========================================================================
    Inicio
    ========================================================================== */
 (async function iniciar() {
@@ -766,6 +845,7 @@ async function navegar(opciones = {}) {
   } catch (err) {
     console.error(err);
     $('#app').innerHTML = vistaError(err);
+    ocultarCargador();
     return;
   }
   pintarCabecera();
@@ -778,4 +858,6 @@ async function navegar(opciones = {}) {
   // Al cambiar de idioma se vuelve a pintar el formulario y los textos fijos.
   document.addEventListener('click', (e) => { if (e.target.closest('[data-idioma]')) contacto.pintar(); });
   await navegar();
+  await (document.fonts ? document.fonts.ready : Promise.resolve());
+  ocultarCargador();
 })();

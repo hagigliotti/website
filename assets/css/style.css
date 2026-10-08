@@ -344,24 +344,55 @@ svg { width: 1em; height: 1em; }
 @keyframes cinta { to { transform: translateX(-50%); } }
 
 /* ==========================================================================
-   Mensaje
+   Mensaje (fondo animado)
    ========================================================================== */
-.mensaje { padding-block: var(--seccion); }
-.etiqueta { display: inline-block; margin-bottom: 1.75rem; font-weight: 600; color: var(--naranja); }
-.etiqueta b { font-family: var(--f-firma); font-weight: 400; font-size: 2rem; color: var(--hueso); margin-left: 0.4rem; vertical-align: -0.2em; }
+.mensaje { position: relative; isolation: isolate; overflow: hidden; padding-block: clamp(4.5rem, 9vw, 7.5rem); background: var(--carbon); }
+.aurora { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+.aurora i { position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; will-change: transform; }
+.aurora i:nth-child(1) { left: -20vmax; top: -30vmax; background: radial-gradient(circle, rgba(255, 122, 0, 0.42), transparent 62%); animation: deriva-a 22s ease-in-out infinite alternate; }
+.aurora i:nth-child(2) { right: -25vmax; bottom: -35vmax; background: radial-gradient(circle, rgba(194, 74, 0, 0.5), transparent 60%); animation: deriva-b 26s ease-in-out infinite alternate; }
+.aurora i:nth-child(3) { left: 30%; top: 10%; width: 45vmax; height: 45vmax; background: radial-gradient(circle, rgba(120, 124, 132, 0.28), transparent 65%); animation: deriva-c 18s ease-in-out infinite alternate; }
+.aurora i:nth-child(4) {
+  inset: 0; width: auto; height: auto; border-radius: 0;
+  background: repeating-radial-gradient(circle at 75% 120%, transparent 0 38px, rgba(255, 255, 255, 0.035) 38px 39px);
+  animation: pulso 9s ease-in-out infinite alternate;
+}
+@keyframes deriva-a { to { transform: translate(28vw, 22vh) scale(1.15); } }
+@keyframes deriva-b { to { transform: translate(-30vw, -18vh) scale(0.9); } }
+@keyframes deriva-c { to { transform: translate(-22vw, 18vh) scale(1.3); } }
+@keyframes pulso { to { transform: scale(1.08); opacity: 0.6; } }
+.mensaje__grilla { display: grid; grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.mensaje__lado { display: flex; flex-direction: column; gap: 0.25rem; }
+.mensaje__comilla { font-family: var(--f-display); font-weight: 900; font-size: clamp(6rem, 11vw, 9rem); line-height: 0.6; color: var(--naranja); margin-bottom: 0.5rem; }
+.etiqueta { font-weight: 600; font-size: 0.9375rem; color: rgba(242, 240, 236, 0.65); }
+.mensaje__firma { font-family: var(--f-firma); font-size: clamp(2.6rem, 4vw, 3.4rem); line-height: 1.1; color: var(--hueso); }
 .frase {
   margin: 0;
-  max-width: 24ch;
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: clamp(2.2rem, 5.6vw, 5.5rem);
-  line-height: 1.02;
+  max-width: 34ch;
+  font-family: var(--f-libro);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.45rem, 2.7vw, 2.45rem);
+  line-height: 1.32;
   color: var(--hueso);
   text-wrap: pretty;
 }
-.frase strong { color: var(--naranja); font-weight: 900; }
-.frase .palabra { opacity: var(--o, 1); transition: opacity 120ms linear; }
-.mensaje__firma { display: block; margin-top: 2rem; font-family: var(--f-firma); font-size: clamp(3rem, 6vw, 5rem); line-height: 1; color: var(--naranja); }
+.frase strong {
+  font-family: var(--f-display);
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 1.16em;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  color: var(--naranja);
+}
+.frase .palabra { opacity: var(--o, 1); transition: opacity 140ms linear; }
+@media (max-width: 760px) {
+  .mensaje__grilla { grid-template-columns: 1fr; }
+  .mensaje__lado { flex-direction: row; align-items: baseline; gap: 0.6rem; }
+  .mensaje__comilla { font-size: 5rem; margin: 0; }
+}
 
 /* ==========================================================================
    Proyectos (desplazamiento horizontal fijado)
@@ -490,7 +521,12 @@ svg { width: 1em; height: 1em; }
    Pie con contacto
    ========================================================================== */
 .pie { padding-block: var(--seccion) 2rem; overflow: hidden; }
+.pie__frase span { display: inline-block; }
+@media (hover: hover) and (pointer: fine) { .pie__frase:hover { color: var(--hueso); } }
 .pie__frase {
+  display: block;
+  text-align: left;
+  cursor: pointer;
   margin: 0 0 clamp(2.5rem, 6vw, 5rem);
   font-family: var(--f-display);
   font-weight: 900;
@@ -854,4 +890,85 @@ svg { width: 1em; height: 1em; }
   .menu__lista a { transform: none; }
   .libro:hover .libro__tapa, .proyecto:hover .proyecto__foto img, .ficha:hover .ficha__imagen img { transform: none; }
   .contacto__panel { transform: none; }
+}
+
+/* ==========================================================================
+   Movimiento al desplazar
+   ========================================================================== */
+#app { overflow-x: clip; }
+.titulo-seccion span, .pie__frase span { will-change: transform; }
+.ficha__mover { position: absolute; inset: 0; will-change: transform; transform: scale(1.18); }
+.proyecto__foto img { transform: scale(1.2); }
+.js .revela {
+  opacity: 0;
+  transform: translateY(48px);
+  clip-path: inset(14% 0 0 0 round 1.5rem);
+}
+.js .revela.visible {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0 round 0);
+  transition: opacity 700ms ease var(--d, 0ms), transform 1000ms var(--ease-out) var(--d, 0ms), clip-path 1000ms var(--ease-out) var(--d, 0ms);
+}
+.js .hito.revela, .js .panel.revela { clip-path: none; }
+
+/* ==========================================================================
+   Pantalla de carga HAG
+   ========================================================================== */
+.cargador {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2.25rem;
+  background: var(--carbon);
+  transition: clip-path 800ms var(--ease-drawer), visibility 0s linear 800ms;
+  clip-path: inset(0 0 0 0);
+}
+.cargador::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 50% 40% at 50% 50%, rgba(255, 122, 0, 0.16), transparent 70%);
+}
+.cargador.saliendo { clip-path: inset(0 0 100% 0); visibility: hidden; }
+.cargador__logo { display: flex; align-items: flex-end; line-height: 0.8; }
+.cargador__logo > span { display: inline-block; }
+.cargador__h, .cargador__g {
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(7rem, 22vw, 13rem);
+  animation: subir 900ms var(--ease-out) both;
+}
+.cargador__h { color: var(--naranja); }
+.cargador__g { color: transparent; -webkit-text-stroke: 2px var(--naranja); animation-delay: 260ms; }
+.cargador__a {
+  font-family: var(--f-firma);
+  font-size: clamp(11rem, 34vw, 20rem);
+  color: var(--hueso);
+  margin: 0 -0.08em 0 -0.12em;
+  padding: 0 0.12em;
+  transform: translateY(0.06em);
+  position: relative;
+  z-index: 1;
+  animation: escribir 900ms var(--ease-in-out) 380ms both;
+}
+.cargador__barra { width: min(14rem, 50vw); height: 2px; border-radius: 2px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+.cargador__barra i { display: block; height: 100%; background: var(--naranja); transform-origin: left; animation: barra 1400ms var(--ease-in-out) both; }
+.cargador.saliendo .cargador__logo { transform: translateY(-30px); opacity: 0; transition: transform 600ms var(--ease-out), opacity 400ms ease; }
+@keyframes subir { from { transform: translateY(40%); opacity: 0; clip-path: inset(0 0 100% 0); } to { clip-path: inset(-20% -20% -20% -20%); } }
+@keyframes escribir { from { clip-path: inset(-30% 100% -30% 0); } to { clip-path: inset(-30% -10% -30% 0); } }
+@keyframes barra { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora i { animation: none; }
+  .cargador__h, .cargador__g, .cargador__a, .cargador__barra i { animation: none; }
+  .cargador { transition: opacity 200ms ease, visibility 0s linear 200ms; clip-path: none; }
+  .cargador.saliendo { opacity: 0; clip-path: none; }
+  .js .revela { opacity: 1; transform: none; clip-path: none; }
+  .ficha__mover, .proyecto__foto img { transform: none !important; }
+  .titulo-seccion span, .pie__frase span { transform: none !important; }
 }

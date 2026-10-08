@@ -19,12 +19,29 @@
     "it": "Ogni **sfida** può diventare un’**opportunità** quando impariamo a guardare oltre l’evidente, a fare del nostro meglio con ciò che abbiamo per scoprire **nuove possibilità** e a **confidare in Dio** per andare avanti."
   },
   "redes": [
-    { "nombre": "LinkedIn", "icono": "linkedin", "url": "https://www.linkedin.com/in/hagigliotti/" },
-    { "nombre": "Instagram", "icono": "instagram", "url": "https://www.instagram.com/hagigliotti" },
-    { "nombre": "YouTube", "icono": "youtube", "url": "https://www.youtube.com/@hagproducciones" }
+    {
+      "nombre": "LinkedIn",
+      "icono": "linkedin",
+      "url": "https://www.linkedin.com/in/hagigliotti/"
+    },
+    {
+      "nombre": "Instagram",
+      "icono": "instagram",
+      "url": "https://www.instagram.com/hagigliotti"
+    },
+    {
+      "nombre": "YouTube",
+      "icono": "youtube",
+      "url": "https://www.youtube.com/@hagproducciones"
+    },
+    {
+      "nombre": "Facebook",
+      "icono": "facebook",
+      "url": "https://www.facebook.com/hagigliotti"
+    }
   ],
   "contacto": {
     "servicio": "web3forms",
-    "clave": ""
+    "clave": "c487f5f1-eec9-4a61-accb-7c836c9ac9d0"
   }
 }
