@@ -243,7 +243,7 @@ function pie() {
   return `
   <footer class="pie liso-negro grano" id="contacto">
     <div class="envoltura">
-      <button class="pie__frase" type="button" data-abrir-contacto><span data-desliza>${esc(t('frase_final'))}</span></button>
+      <div class="pie__monograma" aria-label="HAG" role="img"><span class="cargador__h" data-dir="-1">H</span><span class="cargador__a" data-dir="0">a</span><span class="cargador__g" data-dir="1">G</span></div>
       <div class="pie__grilla">
         <div>
           <h3>${esc(t('contacto'))}</h3>
@@ -575,7 +575,7 @@ const efectos = {
   activo: false,
   medirLigero() {
     if (this.activo) return;
-    this.titulos = $$('[data-titulo-desliza], .pie__frase');
+    this.titulos = $$('[data-titulo-desliza], .pie__monograma');
     this.paralajes = $$('[data-paralaje]');
     this.paralajesX = [];
     this.palabras = [];
@@ -587,7 +587,7 @@ const efectos = {
     this.pista = $('[data-pista]');
     this.frase = $('[data-frase]');
     this.palabras = this.frase ? $$('.palabra', this.frase) : [];
-    this.titulos = $$('[data-titulo-desliza], .pie__frase');
+    this.titulos = $$('[data-titulo-desliza], .pie__monograma');
     this.paralajes = $$('[data-paralaje]');
     this.paralajesX = $$('[data-paralaje-x]');
     if (this.proyectos) {
@@ -620,7 +620,7 @@ const efectos = {
         const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.75)));
         const lineas = el.children.length ? Array.from(el.children) : [el];
         lineas.forEach((l, i) => {
-          const dir = i % 2 ? 1 : -1;
+          const dir = l.dataset.dir !== undefined ? Number(l.dataset.dir) : (i % 2 ? 1 : -1);
           l.style.transform = `translate3d(${(dir * (1 - p) * 14).toFixed(2)}vw,0,0)`;
         });
       }
@@ -813,7 +813,13 @@ async function navegar(opciones = {}) {
   if (misma) requestAnimationFrame(() => window.scrollTo(0, yAntes));
   primera = false;
   rutaAnterior = location.hash;
+  // Google Analytics: registrar cada sección visitada (el sitio cambia de página sin recargar).
+  if (!primeraCarga && typeof window.gtag === 'function') {
+    window.gtag('event', 'page_view', { page_title: document.title, page_location: location.href, page_path: location.pathname + location.hash });
+  }
+  primeraCarga = false;
 }
+let primeraCarga = true;
 
 /* ==========================================================================
    Pantalla de carga HAG
