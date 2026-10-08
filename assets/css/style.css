@@ -972,3 +972,11 @@ svg { width: 1em; height: 1em; }
   .ficha__mover, .proyecto__foto img { transform: none !important; }
   .titulo-seccion span, .pie__frase span { transform: none !important; }
 }
+
+/* Monograma HAG en el pie */
+.pie__monograma { display: flex; align-items: flex-end; line-height: 0.8; margin: 0 0 clamp(2.5rem, 6vw, 5rem); }
+.pie__monograma > span { display: inline-block; animation: none; will-change: transform; }
+.pie__monograma .cargador__h, .pie__monograma .cargador__g { font-size: clamp(9rem, 30vw, 26rem); }
+.pie__monograma .cargador__g { -webkit-text-stroke-width: 3px; }
+.pie__monograma .cargador__a { font-size: clamp(14rem, 46vw, 40rem); }
+@media (prefers-reduced-motion: reduce) { .pie__monograma > span { transform: none !important; } }
