@@ -1,0 +1,781 @@
+import { Lector, miniaturaPDF } from './reader.js';
+import { IDIOMAS, idioma, cambiarIdioma, t, n, L } from './i18n.js';
+
+/* ==========================================================================
+   Utilidades
+   ========================================================================== */
+const $ = (sel, raiz = document) => raiz.querySelector(sel);
+const $$ = (sel, raiz = document) => Array.from(raiz.querySelectorAll(sel));
+const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const url = (ruta) => ruta.split('/').map(encodeURIComponent).join('/');
+const enlace = (ruta) => `#/${url(ruta)}`;
+const icono = (id) => `<svg aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const bonito = (carpeta) => carpeta.replace(/[-_]+/g, ' ').replace(/([a-záéíóúñ])([A-ZÁÉÍÓÚÑ])/g, '$1 $2').trim();
+const limpiarNombre = (archivo) => {
+  const base = archivo.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim();
+  return base.charAt(0).toUpperCase() + base.slice(1);
+};
+const parrafos = (texto) => texto.split(/\n\s*\n/).map((p) => `<p>${esc(p.trim()).replace(/\n/g, '<br>')}</p>`).join('');
+
+const SECCIONES = {
+  Projects: { id: 'proyectos', ver: 'ver_proyecto' },
+  Trips: { id: 'viajes', ver: 'ver_album' },
+  Works: { id: 'trabajos', ver: 'ver_trabajo' },
+};
+
+/* ==========================================================================
+   Datos
+   ========================================================================== */
+const estado = { config: null, manifest: null, cv: null };
+
+async function json(ruta) {
+  const r = await fetch(ruta, { cache: 'no-cache' });
+  if (!r.ok) throw new Error(`${ruta}: ${r.status}`);
+  return r.json();
+}
+
+const items = (seccion) => (estado.manifest.secciones[seccion] && estado.manifest.secciones[seccion].items) || [];
+const tituloDe = (it) => L(it.titulo) || bonito(it.carpeta);
+const imagenesDe = (it) => it.archivos.filter((a) => a.tipo === 'imagen');
+const documentosDe = (it) => it.archivos.filter((a) => a.tipo !== 'imagen');
+const anio = (it) => (it.fecha || '').slice(0, 4);
+const descFoto = (it, img) => L(it.fotos[img.nombre.toLowerCase()]);
+const nombreCompleto = () => `${estado.config.nombre} ${estado.config.apellido || ''}`.trim();
+
+/* ==========================================================================
+   Navegación, idiomas y redes
+   ========================================================================== */
+function aplicarTextosFijos() {
+  $$('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+  $$('[data-t-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.tAria)); });
+}
+
+function botonesIdioma(clase = '') {
+  return Object.entries(IDIOMAS).map(([c, nombre]) =>
+    `<button type="button" class="${clase}" data-idioma="${c}" aria-current="${c === idioma}" lang="${c}">${nombre}</button>`).join('');
+}
+
+function pintarCabecera() {
+  const { config } = estado;
+  $('[data-firma]').textContent = config.firma || config.nombre;
+  const redes = (config.redes || []).map((r) =>
+    `<a class="red" href="${esc(r.url)}" target="_blank" rel="noopener" aria-label="${esc(r.nombre)}">${icono(r.icono || r.nombre.toLowerCase())}</a>`).join('');
+  $('[data-redes]').innerHTML = redes;
+  $('[data-menu-redes]').innerHTML = (config.redes || []).map((r) => `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.nombre)}</a>`).join('');
+  $('[data-idioma-boton]').textContent = idioma.toUpperCase();
+  $('[data-idioma-boton]').setAttribute('aria-label', `${t('idioma')}: ${IDIOMAS[idioma]}`);
+  $('[data-idioma-lista]').innerHTML = Object.entries(IDIOMAS).map(([c, nombre]) =>
+    `<li><button type="button" data-idioma="${c}" aria-current="${c === idioma}" lang="${c}">${nombre}</button></li>`).join('');
+  $('[data-menu-idiomas]').innerHTML = botonesIdioma();
+  const links = [
+    ['', 'inicio'], ['proyectos', 'proyectos'], ['viajes', 'viajes'], ['trabajos', 'trabajos'], ['experiencia', 'experiencia'], ['cv', 'cv'],
+  ];
+  $('[data-menu-links]').innerHTML = links.map(([h, k]) => `<li><a href="#/${h}">${esc(t(k))}</a></li>`).join('');
+  aplicarTextosFijos();
+}
+
+function iniciarCabecera() {
+  const boton = $('[data-menu-boton]');
+  const alternarMenu = (abrir) => {
+    document.body.classList.toggle('menu-abierto', abrir);
+    document.body.classList.toggle('bloqueado', abrir);
+    boton.setAttribute('aria-expanded', String(abrir));
+    $('b', boton).textContent = t(abrir ? 'menu_cerrar' : 'menu_abrir');
+  };
+  boton.addEventListener('click', () => alternarMenu(!document.body.classList.contains('menu-abierto')));
+  $('[data-menu]').addEventListener('click', (e) => { if (e.target.closest('a')) alternarMenu(false); });
+
+  const bIdioma = $('[data-idioma-boton]');
+  const lista = $('[data-idioma-lista]');
+  const alternarLista = (abrir) => { lista.hidden = !abrir; bIdioma.setAttribute('aria-expanded', String(abrir)); };
+  bIdioma.addEventListener('click', (e) => { e.stopPropagation(); alternarLista(lista.hidden); });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.idiomas')) alternarLista(false); });
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-idioma]');
+    if (!b) return;
+    alternarLista(false);
+    if (b.dataset.idioma === idioma) return;
+    cambiarIdioma(b.dataset.idioma);
+    pintarCabecera();
+    navegar({ mismoLugar: true });
+  });
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-abrir-contacto]')) { alternarMenu(false); contacto.abrir(); } });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (document.body.classList.contains('menu-abierto')) alternarMenu(false);
+    alternarLista(false);
+  });
+  window.cerrarMenu = () => alternarMenu(false);
+}
+
+/* ==========================================================================
+   Contacto
+   ========================================================================== */
+const contacto = {
+  raiz: $('[data-contacto]'),
+  pintar() {
+    $('[data-formulario]').innerHTML = `
+      <div class="campo"><label for="c-nombre">${esc(t('nombre'))}</label><input id="c-nombre" name="name" autocomplete="name" required></div>
+      <div class="campo"><label for="c-email">${esc(t('email'))}</label><input id="c-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" required></div>
+      <div class="campo"><label for="c-mensaje">${esc(t('mensaje'))}</label><textarea id="c-mensaje" name="message" required></textarea></div>
+      <input class="trampa" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="formulario__enviar" type="submit">${esc(t('enviar'))}</button>
+      <p class="formulario__estado" role="status" aria-live="polite"></p>`;
+  },
+  abrir() {
+    this.ultimoFoco = document.activeElement;
+    this.raiz.classList.add('abierto');
+    document.body.classList.add('bloqueado');
+    setTimeout(() => $('#c-nombre').focus(), 60);
+  },
+  cerrar() {
+    if (!this.raiz.classList.contains('abierto')) return;
+    this.raiz.classList.remove('abierto');
+    document.body.classList.remove('bloqueado');
+    if (this.ultimoFoco) this.ultimoFoco.focus({ preventScroll: true });
+  },
+  async enviar(form) {
+    const estadoEl = $('.formulario__estado', form);
+    const datos = Object.fromEntries(new FormData(form));
+    if (datos.botcheck) return;
+    if (!datos.name.trim() || !/^\S+@\S+\.\S+$/.test(datos.email) || !datos.message.trim()) { estadoEl.textContent = t('campos'); return; }
+    const cfg = estado.config.contacto || {};
+    if (!cfg.clave) { estadoEl.textContent = t('sin_config'); return; }
+    const boton = $('.formulario__enviar', form);
+    boton.disabled = true;
+    boton.textContent = t('enviando');
+    estadoEl.textContent = '';
+    try {
+      let r;
+      if (cfg.servicio === 'formspree') {
+        r = await fetch(`https://formspree.io/f/${encodeURIComponent(cfg.clave)}`, {
+          method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: datos.name, email: datos.email, message: datos.message, _subject: `Web: ${datos.name}` }),
+        });
+      } else {
+        r = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_key: cfg.clave, name: datos.name, email: datos.email, message: datos.message, subject: `Mensaje desde la web: ${datos.name}`, from_name: 'Sitio web' }),
+        });
+      }
+      const respuesta = await r.json().catch(() => ({}));
+      if (!r.ok || respuesta.success === false) throw new Error(respuesta.message || r.status);
+      form.reset();
+      estadoEl.textContent = t('enviado');
+    } catch (err) {
+      console.error(err);
+      estadoEl.textContent = t('error_envio');
+    } finally {
+      boton.disabled = false;
+      boton.textContent = t('enviar');
+    }
+  },
+  iniciar() {
+    this.pintar();
+    $('[data-cerrar-contacto]').addEventListener('click', () => this.cerrar());
+    this.raiz.addEventListener('click', (e) => { if (e.target === this.raiz) this.cerrar(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') this.cerrar(); });
+    $('[data-formulario]').addEventListener('submit', (e) => { e.preventDefault(); this.enviar(e.currentTarget); });
+  },
+};
+
+/* ==========================================================================
+   Componentes
+   ========================================================================== */
+function botonFlecha(href, texto) {
+  return `<a class="boton-flecha" href="${href}">${esc(texto)}<span class="boton-flecha__icono">${icono('flecha')}</span></a>`;
+}
+
+function cinta(palabras, clases = 'liso-naranja') {
+  const grupo = palabras.map((p) => `<span>${esc(p)}</span>`).join('');
+  return `<div class="cinta ${clases}" aria-hidden="true"><div class="cinta__pista">${grupo}${grupo}${grupo}${grupo}</div></div>`;
+}
+
+function fraseConPalabras(texto) {
+  let html = '';
+  texto.split(/(\*\*.+?\*\*)/g).forEach((parte) => {
+    if (!parte) return;
+    const negrita = parte.startsWith('**');
+    const limpio = negrita ? parte.slice(2, -2) : parte;
+    const palabras = limpio.split(/(\s+)/).map((w) => (w.trim() ? `<span class="palabra">${esc(w)}</span>` : w)).join('');
+    html += negrita ? `<strong>${palabras}</strong>` : palabras;
+  });
+  return html;
+}
+
+function hito(h) {
+  const hasta = /^actual/i.test(h.hasta || '') ? t('actualidad') : h.hasta;
+  const fechas = h.desde && hasta && h.desde !== hasta ? `${h.desde} – ${hasta}` : (h.desde || hasta || '');
+  return `
+    <li class="hito">
+      <div class="hito__fechas">${esc(fechas)}</div>
+      <div>
+        <h3 class="hito__puesto">${esc(L(h.puesto))}</h3>
+        ${h.lugar ? `<p class="hito__lugar">${esc(L(h.lugar))}</p>` : ''}
+        ${h.descripcion ? `<p class="hito__desc">${esc(L(h.descripcion))}</p>` : ''}
+      </div>
+    </li>`;
+}
+
+function ficha(it, alta = false) {
+  const imgs = imagenesDe(it);
+  const segunda = imgs.find((i) => i.ruta !== it.portada);
+  const meta = [anio(it), imgs.length ? n('foto', imgs.length) : ''].filter(Boolean).join(', ');
+  return `
+    <a class="ficha${alta ? ' ficha--alta' : ''}" href="${enlace(it.ruta)}">
+      <div class="ficha__imagen">
+        ${it.portada ? `<img src="${url(it.portada)}" alt="" loading="lazy">` : ''}
+        ${segunda ? `<img src="${url(segunda.ruta)}" alt="" loading="lazy">` : ''}
+      </div>
+      <div class="ficha__texto"><h3 class="ficha__nombre">${esc(tituloDe(it))}</h3><span class="ficha__meta">${esc(meta)}</span></div>
+    </a>`;
+}
+
+function vacio(carpeta) {
+  return `<div class="aviso"><h2>${esc(t('vacio_t'))}</h2><p>${esc(t('vacio_d', { c: carpeta }))}</p></div>`;
+}
+
+function pie() {
+  const { config } = estado;
+  const anioActual = new Date().getFullYear();
+  return `
+  <footer class="pie liso-negro grano" id="contacto">
+    <div class="envoltura">
+      <p class="pie__frase">${esc(t('frase_final'))}</p>
+      <div class="pie__grilla">
+        <div>
+          <h3>${esc(t('contacto'))}</h3>
+          <button class="pie__escribir" type="button" data-abrir-contacto><u>${esc(t('escribime'))}</u></button>
+          <p style="color:var(--gris);margin:0.75rem 0 0;max-width:30ch">${esc(t('contacto_bajada'))}</p>
+        </div>
+        <div>
+          <h3>${esc(t('secciones'))}</h3>
+          <ul>
+            <li><a href="#/proyectos">${esc(t('proyectos'))}</a></li>
+            <li><a href="#/viajes">${esc(t('viajes'))}</a></li>
+            <li><a href="#/trabajos">${esc(t('trabajos'))}</a></li>
+            <li><a href="#/experiencia">${esc(t('experiencia'))}</a></li>
+            <li><a href="#/cv">${esc(t('cv'))}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>${esc(t('redes'))}</h3>
+          <ul>${(config.redes || []).map((r) => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.nombre)}</a></li>`).join('')}</ul>
+          <h3 style="margin-top:1.75rem">${esc(t('idioma'))}</h3>
+          <div class="pie__idiomas">${botonesIdioma()}</div>
+        </div>
+      </div>
+      <div class="pie__legal"><span>© ${anioActual} ${esc(nombreCompleto())}. ${esc(t('derechos'))}</span><a href="#/">${esc(t('inicio'))}</a></div>
+    </div>
+  </footer>`;
+}
+
+/* ==========================================================================
+   Portada
+   ========================================================================== */
+function vistaInicio() {
+  const { config, cv } = estado;
+  const letras = (txt, desde) => [...txt].map((c, i) => `<span class="hero__letra" style="--i:${desde + i}">${c === ' ' ? '&nbsp;' : esc(c)}</span>`).join('');
+  const proyectos = items('Projects');
+  const viajes = items('Trips');
+  const trabajos = items('Works');
+  const exp = (cv && cv.experiencia) || [];
+  const est = (cv && cv.estudios) || [];
+
+  return `
+  <section class="hero grano" aria-label="${esc(nombreCompleto())}">
+    <div class="hero__estela" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="envoltura hero__contenido">
+      <h1 class="hero__nombre" data-nombre>
+        <span class="hero__linea hero__linea--relleno">${letras(config.nombre, 0)}</span>
+        ${config.apellido ? `<span class="hero__linea hero__linea--trazo">${letras(config.apellido, config.nombre.length)}</span>` : ''}
+      </h1>
+      <p class="hero__firma" aria-hidden="true">${esc(config.firma || config.nombre)}</p>
+      <div class="hero__pie">
+        <p><strong>${esc(L(config.rol))}</strong></p>
+        <a class="hero__bajar" href="#/mensaje">${esc(t('seguir'))}<i aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  ${cinta([t('proyectos'), t('viajes'), t('trabajos'), t('experiencia'), t('estudios')])}
+
+  <section class="mensaje liso-grafito" id="mensaje">
+    <div class="envoltura">
+      <span class="etiqueta">${esc(t('mensaje_de'))}<b>${esc(config.firma || config.nombre)}</b></span>
+      <p class="frase" data-frase>${fraseConPalabras(L(config.frase))}</p>
+      <span class="mensaje__firma" aria-hidden="true">${esc(config.firma || config.nombre)}</span>
+    </div>
+  </section>
+
+  <section class="proyectos liso-negro" id="proyectos" data-proyectos>
+    <div class="proyectos__fijo">
+      <div class="envoltura proyectos__cabeza">
+        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('proyectos'))}</span></h2>
+        <p class="bajada">${esc(t('proyectos_bajada'))}</p>
+      </div>
+      ${proyectos.length ? `
+      <div class="pista" data-pista>
+        ${proyectos.map((p) => `
+          <a class="proyecto" href="${enlace(p.ruta)}">
+            <div class="proyecto__foto">${p.portada ? `<img src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}</div>
+            <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(t('ver_proyecto'))}</span></div>
+          </a>`).join('')}
+      </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
+    </div>
+  </section>
+
+  ${cinta(['Viajes', 'Trips', 'Voyages', 'Reisen', 'Viagens', 'Viaggi'], 'liso-grafito cinta--inversa')}
+
+  <section class="salon carbono" id="viajes">
+    <div class="envoltura">
+      <div class="salon__cabeza">
+        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('viajes_l1'))}</span><span>${esc(t('viajes_l2'))}</span></h2>
+        <p class="bajada">${esc(t('viajes_bajada'))}</p>
+      </div>
+      ${viajes.length ? `<div class="salon__grilla">${viajes.map((v) => ficha(v)).join('')}</div>` : vacio('Trips')}
+    </div>
+  </section>
+
+  <section class="salon puntos" id="trabajos">
+    <div class="envoltura">
+      <div class="salon__cabeza">
+        <h2 class="titulo-seccion"><span>${esc(t('trabajos_l1'))}</span><span>${esc(t('trabajos_l2'))}</span></h2>
+        <p class="bajada">${esc(t('trabajos_bajada'))}</p>
+      </div>
+      ${trabajos.length ? `<div class="salon__grilla">${trabajos.map((w) => ficha(w, true)).join('')}</div>` : vacio('Works')}
+    </div>
+  </section>
+
+  <section class="liso-negro" id="experiencia">
+    <div class="envoltura trayectoria">
+      <article class="panel liso-naranja">
+        <h2 class="titulo-seccion"><span>${esc(t('exp_l1'))}</span><span>${esc(t('exp_l2'))}</span></h2>
+        <p class="bajada">${esc(t('exp_bajada'))}</p>
+        <ol class="hitos">${exp.slice(0, 4).map(hito).join('')}</ol>
+        ${botonFlecha('#/cv', t('ver_cv'))}
+      </article>
+      <article class="panel rayas" id="estudios">
+        <h2 class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('est_l1'))}</span><span>${esc(t('est_l2'))}</span></h2>
+        <p class="bajada">${esc(t('est_bajada'))}</p>
+        <ol class="hitos">${est.slice(0, 4).map(hito).join('')}</ol>
+        ${botonFlecha('#/cv', t('ver_cv'))}
+      </article>
+    </div>
+  </section>
+
+  ${pie()}`;
+}
+
+/* ==========================================================================
+   Detalle de proyecto, viaje o trabajo
+   ========================================================================== */
+function galeria(it, imgs) {
+  return `<div class="album">${imgs.map((img) => {
+    const d = descFoto(it, img);
+    return `
+    <button class="album__foto" type="button" data-foto="${esc(img.ruta)}" aria-label="${esc(d || limpiarNombre(img.nombre))}">
+      <img src="${url(img.ruta)}" alt="${esc(d)}" loading="lazy" decoding="async">
+      ${d ? `<span class="album__leyenda">${esc(d)}</span>` : ''}
+    </button>`;
+  }).join('')}</div>`;
+}
+
+function estante(it, docs, imgs) {
+  const tipoEtiqueta = { pdf: 'PDF', texto: 'TXT', markdown: 'MD' };
+  const libros = docs.map((d, i) => {
+    const et = tipoEtiqueta[d.tipo] || '';
+    const tapa = d.tipo === 'pdf'
+      ? `<div class="libro__tapa" data-miniatura="${esc(d.ruta)}"><span class="libro__tipo">${et}</span></div>`
+      : `<div class="libro__tapa libro__tapa--texto"><span class="libro__tipo">${et}</span><b>${esc(limpiarNombre(d.nombre))}</b><small>${esc(tituloDe(it))}</small></div>`;
+    return `
+      <button class="libro" type="button" data-leer="${i}">
+        ${tapa}
+        <span class="libro__nombre">${esc(limpiarNombre(d.nombre))}</span>
+        <span class="libro__meta" data-meta="${esc(d.ruta)}">${et}</span>
+      </button>`;
+  });
+  if (imgs.length > 1) {
+    libros.push(`
+      <button class="libro" type="button" data-leer-imagenes>
+        <div class="libro__tapa"><img src="${url(imgs[0].ruta)}" alt="" loading="lazy"><span class="libro__tipo">IMG</span></div>
+        <span class="libro__nombre">${esc(t('imagenes_proyecto'))}</span>
+        <span class="libro__meta">${esc(n('imagen', imgs.length))}</span>
+      </button>`);
+  }
+  return `<h2 class="subtitulo">${esc(t('para_leer'))}</h2><div class="estante">${libros.join('')}</div>`;
+}
+
+function vistaDetalle(seccion, it) {
+  const lista = items(seccion);
+  const i = lista.indexOf(it);
+  const siguiente = lista[(i + 1) % lista.length];
+  const imgs = imagenesDe(it);
+  const docs = documentosDe(it);
+  const texto = L(it.texto);
+  const conf = SECCIONES[seccion];
+  const esProyecto = seccion === 'Projects';
+  const imgsAlbum = esProyecto ? imgs.filter((x) => x.ruta !== it.portada) : imgs;
+
+  const datos = [];
+  if (imgsAlbum.length) datos.push([imgsAlbum.length, n('foto', imgsAlbum.length).replace(/^\d+\s/, '')]);
+  if (docs.length) datos.push([docs.length, n('documento', docs.length).replace(/^\d+\s/, '')]);
+  if (anio(it)) datos.push([anio(it), '']);
+
+  return `
+  <div class="pagina envoltura">
+    <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a></nav>
+    <header class="encabezado">
+      <h1 class="titular">${esc(tituloDe(it))}</h1>
+      <div>
+        ${datos.length ? `<div class="encabezado__datos">${datos.map(([a, b]) => `<span><b>${esc(a)}</b>${esc(b)}</span>`).join('')}</div>` : ''}
+        ${texto ? `<div class="encabezado__texto">${parrafos(texto)}</div>` : ''}
+        ${it.enlace ? `<div class="botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(t('visitar'))} ${icono('flecha')}</a></div>` : ''}
+      </div>
+    </header>
+    ${esProyecto && it.portada ? `<div class="portada-grande"><img src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
+    ${docs.length ? estante(it, docs, imgs) : ''}
+    ${imgsAlbum.length ? `${docs.length || esProyecto ? `<h2 class="subtitulo">${esc(t('imagenes'))}</h2>` : ''}${galeria(it, imgsAlbum)}` : ''}
+    ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
+  </div>
+  ${pie()}`;
+}
+
+/* ==========================================================================
+   Currículum
+   ========================================================================== */
+function vistaCV() {
+  const { cv, config, manifest } = estado;
+  const pdf = manifest.cv && manifest.cv.pdf;
+  const linkedin = (config.redes || []).find((r) => /linkedin/i.test(r.url));
+  const lista = (titulo, valores) => (valores && valores.length ? `<div><h3>${esc(titulo)}</h3><ul class="chips">${valores.map((x) => `<li>${esc(L(x))}</li>`).join('')}</ul></div>` : '');
+  return `
+  <div class="pagina envoltura">
+    <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><span>${esc(t('cv'))}</span></nav>
+    <header class="encabezado">
+      <h1 class="titular">${esc(config.nombre)}<br>${esc(config.apellido || '')}</h1>
+      <div>
+        <div class="encabezado__texto"><p>${esc(L(config.rol))}</p></div>
+        <div class="botones">
+          ${pdf ? `<button class="boton" type="button" data-leer-cv>${esc(t('leer_cv'))}</button><a class="boton boton--sec" href="${url(pdf)}" download>${esc(t('descargar_cv'))}</a>` : ''}
+          ${linkedin ? `<a class="boton ${pdf ? 'boton--sec' : ''}" href="${esc(linkedin.url)}" target="_blank" rel="noopener">${esc(t('linkedin_cv'))}</a>` : ''}
+        </div>
+      </div>
+    </header>
+    <div class="cv">
+      <div>
+        ${cv && cv.experiencia && cv.experiencia.length ? `<h2 class="subtitulo">${esc(t('experiencia'))}</h2><ol class="linea-tiempo">${cv.experiencia.map(hito).join('')}</ol>` : ''}
+        ${cv && cv.estudios && cv.estudios.length ? `<h2 class="subtitulo">${esc(t('estudios'))}</h2><ol class="linea-tiempo">${cv.estudios.map(hito).join('')}</ol>` : ''}
+      </div>
+      <aside class="cv__lateral">
+        ${lista(t('habilidades'), cv && cv.habilidades)}
+        ${lista(t('idiomas_cv'), cv && cv.idiomas)}
+        <div><button class="boton" type="button" data-abrir-contacto>${esc(t('escribime'))}</button></div>
+      </aside>
+    </div>
+  </div>
+  ${pie()}`;
+}
+
+function vistaNoEncontrada() {
+  return `
+  <div class="pagina envoltura">
+    <h1 class="titular">404</h1>
+    <div class="aviso" style="margin-top:3rem"><h2>${esc(t('no_encontrado'))}</h2><p>${esc(t('no_encontrado_d'))}</p>${botonFlecha('#/', t('volver'))}</div>
+  </div>
+  ${pie()}`;
+}
+
+function vistaError(err) {
+  return `
+  <div class="pagina envoltura">
+    <div class="aviso"><h2>${esc(t('sin_datos'))}</h2><p>${esc(t('sin_datos_d'))}</p><p><code>${esc(err.message)}</code></p></div>
+  </div>`;
+}
+
+/* ==========================================================================
+   Visor de fotos
+   ========================================================================== */
+const visor = {
+  raiz: $('[data-visor]'),
+  abrir(it, lista, i) {
+    this.it = it; this.lista = lista; this.i = i;
+    this.ultimoFoco = document.activeElement;
+    this.raiz.classList.add('abierto');
+    document.body.classList.add('bloqueado');
+    history.pushState({ visor: true }, '', location.hash || '#/');
+    this.mostrar(0);
+    $('[data-visor-cerrar]').focus({ preventScroll: true });
+  },
+  cerrar(desdeHistorial = false) {
+    if (!this.raiz.classList.contains('abierto')) return;
+    this.raiz.classList.remove('abierto');
+    document.body.classList.remove('bloqueado');
+    if (!desdeHistorial && history.state && history.state.visor) history.back();
+    if (this.ultimoFoco) this.ultimoFoco.focus({ preventScroll: true });
+  },
+  mostrar(dir) {
+    const img = $('[data-visor-img]');
+    const item = this.lista[this.i];
+    const d = descFoto(this.it, item);
+    img.src = url(item.ruta);
+    img.alt = d || limpiarNombre(item.nombre);
+    $('[data-visor-titulo]').innerHTML = `${esc(tituloDe(this.it))}<span>${this.i + 1} / ${this.lista.length}</span>`;
+    $('[data-visor-desc]').textContent = d;
+    img.style.transition = 'none';
+    img.style.transform = dir ? `translateX(${dir * 24}px)` : 'scale(0.98)';
+    img.style.opacity = '0';
+    img.decode().catch(() => {}).then(() => { img.style.transition = ''; img.style.transform = ''; img.style.opacity = '1'; });
+    $('[data-visor-ant]').disabled = this.i === 0;
+    $('[data-visor-sig]').disabled = this.i === this.lista.length - 1;
+    [this.i - 1, this.i + 1].forEach((j) => { if (this.lista[j]) new Image().src = url(this.lista[j].ruta); });
+  },
+  mover(d) {
+    const j = this.i + d;
+    if (j < 0 || j >= this.lista.length) return;
+    this.i = j;
+    this.mostrar(d);
+  },
+  iniciar() {
+    $('[data-visor-cerrar]').addEventListener('click', () => this.cerrar());
+    $('[data-visor-ant]').addEventListener('click', () => this.mover(-1));
+    $('[data-visor-sig]').addEventListener('click', () => this.mover(1));
+    const escena = $('[data-visor-escena]');
+    escena.addEventListener('click', (e) => { if (e.target === escena) this.cerrar(); });
+    let x0 = null;
+    escena.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    escena.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0;
+      if (Math.abs(dx) > 45) this.mover(dx < 0 ? 1 : -1);
+      x0 = null;
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!this.raiz.classList.contains('abierto')) return;
+      if (e.key === 'Escape') this.cerrar();
+      if (e.key === 'ArrowRight') this.mover(1);
+      if (e.key === 'ArrowLeft') this.mover(-1);
+    });
+    window.addEventListener('popstate', () => {
+      if (this.raiz.classList.contains('abierto') && !(history.state && history.state.visor)) this.cerrar(true);
+    });
+  },
+};
+
+/* ==========================================================================
+   Efectos de desplazamiento (solo en la portada)
+   ========================================================================== */
+const efectos = {
+  activo: false,
+  medir() {
+    this.proyectos = $('[data-proyectos]');
+    this.pista = $('[data-pista]');
+    this.frase = $('[data-frase]');
+    this.palabras = this.frase ? $$('.palabra', this.frase) : [];
+    if (this.proyectos) {
+      this.proyectos.style.height = '';
+      const libre = !this.pista || reduceMotion() || window.innerWidth < 760;
+      this.proyectos.classList.toggle('proyectos--libre', libre);
+      this.desborde = 0;
+      if (!libre) {
+        this.pista.style.transform = '';
+        this.desborde = Math.max(0, this.pista.scrollWidth - window.innerWidth);
+        if (this.desborde > 0) this.proyectos.style.height = `${window.innerHeight + this.desborde}px`;
+        else this.proyectos.classList.add('proyectos--libre');
+      }
+    }
+    this.actualizar();
+  },
+  actualizar() {
+    this.pendiente = false;
+    const vh = window.innerHeight;
+    if (this.proyectos && this.desborde > 0 && !this.proyectos.classList.contains('proyectos--libre')) {
+      const r = this.proyectos.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / (r.height - vh)));
+      this.pista.style.transform = `translate3d(${-p * this.desborde}px,0,0)`;
+    }
+    if (this.palabras.length && !reduceMotion()) {
+      const r = this.frase.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.9 - vh * 0.2 + r.height * 0.4)));
+      const total = this.palabras.length;
+      this.palabras.forEach((w, i) => {
+        const o = Math.min(1, Math.max(0.18, p * total * 1.15 - i + 1));
+        w.style.setProperty('--o', o.toFixed(2));
+      });
+    }
+  },
+  alDesplazar() {
+    if (efectos.pendiente || !efectos.activo) return;
+    efectos.pendiente = true;
+    requestAnimationFrame(() => efectos.actualizar());
+  },
+  iniciar() {
+    window.addEventListener('scroll', () => this.alDesplazar(), { passive: true });
+    let tm;
+    window.addEventListener('resize', () => { clearTimeout(tm); tm = setTimeout(() => { if (this.activo) this.medir(); ajustarNombre(); }, 150); });
+  },
+};
+
+/* ==========================================================================
+   Comportamiento de cada vista
+   ========================================================================== */
+let lector;
+
+function ajustarNombre() {
+  const h = $('[data-nombre]');
+  if (!h) return;
+  h.style.setProperty('--tam-nombre', '100px');
+  const lineas = $$('.hero__linea', h);
+  const ancho = Math.max(...lineas.map((l) => l.scrollWidth));
+  const cont = h.parentElement;
+  const disponible = cont.clientWidth - parseFloat(getComputedStyle(cont).paddingLeft) * 2;
+  const porAncho = (100 * disponible) / ancho;
+  const porAlto = (window.innerHeight * 0.58) / (lineas.length * 0.9);
+  h.style.setProperty('--tam-nombre', `${Math.floor(Math.min(porAncho, porAlto))}px`);
+}
+
+function activarVista(ctx) {
+  efectos.activo = !!ctx.inicio;
+  if (ctx.inicio) {
+    ajustarNombre();
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+      ajustarNombre();
+      efectos.medir();
+      requestAnimationFrame(() => document.body.classList.add('cargado'));
+      if (ctx.ancla) {
+        const destino = document.getElementById(ctx.ancla);
+        if (destino) destino.scrollIntoView({ behavior: ctx.suave ? 'smooth' : 'auto' });
+      }
+    });
+    $$('img', $('[data-pista]') || document.createElement('div')).forEach((img) => img.addEventListener('load', () => efectos.medir(), { once: true }));
+  }
+
+  $$('.album__foto img').forEach((img) => {
+    if (img.complete) img.classList.add('listo');
+    else img.addEventListener('load', () => img.classList.add('listo'), { once: true });
+  });
+
+  const it = ctx.item;
+  if (it) {
+    const imgs = imagenesDe(it);
+    const docs = documentosDe(it);
+    const enAlbum = ctx.seccion === 'Projects' ? imgs.filter((x) => x.ruta !== it.portada) : imgs;
+    $$('[data-foto]').forEach((b) => b.addEventListener('click', () => {
+      visor.abrir(it, enAlbum, enAlbum.findIndex((x) => x.ruta === b.dataset.foto));
+    }));
+    $$('[data-leer]').forEach((b) => b.addEventListener('click', () => {
+      const d = docs[Number(b.dataset.leer)];
+      lector.abrir({ titulo: limpiarNombre(d.nombre), sub: tituloDe(it), tipo: d.tipo, url: url(d.ruta), descarga: url(d.ruta) });
+    }));
+    const bImgs = $('[data-leer-imagenes]');
+    if (bImgs) bImgs.addEventListener('click', () => lector.abrir({ titulo: t('imagenes_proyecto'), sub: tituloDe(it), tipo: 'imagenes', urls: imgs.map((x) => url(x.ruta)) }));
+    miniaturas();
+  }
+
+  const bCV = $('[data-leer-cv]');
+  if (bCV) bCV.addEventListener('click', () => lector.abrir({ titulo: t('cv'), sub: nombreCompleto(), tipo: 'pdf', url: url(estado.manifest.cv.pdf), descarga: url(estado.manifest.cv.pdf) }));
+}
+
+function miniaturas() {
+  const tapas = $$('[data-miniatura]');
+  if (!tapas.length) return;
+  const io = new IntersectionObserver((entradas) => {
+    entradas.forEach(async (e) => {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      const ruta = e.target.dataset.miniatura;
+      try {
+        const { canvas, paginas } = await miniaturaPDF(url(ruta), e.target.clientWidth || 300);
+        canvas.setAttribute('aria-hidden', 'true');
+        e.target.prepend(canvas);
+        const meta = $(`[data-meta="${CSS.escape(ruta)}"]`);
+        if (meta) meta.textContent = `PDF, ${n('pagina', paginas)}`;
+      } catch (_) {
+        e.target.classList.add('libro__tapa--texto');
+        e.target.insertAdjacentHTML('beforeend', `<b>${esc(limpiarNombre(ruta.split('/').pop()))}</b>`);
+      }
+    });
+  }, { rootMargin: '200px' });
+  tapas.forEach((x) => io.observe(x));
+}
+
+/* ==========================================================================
+   Rutas
+   ========================================================================== */
+const ANCLAS = ['proyectos', 'viajes', 'trabajos', 'experiencia', 'estudios', 'mensaje', 'contacto'];
+
+function resolver() {
+  const segs = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map((s) => { try { return decodeURIComponent(s); } catch (_) { return s; } });
+  const nombre = nombreCompleto();
+  if (!segs.length) return { html: vistaInicio(), titulo: nombre, inicio: true };
+  if (segs.length === 1 && ANCLAS.includes(segs[0])) return { html: vistaInicio(), titulo: `${t(segs[0] === 'mensaje' || segs[0] === 'contacto' ? 'inicio' : segs[0])}, ${nombre}`, inicio: true, ancla: segs[0] };
+  if (segs[0] === 'cv') return { html: vistaCV(), titulo: `${t('cv')}, ${nombre}` };
+  if (SECCIONES[segs[0]]) {
+    if (segs.length === 1) return { html: vistaInicio(), titulo: nombre, inicio: true, ancla: SECCIONES[segs[0]].id };
+    const it = items(segs[0]).find((x) => x.carpeta === segs[1]);
+    if (it) return { html: vistaDetalle(segs[0], it), titulo: `${tituloDe(it)}, ${nombre}`, item: it, seccion: segs[0] };
+  }
+  return { html: vistaNoEncontrada(), titulo: nombre };
+}
+
+let primera = true;
+let rutaAnterior = '';
+async function navegar(opciones = {}) {
+  const app = $('#app');
+  const ctx = resolver();
+  const misma = opciones.mismoLugar;
+  const yAntes = window.scrollY;
+  // Si ya estamos en la portada y solo cambia la sección, desplazar sin volver a pintar.
+  const base = (h) => (/^#\/?(proyectos|viajes|trabajos|experiencia|estudios|mensaje|contacto)?$/.test(h) ? 'portada' : h);
+  if (!misma && !primera && ctx.inicio && base(rutaAnterior) === 'portada' && ctx.ancla) {
+    rutaAnterior = location.hash;
+    const destino = document.getElementById(ctx.ancla);
+    if (destino) destino.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth' });
+    return;
+  }
+  if (!primera && !misma) {
+    app.classList.add('saliendo');
+    await new Promise((r) => setTimeout(r, 180));
+  }
+  if (!misma) document.body.classList.remove('cargado');
+  app.innerHTML = ctx.html;
+  document.title = ctx.titulo;
+  if (misma) {
+    window.scrollTo(0, yAntes);
+    if (ctx.inicio) document.body.classList.add('cargado');
+  } else if (!ctx.ancla) window.scrollTo(0, 0);
+  app.classList.remove('saliendo');
+  if (!primera && !misma) app.focus({ preventScroll: true });
+  activarVista({ ...ctx, ancla: misma ? null : ctx.ancla, suave: false });
+  if (misma) requestAnimationFrame(() => window.scrollTo(0, yAntes));
+  primera = false;
+  rutaAnterior = location.hash;
+}
+
+/* ==========================================================================
+   Inicio
+   ========================================================================== */
+(async function iniciar() {
+  aplicarTextosFijos();
+  try {
+    estado.config = await json('config.json');
+    estado.manifest = await json('manifest.json');
+    estado.cv = await json('cv/cv.json').catch(() => null);
+  } catch (err) {
+    console.error(err);
+    $('#app').innerHTML = vistaError(err);
+    return;
+  }
+  pintarCabecera();
+  iniciarCabecera();
+  contacto.iniciar();
+  visor.iniciar();
+  efectos.iniciar();
+  lector = new Lector($('[data-lector]'), { firma: estado.config.firma || estado.config.nombre, t });
+  window.addEventListener('hashchange', () => navegar());
+  // Al cambiar de idioma se vuelve a pintar el formulario y los textos fijos.
+  document.addEventListener('click', (e) => { if (e.target.closest('[data-idioma]')) contacto.pintar(); });
+  await navegar();
+})();

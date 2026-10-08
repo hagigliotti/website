@@ -1,0 +1,6 @@
+Título: CD
+
+Diseño de portada y librillo de un CD. (Texto de muestra.)
+
+[en]
+Cover and booklet design for a CD. (Sample text.)

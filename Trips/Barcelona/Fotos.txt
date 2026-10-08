@@ -1,0 +1,10 @@
+barcelona-01.jpg: Descripción de la foto 1 (editala en Fotos.txt).
+barcelona-02.jpg: Descripción de la foto 2 (editala en Fotos.txt).
+barcelona-03.jpg: Descripción de la foto 3 (editala en Fotos.txt).
+barcelona-04.jpg: Descripción de la foto 4 (editala en Fotos.txt).
+
+[en]
+barcelona-01.jpg: Description of photo 1.
+barcelona-02.jpg: Description of photo 2.
+barcelona-03.jpg: Description of photo 3.
+barcelona-04.jpg: Description of photo 4.

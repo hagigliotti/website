@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hernando Gigliotti</title>
+  <meta name="description" content="Hernando Gigliotti: proyectos, viajes, diseño y currículum.">
+  <meta name="theme-color" content="#121315">
+  <meta property="og:title" content="Hernando Gigliotti">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23121315'/%3E%3Ctext x='32' y='44' font-family='Arial Black,Arial' font-weight='900' font-size='30' text-anchor='middle' fill='%23ff7a00'%3EH%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Mrs+Saint+Delafield&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+  <!-- Íconos reutilizables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.06c.53-1 1.83-1.75 3.4-1.75 3.64 0 4.24 2.3 4.24 5.3v5.95h-4v-5.27c0-1.26-.02-2.88-1.85-2.88-1.85 0-2.13 1.37-2.13 2.79v5.36h-4v-11Z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/></g><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-youtube" viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z"/></symbol>
+    <symbol id="i-sobre" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/></g></symbol>
+    <symbol id="i-flecha" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M7 17 17 7M9 7h8v8"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-izq" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-der" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M9 5l7 7-7 7"/></symbol>
+    <symbol id="i-bajar" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></symbol>
+    <symbol id="i-mas" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 12h12M12 6v12"/></symbol>
+    <symbol id="i-menos" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M6 12h12"/></symbol>
+  </svg>
+
+  <header class="nav">
+    <a class="nav__marca" href="#/" data-firma>Hernando</a>
+    <div class="nav__derecha">
+      <nav class="nav__redes" data-redes aria-label="Redes"></nav>
+      <div class="idiomas">
+        <button class="idiomas__boton" type="button" aria-haspopup="true" aria-expanded="false" data-idioma-boton></button>
+        <ul class="idiomas__lista" data-idioma-lista hidden></ul>
+      </div>
+      <button class="nav__contacto" type="button" data-abrir-contacto data-t-aria="contacto"><svg aria-hidden="true"><use href="#i-sobre"/></svg><span data-t="contacto">Contacto</span></button>
+      <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-boton>
+        <span></span><span></span><b class="sr" data-t="menu_abrir">Abrir menú</b>
+      </button>
+    </div>
+  </header>
+
+  <div class="menu" id="menu" data-menu>
+    <ul class="menu__lista" data-menu-links></ul>
+    <div class="menu__pie">
+      <div class="menu__redes" data-menu-redes></div>
+      <div class="menu__idiomas" data-menu-idiomas></div>
+    </div>
+  </div>
+
+  <main id="app" tabindex="-1"></main>
+
+  <!-- Contacto -->
+  <div class="contacto" role="dialog" aria-modal="true" aria-labelledby="contacto-titulo" data-contacto>
+    <div class="contacto__panel">
+      <button class="circulo contacto__cerrar" type="button" data-cerrar-contacto data-t-aria="cerrar"><svg><use href="#i-x"/></svg></button>
+      <h2 class="contacto__titulo" id="contacto-titulo" data-t="escribime">Escribime</h2>
+      <p class="contacto__bajada" data-t="contacto_bajada"></p>
+      <form class="formulario" data-formulario novalidate></form>
+    </div>
+  </div>
+
+  <!-- Visor de fotos -->
+  <div class="visor" role="dialog" aria-modal="true" data-visor>
+    <div class="visor__barra">
+      <div class="visor__titulo" data-visor-titulo></div>
+      <button class="circulo" type="button" data-visor-cerrar data-t-aria="cerrar"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <div class="visor__escena" data-visor-escena><img alt="" data-visor-img></div>
+    <p class="visor__desc" data-visor-desc></p>
+    <div class="visor__pie">
+      <button class="circulo" type="button" data-visor-ant data-t-aria="anterior"><svg><use href="#i-izq"/></svg></button>
+      <button class="circulo circulo--naranja" type="button" data-visor-sig data-t-aria="siguiente"><svg><use href="#i-der"/></svg></button>
+    </div>
+  </div>
+
+  <!-- Lector tipo libro -->
+  <div class="lector" role="dialog" aria-modal="true" data-lector>
+    <div class="lector__barra">
+      <div class="lector__titulo"><b data-lector-titulo></b><small data-lector-sub></small></div>
+      <div class="lector__acciones">
+        <a class="circulo" data-lector-descargar download data-t-aria="descargar"><svg><use href="#i-bajar"/></svg></a>
+        <button class="circulo" type="button" data-lector-cerrar data-t-aria="cerrar"><svg><use href="#i-x"/></svg></button>
+      </div>
+    </div>
+    <div class="lector__escena" data-lector-escena></div>
+    <div class="lector__pie">
+      <button class="circulo" type="button" data-lector-ant data-t-aria="pag_ant"><svg><use href="#i-izq"/></svg></button>
+      <input class="lector__rango" type="range" min="0" max="0" value="0" step="1" data-lector-rango data-t-aria="ir_pagina">
+      <span class="lector__contador" data-lector-contador></span>
+      <div class="lector__tam" data-lector-tam hidden>
+        <button class="circulo" type="button" data-tam="-1" data-t-aria="letra_menos"><svg><use href="#i-menos"/></svg></button>
+        <button class="circulo" type="button" data-tam="1" data-t-aria="letra_mas"><svg><use href="#i-mas"/></svg></button>
+      </div>
+      <button class="circulo circulo--naranja" type="button" data-lector-sig data-t-aria="pag_sig"><svg><use href="#i-der"/></svg></button>
+    </div>
+  </div>
+
+  <script src="assets/vendor/marked.min.js" defer></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+Título: Cancionero
+
+[es]
+Cancionero digital con un reproductor al estilo Spotify y listas de canciones.
+
+[en]
+Digital songbook with a Spotify-style player and song playlists.
+
+[fr]
+Recueil de chants numérique avec un lecteur façon Spotify et des listes de lecture.
+
+[de]
+Digitales Liederbuch mit einem Player im Spotify-Stil und Playlists.
+
+[pt]
+Cancioneiro digital com um player no estilo Spotify e playlists.
+
+[it]
+Canzoniere digitale con un lettore in stile Spotify e playlist.

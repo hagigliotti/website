@@ -1,0 +1,10 @@
+sanmarino-01.jpg: Descripción de la foto 1 (editala en Fotos.txt).
+sanmarino-02.jpg: Descripción de la foto 2 (editala en Fotos.txt).
+sanmarino-03.jpg: Descripción de la foto 3 (editala en Fotos.txt).
+sanmarino-04.jpg: Descripción de la foto 4 (editala en Fotos.txt).
+
+[en]
+sanmarino-01.jpg: Description of photo 1.
+sanmarino-02.jpg: Description of photo 2.
+sanmarino-03.jpg: Description of photo 3.
+sanmarino-04.jpg: Description of photo 4.

@@ -1,0 +1,6 @@
+Título: Barcelona
+
+Ciudad mediterránea de Cataluña. (Texto de muestra.)
+
+[en]
+Mediterranean city in Catalonia. (Sample text.)

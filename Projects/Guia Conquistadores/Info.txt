@@ -1,0 +1,19 @@
+Título: Guía Conquistadores
+
+[es]
+Guía de recursos para el club de Conquistadores. (Texto de muestra: editalo en Info.txt.)
+
+[en]
+Resource guide for the Pathfinder club. (Sample text: edit it in Info.txt.)
+
+[fr]
+Guide de ressources pour le club des Explorateurs. (Texte d’exemple : modifiez-le dans Info.txt.)
+
+[de]
+Materialsammlung für den Pfadfinderclub. (Beispieltext: in Info.txt bearbeiten.)
+
+[pt]
+Guia de recursos para o clube de Desbravadores. (Texto de exemplo: edite em Info.txt.)
+
+[it]
+Guida di risorse per il club degli Esploratori. (Testo di esempio: modificalo in Info.txt.)

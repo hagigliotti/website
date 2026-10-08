@@ -1,0 +1,38 @@
+{
+  "_nota": "Completá con tus datos de LinkedIn. Cada texto puede ir en un solo idioma (\"texto\") o traducido: {\"es\": \"…\", \"en\": \"…\", \"fr\": \"…\", \"de\": \"…\", \"pt\": \"…\", \"it\": \"…\"}. En \"hasta\" escribí \"actualidad\" si seguís ahí.",
+  "experiencia": [
+    {
+      "puesto": { "es": "Puesto actual", "en": "Current role", "fr": "Poste actuel", "de": "Aktuelle Position", "pt": "Cargo atual", "it": "Ruolo attuale" },
+      "lugar": "Empresa · Ciudad",
+      "desde": "2023",
+      "hasta": "actualidad",
+      "descripcion": { "es": "Contá qué hacés y qué lograste. Copiá el texto de tu experiencia en LinkedIn.", "en": "Describe what you do and what you achieved." }
+    },
+    {
+      "puesto": { "es": "Puesto anterior", "en": "Previous role", "fr": "Poste précédent", "de": "Frühere Position", "pt": "Cargo anterior", "it": "Ruolo precedente" },
+      "lugar": "Empresa · Ciudad",
+      "desde": "2019",
+      "hasta": "2023",
+      "descripcion": { "es": "Descripción del puesto.", "en": "Role description." }
+    }
+  ],
+  "estudios": [
+    {
+      "puesto": { "es": "Título o carrera", "en": "Degree", "fr": "Diplôme", "de": "Abschluss", "pt": "Formação", "it": "Titolo di studio" },
+      "lugar": "Universidad · Ciudad",
+      "desde": "2014",
+      "hasta": "2018"
+    },
+    {
+      "puesto": { "es": "Curso o certificación", "en": "Course or certification", "fr": "Cours ou certification", "de": "Kurs oder Zertifikat", "pt": "Curso ou certificação", "it": "Corso o certificazione" },
+      "lugar": "Institución",
+      "desde": "2021",
+      "hasta": "2021"
+    }
+  ],
+  "habilidades": ["Diseño gráfico", "Diseño editorial", "Producción audiovisual"],
+  "idiomas": [
+    { "es": "Español", "en": "Spanish", "fr": "Espagnol", "de": "Spanisch", "pt": "Espanhol", "it": "Spagnolo" },
+    { "es": "Italiano", "en": "Italian", "fr": "Italien", "de": "Italienisch", "pt": "Italiano", "it": "Italiano" }
+  ]
+}

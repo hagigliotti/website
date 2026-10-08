@@ -1,0 +1,10 @@
+forli-01.jpg: Descripción de la foto 1 (editala en Fotos.txt).
+forli-02.jpg: Descripción de la foto 2 (editala en Fotos.txt).
+forli-03.jpg: Descripción de la foto 3 (editala en Fotos.txt).
+forli-04.jpg: Descripción de la foto 4 (editala en Fotos.txt).
+
+[en]
+forli-01.jpg: Description of photo 1.
+forli-02.jpg: Description of photo 2.
+forli-03.jpg: Description of photo 3.
+forli-04.jpg: Description of photo 4.

@@ -1,0 +1,472 @@
+{
+  "generado": "2026-10-08T13:34:10.198Z",
+  "idiomas": [
+    "es",
+    "en",
+    "fr",
+    "de",
+    "pt",
+    "it"
+  ],
+  "secciones": {
+    "Projects": {
+      "items": [
+        {
+          "carpeta": "Tienda online",
+          "ruta": "Projects/Tienda online",
+          "titulo": {
+            "_": "Tienda online"
+          },
+          "texto": {
+            "es": "Diseño y armado de una tienda online. (Texto de muestra: editalo en Info.txt.)",
+            "en": "Design and build of an online store. (Sample text: edit it in Info.txt.)",
+            "fr": "Conception et création d’une boutique en ligne. (Texte d’exemple : modifiez-le dans Info.txt.)",
+            "de": "Gestaltung und Aufbau eines Onlineshops. (Beispieltext: in Info.txt bearbeiten.)",
+            "pt": "Design e montagem de uma loja online. (Texto de exemplo: edite em Info.txt.)",
+            "it": "Progettazione e realizzazione di un negozio online. (Testo di esempio: modificalo in Info.txt.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Projects/Tienda online/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/Tienda online/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 81524
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.411Z"
+        },
+        {
+          "carpeta": "HAG Producciones",
+          "ruta": "Projects/HAG Producciones",
+          "titulo": {
+            "_": "HAG Producciones"
+          },
+          "texto": {
+            "es": "Mi canal de YouTube de producciones audiovisuales.",
+            "en": "My YouTube channel for audiovisual productions.",
+            "fr": "Ma chaîne YouTube de productions audiovisuelles.",
+            "de": "Mein YouTube-Kanal für audiovisuelle Produktionen.",
+            "pt": "Meu canal no YouTube de produções audiovisuais.",
+            "it": "Il mio canale YouTube di produzioni audiovisive."
+          },
+          "fecha": "",
+          "enlace": "https://www.youtube.com/@hagproducciones",
+          "portada": "Projects/HAG Producciones/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/HAG Producciones/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 86726
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        },
+        {
+          "carpeta": "Guia Conquistadores",
+          "ruta": "Projects/Guia Conquistadores",
+          "titulo": {
+            "_": "Guía Conquistadores"
+          },
+          "texto": {
+            "es": "Guía de recursos para el club de Conquistadores. (Texto de muestra: editalo en Info.txt.)",
+            "en": "Resource guide for the Pathfinder club. (Sample text: edit it in Info.txt.)",
+            "fr": "Guide de ressources pour le club des Explorateurs. (Texte d’exemple : modifiez-le dans Info.txt.)",
+            "de": "Materialsammlung für den Pfadfinderclub. (Beispieltext: in Info.txt bearbeiten.)",
+            "pt": "Guia de recursos para o clube de Desbravadores. (Texto de exemplo: edite em Info.txt.)",
+            "it": "Guida di risorse per il club degli Esploratori. (Testo di esempio: modificalo in Info.txt.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Projects/Guia Conquistadores/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/Guia Conquistadores/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 83078
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        },
+        {
+          "carpeta": "Cancionero",
+          "ruta": "Projects/Cancionero",
+          "titulo": {
+            "_": "Cancionero"
+          },
+          "texto": {
+            "es": "Cancionero digital con un reproductor al estilo Spotify y listas de canciones.",
+            "en": "Digital songbook with a Spotify-style player and song playlists.",
+            "fr": "Recueil de chants numérique avec un lecteur façon Spotify et des listes de lecture.",
+            "de": "Digitales Liederbuch mit einem Player im Spotify-Stil und Playlists.",
+            "pt": "Cancioneiro digital com um player no estilo Spotify e playlists.",
+            "it": "Canzoniere digitale con un lettore in stile Spotify e playlist."
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Projects/Cancionero/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/Cancionero/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 86563
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        }
+      ]
+    },
+    "Trips": {
+      "items": [
+        {
+          "carpeta": "SanMarino",
+          "ruta": "Trips/SanMarino",
+          "titulo": {
+            "_": "San Marino"
+          },
+          "texto": {
+            "_": "Una de las repúblicas más antiguas del mundo, sobre el monte Titano. (Texto de muestra.)",
+            "en": "One of the oldest republics in the world, on Mount Titano. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Trips/SanMarino/sanmarino-01.jpg",
+          "fotos": {
+            "sanmarino-01.jpg": {
+              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
+              "en": "Description of photo 1."
+            },
+            "sanmarino-02.jpg": {
+              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
+              "en": "Description of photo 2."
+            },
+            "sanmarino-03.jpg": {
+              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
+              "en": "Description of photo 3."
+            },
+            "sanmarino-04.jpg": {
+              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
+              "en": "Description of photo 4."
+            }
+          },
+          "archivos": [
+            {
+              "nombre": "sanmarino-01.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-01.jpg",
+              "tipo": "imagen",
+              "bytes": 43567
+            },
+            {
+              "nombre": "sanmarino-02.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-02.jpg",
+              "tipo": "imagen",
+              "bytes": 44285
+            },
+            {
+              "nombre": "sanmarino-03.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-03.jpg",
+              "tipo": "imagen",
+              "bytes": 47549
+            },
+            {
+              "nombre": "sanmarino-04.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-04.jpg",
+              "tipo": "imagen",
+              "bytes": 44835
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.415Z"
+        },
+        {
+          "carpeta": "Barcelona",
+          "ruta": "Trips/Barcelona",
+          "titulo": {
+            "_": "Barcelona"
+          },
+          "texto": {
+            "_": "Ciudad mediterránea de Cataluña. (Texto de muestra.)",
+            "en": "Mediterranean city in Catalonia. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Trips/Barcelona/barcelona-01.jpg",
+          "fotos": {
+            "barcelona-01.jpg": {
+              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
+              "en": "Description of photo 1."
+            },
+            "barcelona-02.jpg": {
+              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
+              "en": "Description of photo 2."
+            },
+            "barcelona-03.jpg": {
+              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
+              "en": "Description of photo 3."
+            },
+            "barcelona-04.jpg": {
+              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
+              "en": "Description of photo 4."
+            }
+          },
+          "archivos": [
+            {
+              "nombre": "barcelona-01.jpg",
+              "ruta": "Trips/Barcelona/barcelona-01.jpg",
+              "tipo": "imagen",
+              "bytes": 40997
+            },
+            {
+              "nombre": "barcelona-02.jpg",
+              "ruta": "Trips/Barcelona/barcelona-02.jpg",
+              "tipo": "imagen",
+              "bytes": 44410
+            },
+            {
+              "nombre": "barcelona-03.jpg",
+              "ruta": "Trips/Barcelona/barcelona-03.jpg",
+              "tipo": "imagen",
+              "bytes": 47537
+            },
+            {
+              "nombre": "barcelona-04.jpg",
+              "ruta": "Trips/Barcelona/barcelona-04.jpg",
+              "tipo": "imagen",
+              "bytes": 45645
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        },
+        {
+          "carpeta": "Berna",
+          "ruta": "Trips/Berna",
+          "titulo": {
+            "_": "Berna"
+          },
+          "texto": {
+            "_": "Capital de Suiza, a orillas del río Aar. (Texto de muestra.)",
+            "en": "The capital of Switzerland, on the Aare river. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Trips/Berna/berna-01.jpg",
+          "fotos": {
+            "berna-01.jpg": {
+              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
+              "en": "Description of photo 1."
+            },
+            "berna-02.jpg": {
+              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
+              "en": "Description of photo 2."
+            },
+            "berna-03.jpg": {
+              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
+              "en": "Description of photo 3."
+            },
+            "berna-04.jpg": {
+              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
+              "en": "Description of photo 4."
+            }
+          },
+          "archivos": [
+            {
+              "nombre": "berna-01.jpg",
+              "ruta": "Trips/Berna/berna-01.jpg",
+              "tipo": "imagen",
+              "bytes": 47701
+            },
+            {
+              "nombre": "berna-02.jpg",
+              "ruta": "Trips/Berna/berna-02.jpg",
+              "tipo": "imagen",
+              "bytes": 46462
+            },
+            {
+              "nombre": "berna-03.jpg",
+              "ruta": "Trips/Berna/berna-03.jpg",
+              "tipo": "imagen",
+              "bytes": 48570
+            },
+            {
+              "nombre": "berna-04.jpg",
+              "ruta": "Trips/Berna/berna-04.jpg",
+              "tipo": "imagen",
+              "bytes": 46504
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        },
+        {
+          "carpeta": "Forli",
+          "ruta": "Trips/Forli",
+          "titulo": {
+            "_": "Forlì"
+          },
+          "texto": {
+            "_": "Ciudad de la Romaña, en el norte de Italia. (Texto de muestra: escribí tu descripción en Info.txt.)",
+            "en": "A city in Romagna, northern Italy. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Trips/Forli/forli-01.jpg",
+          "fotos": {
+            "forli-01.jpg": {
+              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
+              "en": "Description of photo 1."
+            },
+            "forli-02.jpg": {
+              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
+              "en": "Description of photo 2."
+            },
+            "forli-03.jpg": {
+              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
+              "en": "Description of photo 3."
+            },
+            "forli-04.jpg": {
+              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
+              "en": "Description of photo 4."
+            }
+          },
+          "archivos": [
+            {
+              "nombre": "forli-01.jpg",
+              "ruta": "Trips/Forli/forli-01.jpg",
+              "tipo": "imagen",
+              "bytes": 41641
+            },
+            {
+              "nombre": "forli-02.jpg",
+              "ruta": "Trips/Forli/forli-02.jpg",
+              "tipo": "imagen",
+              "bytes": 41136
+            },
+            {
+              "nombre": "forli-03.jpg",
+              "ruta": "Trips/Forli/forli-03.jpg",
+              "tipo": "imagen",
+              "bytes": 48113
+            },
+            {
+              "nombre": "forli-04.jpg",
+              "ruta": "Trips/Forli/forli-04.jpg",
+              "tipo": "imagen",
+              "bytes": 42611
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.414Z"
+        }
+      ]
+    },
+    "Works": {
+      "items": [
+        {
+          "carpeta": "BilancioSociale",
+          "ruta": "Works/BilancioSociale",
+          "titulo": {
+            "_": "Bilancio Sociale"
+          },
+          "texto": {
+            "_": "Diseño del balance social anual: sistema gráfico, infografías y maquetación. (Texto de muestra.)",
+            "en": "Annual social report design: graphic system, infographics and layout. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Works/BilancioSociale/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "bilancio-sociale-2025.pdf",
+              "ruta": "Works/BilancioSociale/bilancio-sociale-2025.pdf",
+              "tipo": "pdf",
+              "bytes": 5083
+            },
+            {
+              "nombre": "bilanciosociale-01.jpg",
+              "ruta": "Works/BilancioSociale/bilanciosociale-01.jpg",
+              "tipo": "imagen",
+              "bytes": 51290
+            },
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Works/BilancioSociale/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 83459
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.415Z"
+        },
+        {
+          "carpeta": "Calendarios",
+          "ruta": "Works/Calendarios",
+          "titulo": {
+            "_": "Calendarios"
+          },
+          "texto": {
+            "_": "Diseño de calendarios. (Texto de muestra.)",
+            "en": "Calendar design. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Works/Calendarios/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "calendarios-01.jpg",
+              "ruta": "Works/Calendarios/calendarios-01.jpg",
+              "tipo": "imagen",
+              "bytes": 51563
+            },
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Works/Calendarios/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 78117
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.415Z"
+        },
+        {
+          "carpeta": "CD",
+          "ruta": "Works/CD",
+          "titulo": {
+            "_": "CD"
+          },
+          "texto": {
+            "_": "Diseño de portada y librillo de un CD. (Texto de muestra.)",
+            "en": "Cover and booklet design for a CD. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Works/CD/portada.jpg",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "cd-01.jpg",
+              "ruta": "Works/CD/cd-01.jpg",
+              "tipo": "imagen",
+              "bytes": 47676
+            },
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Works/CD/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 70841
+            }
+          ],
+          "subido": "2026-10-08T13:26:30.415Z"
+        }
+      ]
+    }
+  },
+  "cv": {
+    "pdf": null
+  }
+}

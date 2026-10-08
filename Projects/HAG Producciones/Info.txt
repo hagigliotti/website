@@ -1,0 +1,20 @@
+Título: HAG Producciones
+Enlace: https://www.youtube.com/@hagproducciones
+
+[es]
+Mi canal de YouTube de producciones audiovisuales.
+
+[en]
+My YouTube channel for audiovisual productions.
+
+[fr]
+Ma chaîne YouTube de productions audiovisuelles.
+
+[de]
+Mein YouTube-Kanal für audiovisuelle Produktionen.
+
+[pt]
+Meu canal no YouTube de produções audiovisuais.
+
+[it]
+Il mio canale YouTube di produzioni audiovisive.

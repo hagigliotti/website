@@ -1,0 +1,10 @@
+berna-01.jpg: Descripción de la foto 1 (editala en Fotos.txt).
+berna-02.jpg: Descripción de la foto 2 (editala en Fotos.txt).
+berna-03.jpg: Descripción de la foto 3 (editala en Fotos.txt).
+berna-04.jpg: Descripción de la foto 4 (editala en Fotos.txt).
+
+[en]
+berna-01.jpg: Description of photo 1.
+berna-02.jpg: Description of photo 2.
+berna-03.jpg: Description of photo 3.
+berna-04.jpg: Description of photo 4.

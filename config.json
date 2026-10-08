@@ -1,0 +1,30 @@
+{
+  "nombre": "Hernando",
+  "apellido": "Gigliotti",
+  "firma": "Hernando",
+  "rol": {
+    "es": "Diseño, proyectos y viajes",
+    "en": "Design, projects and travel",
+    "fr": "Design, projets et voyages",
+    "de": "Design, Projekte und Reisen",
+    "pt": "Design, projetos e viagens",
+    "it": "Design, progetti e viaggi"
+  },
+  "frase": {
+    "es": "Cada **desafío** puede convertirse en una **oportunidad** cuando aprendemos a mirar más allá de lo evidente, hacer lo mejor con lo que tenemos para descubrir **nuevas posibilidades** y **confiar en Dios** para seguir adelante.",
+    "en": "Every **challenge** can become an **opportunity** when we learn to look beyond the obvious, make the best of what we have to discover **new possibilities**, and **trust in God** to keep moving forward.",
+    "fr": "Chaque **défi** peut devenir une **opportunité** lorsque nous apprenons à regarder au-delà de l’évidence, à tirer le meilleur de ce que nous avons pour découvrir de **nouvelles possibilités** et à **faire confiance à Dieu** pour aller de l’avant.",
+    "de": "Jede **Herausforderung** kann zu einer **Chance** werden, wenn wir lernen, über das Offensichtliche hinauszublicken, das Beste aus dem zu machen, was wir haben, um **neue Möglichkeiten** zu entdecken, und **auf Gott zu vertrauen**, um weiterzugehen.",
+    "pt": "Cada **desafio** pode se tornar uma **oportunidade** quando aprendemos a olhar além do óbvio, fazer o melhor com o que temos para descobrir **novas possibilidades** e **confiar em Deus** para seguir em frente.",
+    "it": "Ogni **sfida** può diventare un’**opportunità** quando impariamo a guardare oltre l’evidente, a fare del nostro meglio con ciò che abbiamo per scoprire **nuove possibilità** e a **confidare in Dio** per andare avanti."
+  },
+  "redes": [
+    { "nombre": "LinkedIn", "icono": "linkedin", "url": "https://www.linkedin.com/in/hagigliotti/" },
+    { "nombre": "Instagram", "icono": "instagram", "url": "https://www.instagram.com/hagigliotti" },
+    { "nombre": "YouTube", "icono": "youtube", "url": "https://www.youtube.com/@hagproducciones" }
+  ],
+  "contacto": {
+    "servicio": "web3forms",
+    "clave": ""
+  }
+}

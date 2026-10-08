@@ -1,0 +1,19 @@
+Título: Tienda online
+
+[es]
+Diseño y armado de una tienda online. (Texto de muestra: editalo en Info.txt.)
+
+[en]
+Design and build of an online store. (Sample text: edit it in Info.txt.)
+
+[fr]
+Conception et création d’une boutique en ligne. (Texte d’exemple : modifiez-le dans Info.txt.)
+
+[de]
+Gestaltung und Aufbau eines Onlineshops. (Beispieltext: in Info.txt bearbeiten.)
+
+[pt]
+Design e montagem de uma loja online. (Texto de exemplo: edite em Info.txt.)
+
+[it]
+Progettazione e realizzazione di un negozio online. (Testo di esempio: modificalo in Info.txt.)

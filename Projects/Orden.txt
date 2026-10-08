@@ -1,0 +1,6 @@
+# Orden manual (opcional): del más nuevo al más viejo, un nombre de carpeta por línea.
+# Las carpetas que subas después y no estén en esta lista aparecen primero, por fecha de subida.
+Tienda online
+HAG Producciones
+Guia Conquistadores
+Cancionero
