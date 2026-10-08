@@ -1,0 +1,39 @@
+# Cada vez que subís algo, regenera manifest.json (proyectos, viajes y trabajos)
+# y publica el sitio en GitHub Pages.
+name: Publicar sitio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # historial completo: así se sabe cuándo subiste cada carpeta
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generar manifest.json
+        run: node scripts/build-manifest.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
