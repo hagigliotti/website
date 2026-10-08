@@ -63,6 +63,30 @@ foto1.jpg: View from Montjuïc at sunset.
 
 El nombre tiene que coincidir con el archivo de la foto. Al tocar la foto, la descripción aparece debajo.
 
+## Proyectos con la app funcionando (iPhone, iMac, proyector, TV)
+
+En el `Info.txt` del proyecto:
+
+```
+Enlace: https://hagigliotti.github.io/cancionero_mv/
+Dispositivos: iphone, imac, proyector, tv
+Demo TV: https://hagigliotti.github.io/cancionero_mv/?tv=1
+```
+
+El texto antes del primer `##` va al lado del primer dispositivo. Cada sección `## [imac] Título`, `## [proyector] Título` o `## [tv] Título` va al lado de ese dispositivo. Las listas se escriben con `- ` al comienzo de cada línea. Las traducciones van en `Info.en.txt`, `Info.fr.txt`, `Info.de.txt`, `Info.pt.txt` e `Info.it.txt`.
+
+## Partes independientes (las clases de Conquistadores)
+
+Cada subcarpeta con su propio `Info.txt` es una parte independiente, con su página y su color:
+
+```
+Título: Amigo
+Color: azul
+Lista: https://www.youtube.com/playlist?list=...
+```
+
+Colores: azul, rojo, verde, blanco, gris, violeta, vinotinto, amarillo, naranja, o un código como `#1f63c8`. Dos colores separados por `/` (por ejemplo `violeta/vinotinto`) hacen un degradé. Si un proyecto tiene `Lista:`, se muestra el reproductor con todos los videos de esa lista.
+
 ## Orden (FIFO)
 
 Los proyectos, viajes y trabajos se muestran **del más nuevo al más viejo**, según cuándo subiste cada carpeta a GitHub. Si una carpeta tiene `Fecha:` en su Info.txt, se usa esa fecha.

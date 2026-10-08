@@ -1,0 +1,25 @@
+Título: Amigo
+Color: azul
+Lista: https://www.youtube.com/playlist?list=PLYkPy0hFVZIKrBTO4SLoSuLJQaRqIEgo0
+
+Clase 1 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.
+
+[en]
+Título: Friend
+Class 1 of 6 of the Progressive Classes. All the videos of the class, in order.
+
+[fr]
+Título: Ami
+Classe 1 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.
+
+[de]
+Título: Freund
+Klasse 1 von 6. Alle Videos der Klasse, der Reihe nach.
+
+[pt]
+Título: Amigo
+Classe 1 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.
+
+[it]
+Título: Amico
+Classe 1 di 6 delle classi progressive. Tutti i video della classe, in ordine.

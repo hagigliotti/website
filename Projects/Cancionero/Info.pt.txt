@@ -1,0 +1,25 @@
+Título: Cancionero MV
+
+O Cancionero MV é um aplicativo web para músicos, equipes de louvor e regentes. Reúne o cancioneiro, o Hinário Adventista e os cânticos de acampamento em um só lugar, com acordes, tonalidade e tudo o que é preciso para tocar ou dirigir uma música.
+
+Foi pensado para os voluntários no serviço missionário da Igreja Adventista do Sétimo Dia. Depois de instalado funciona sem internet, e serve tanto para praticar quanto para o momento ao vivo: na estante, no ensaio ou projetado durante o culto.
+
+- Busca por título, letra, autor, compositor, ritmo ou etiquetas.
+- Acordes sobre a letra, com o som e diagramas de piano, violão, baixo e ukulele.
+- Transposição de tom, meio tom por vez.
+- Teleprompter com rolagem automática para tocar com as mãos livres.
+- Minhas Listas: repertórios próprios que podem ser exportados e importados.
+- Meus Pedidos de Oração, com versículo, foto e cântico relacionado.
+- Metrônomo, afinador e bloco musical.
+- Músicas em espanhol, inglês, guarani, italiano e português.
+
+No celular ele é usado como qualquer outro aplicativo. O simulador mostra o aplicativo real funcionando: experimente.
+
+## [imac] No computador
+Em um PC ou Mac a letra fica mais espaçosa, a barra de letras é percorrida com setas e todas as ferramentas ficam à mão. Ideal para preparar o repertório do sábado ou ensaiar com a equipe.
+
+## [proyector] Modo igreja: projetor
+No menu Modo igreja → Projetor, o aplicativo passa para uma visualização com letra gigante sobre fundo preto, pensada para projetar durante o culto. As ferramentas que só atrapalham em uma tela grande, como o afinador ou os diagramas de acordes, ficam ocultas. Disponível em tablet, PC e Mac.
+
+## [tv] Modo TV com controle remoto
+Em uma Android TV ou Smart TV ele é ativado sozinho. É controlado pelo controle remoto: as setas movem o foco, OK abre a música, Voltar fecha, e canal +/– rola a letra.

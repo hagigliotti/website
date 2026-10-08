@@ -1,0 +1,11 @@
+Título: Capodanno
+
+Una pagina per seguire l’arrivo del Capodanno e del Natale nel mondo, fuso orario per fuso orario.
+
+Mostra un conto alla rovescia in diretta e prepara, per ognuno dei 37 fusi orari, un augurio pronto da pubblicare sui social, con le bandiere e le città che stanno festeggiando in quel momento: da UTC+14 a Kiribati fino a UTC−12.
+
+- Conto alla rovescia in diretta.
+- Schede per Capodanno e Natale, con un pulsante per copiare ogni augurio.
+- Più di 300 città, con il nome nella lingua locale e in inglese.
+- Augurio modificabile; l’anno si aggiorna da solo.
+- Una scheda con il Capodanno di altri calendari: cinese, ebraico, islamico, persiano, etiope e thailandese.

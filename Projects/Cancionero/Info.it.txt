@@ -1,0 +1,25 @@
+Título: Cancionero MV
+
+Cancionero MV è un’applicazione web per musicisti, gruppi di lode e direttori di canto. Riunisce il canzoniere, l’Innario Avventista e i canti da campeggio in un solo posto, con accordi, tonalità e tutto il necessario per suonare o dirigere un canto.
+
+È pensata per i volontari nel servizio missionario della Chiesa Cristiana Avventista del Settimo Giorno. Una volta installata funziona offline, ed è utile sia per esercitarsi sia dal vivo: sul leggio, alle prove o proiettata durante il culto.
+
+- Ricerca per titolo, testo, autore, compositore, ritmo o etichette.
+- Accordi sopra il testo, con il loro suono e i diagrammi per pianoforte, chitarra, basso e ukulele.
+- Trasposizione della tonalità, mezzo tono alla volta.
+- Gobbo elettronico con scorrimento automatico per suonare a mani libere.
+- Le mie liste: repertori personali, esportabili e importabili.
+- Le mie richieste di preghiera, con versetto, foto e canto collegato.
+- Metronomo, accordatore e blocco note musicale.
+- Canti in spagnolo, inglese, guaraní, italiano e portoghese.
+
+Sul telefono si usa come qualsiasi altra app. Il simulatore mostra l’app vera in funzione: provala.
+
+## [imac] Sul computer
+Su un PC o un Mac il testo respira di più, la barra delle lettere si scorre con le frecce e tutti gli strumenti sono a portata di mano. Ideale per preparare il repertorio del sabato o provare con il gruppo.
+
+## [proyector] Modalità chiesa: proiettore
+Dal menu Modalità chiesa → Proiettore, l’app passa a una vista con il testo gigante su sfondo nero, pensata per la proiezione durante il culto. Gli strumenti che su uno schermo grande danno solo fastidio, come l’accordatore o i diagrammi degli accordi, vengono nascosti. Disponibile su tablet, PC e Mac.
+
+## [tv] Modalità TV con telecomando
+Su una Android TV o Smart TV si attiva da sola. Si usa con il telecomando: le frecce spostano la selezione, OK apre il canto, Indietro chiude e canale +/– fa scorrere il testo.

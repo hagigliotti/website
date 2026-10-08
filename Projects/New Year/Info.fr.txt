@@ -1,0 +1,11 @@
+Título: Nouvel An
+
+Une page pour suivre l’arrivée du Nouvel An et de Noël dans le monde, fuseau horaire par fuseau horaire.
+
+Elle affiche un compte à rebours en direct et prépare, pour chacun des 37 fuseaux horaires, un message prêt à publier sur les réseaux, avec les drapeaux et les villes qui fêtent à ce moment-là : de UTC+14 à Kiribati jusqu’à UTC−12.
+
+- Compte à rebours en direct.
+- Onglets Nouvel An et Noël, avec un bouton pour copier chaque message.
+- Plus de 300 villes, avec leur nom dans la langue locale et en anglais.
+- Message modifiable ; l’année se met à jour toute seule.
+- Un onglet avec le Nouvel An d’autres calendriers : chinois, juif, islamique, persan, éthiopien et thaï.

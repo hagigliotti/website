@@ -1,0 +1,25 @@
+Título: Cancionero MV
+
+Cancionero MV is a web app for musicians, worship teams and song leaders. It brings together the songbook, the Adventist Hymnal and camp songs in one place, with chords, key and everything you need to play or lead a song.
+
+It was built for volunteers in the missionary service of the Seventh-day Adventist Church. Once installed it works offline, and it is just as useful for practice as for live moments: on the music stand, at rehearsal, or projected during the service.
+
+- Search by title, lyrics, author, composer, rhythm or tags.
+- Chords above the lyrics, with their sound and piano, guitar, bass and ukulele diagrams.
+- Key transposition, one semitone at a time.
+- Teleprompter with auto-scroll, to play hands-free.
+- My Lists: your own setlists, which can be exported and imported.
+- My Prayer Requests, with a Bible verse, a photo and a related song.
+- Metronome, tuner and music notepad.
+- Songs in Spanish, English, Guarani, Italian and Portuguese.
+
+On a phone it works like any other app. The simulator shows the real app running: try it.
+
+## [imac] On the computer
+On a PC or Mac the lyrics have more room to breathe, the letter bar can be browsed with arrows and every tool is within reach. Perfect for preparing Saturday's setlist or rehearsing with the team.
+
+## [proyector] Church mode: projector
+From the menu Church mode → Projector, the app switches to giant lyrics on a black background, designed to be projected during the service. Tools that only get in the way on a big screen, like the tuner or chord diagrams, are hidden. Available on tablet, PC and Mac.
+
+## [tv] TV mode with remote control
+On an Android TV or Smart TV it turns on by itself. It is controlled with the remote: the arrows move the focus, OK opens the song, Back closes, and channel +/– scrolls the lyrics.

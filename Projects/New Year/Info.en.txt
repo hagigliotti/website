@@ -1,0 +1,11 @@
+Título: New Year
+
+A page to follow the arrival of the New Year and Christmas around the world, time zone by time zone.
+
+It shows a live countdown and, for each of the 37 time zones, builds a greeting ready to post on social media, with the flags and cities celebrating at that moment: from UTC+14 in Kiribati to UTC−12.
+
+- Live countdown.
+- New Year and Christmas tabs, with a button to copy each greeting.
+- More than 300 cities, named in the local language and in English.
+- Editable greeting; the year updates itself.
+- A tab with the New Year of other calendars: Chinese, Jewish, Islamic, Persian, Ethiopian and Thai.

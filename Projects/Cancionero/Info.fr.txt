@@ -1,0 +1,25 @@
+Título: Cancionero MV
+
+Cancionero MV est une application web pour les musiciens, les équipes de louange et les chefs de chant. Elle réunit le recueil de chants, l’hymnaire adventiste et les chants de camp au même endroit, avec les accords, la tonalité et tout le nécessaire pour jouer ou diriger un chant.
+
+Elle a été conçue pour les volontaires du service missionnaire de l’Église adventiste du septième jour. Une fois installée, elle fonctionne hors ligne et sert autant pour s’exercer que pour le direct : sur le pupitre, en répétition ou projetée pendant le culte.
+
+- Recherche par titre, paroles, auteur, compositeur, rythme ou étiquettes.
+- Accords au-dessus des paroles, avec leur son et des diagrammes pour piano, guitare, basse et ukulélé.
+- Transposition de la tonalité, demi-ton par demi-ton.
+- Téléprompteur à défilement automatique pour jouer les mains libres.
+- Mes listes : vos propres répertoires, exportables et importables.
+- Mes demandes de prière, avec un verset, une photo et un chant associé.
+- Métronome, accordeur et bloc-notes musical.
+- Chants en espagnol, anglais, guarani, italien et portugais.
+
+Sur le téléphone, elle s’utilise comme n’importe quelle application. Le simulateur montre la vraie application en marche : essayez-la.
+
+## [imac] Sur l’ordinateur
+Sur un PC ou un Mac, les paroles respirent davantage, la barre des lettres se parcourt avec des flèches et tous les outils sont à portée de main. Idéal pour préparer le répertoire du sabbat ou répéter avec l’équipe.
+
+## [proyector] Mode église : projecteur
+Depuis le menu Mode église → Projecteur, l’application passe à un affichage des paroles en très grand sur fond noir, pensé pour être projeté pendant le culte. Les outils qui gênent sur un grand écran, comme l’accordeur ou les diagrammes d’accords, sont masqués. Disponible sur tablette, PC et Mac.
+
+## [tv] Mode TV avec télécommande
+Sur une Android TV ou une Smart TV, il s’active tout seul. Il se pilote avec la télécommande : les flèches déplacent la sélection, OK ouvre le chant, Retour ferme, et chaîne +/– fait défiler les paroles.

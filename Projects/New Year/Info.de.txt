@@ -1,0 +1,11 @@
+Título: Neujahr
+
+Eine Seite, um die Ankunft von Neujahr und Weihnachten rund um die Welt zu verfolgen, Zeitzone für Zeitzone.
+
+Sie zeigt einen Live-Countdown und erstellt für jede der 37 Zeitzonen einen Gruß, fertig zum Posten in sozialen Netzwerken, mit den Flaggen und Städten, die gerade feiern: von UTC+14 in Kiribati bis UTC−12.
+
+- Live-Countdown.
+- Reiter für Neujahr und Weihnachten, mit einer Schaltfläche zum Kopieren jedes Grußes.
+- Über 300 Städte, mit ihrem Namen in der Landessprache und auf Englisch.
+- Bearbeitbarer Gruß; das Jahr aktualisiert sich von selbst.
+- Ein Reiter mit dem Neujahr anderer Kalender: chinesisch, jüdisch, islamisch, persisch, äthiopisch und thailändisch.

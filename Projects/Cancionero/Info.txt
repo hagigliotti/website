@@ -1,19 +1,28 @@
-Título: Cancionero
+Título: Cancionero MV
+Enlace: https://hagigliotti.github.io/cancionero_mv/
+Demo TV: https://hagigliotti.github.io/cancionero_mv/?tv=1
+Dispositivos: iphone, imac, proyector, tv
 
-[es]
-Cancionero digital con un reproductor al estilo Spotify y listas de canciones.
+Cancionero MV es una aplicación web para músicos, equipos de alabanza y directores de canto. Reúne el Cancionero, el Himnario Adventista y los Cantos de Campamento en un solo lugar, con acordes, tonalidad y todo lo necesario para tocar o dirigir una canción.
 
-[en]
-Digital songbook with a Spotify-style player and song playlists.
+Está pensada para los voluntarios en el servicio misionero de la Iglesia Adventista del Séptimo Día. Una vez instalada funciona sin conexión, y sirve tanto para practicar como para el momento en vivo: en el atril, en el ensayo o proyectada durante el culto.
 
-[fr]
-Recueil de chants numérique avec un lecteur façon Spotify et des listes de lecture.
+- Buscador por título, letra, autor, compositor, ritmo o etiquetas.
+- Acordes sobre la letra, con su sonido y diagramas de piano, guitarra, bajo y ukelele.
+- Transposición de tonalidad, medio tono por vez.
+- Teleprónter con desplazamiento automático para tocar con las manos libres.
+- Mis Listas: repertorios propios que se pueden exportar e importar.
+- Mis Pedidos de Oración, con versículo, foto y canto relacionado.
+- Metrónomo, afinador y bloc musical.
+- Canciones en español, inglés, guaraní, italiano y portugués.
 
-[de]
-Digitales Liederbuch mit einem Player im Spotify-Stil und Playlists.
+En el celular se usa como una app más. El simulador muestra la app real funcionando: probala.
 
-[pt]
-Cancioneiro digital com um player no estilo Spotify e playlists.
+## [imac] En la computadora
+En una PC o Mac la letra se lee con más aire, la barra de letras se recorre con flechas y todas las herramientas quedan a mano. Ideal para preparar el repertorio del sábado o ensayar con el equipo.
 
-[it]
-Canzoniere digitale con un lettore in stile Spotify e playlist.
+## [proyector] Modo iglesia: proyector
+Desde el menú Modo iglesia → Proyector, la app cambia a una vista de letra gigante sobre fondo negro, pensada para proyectar durante el servicio. Se ocultan las herramientas que en una pantalla grande solo estorban, como el afinador o los diagramas de acordes. Disponible en tablet, PC y Mac.
+
+## [tv] Modo TV con control remoto
+En una Android TV o Smart TV se activa solo. Se maneja con el control remoto: las flechas mueven el foco, OK abre la canción, Atrás cierra, y canal +/– recorre la letra.

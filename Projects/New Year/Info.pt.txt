@@ -1,0 +1,11 @@
+Título: Ano Novo
+
+Uma página para acompanhar a chegada do Ano Novo e do Natal ao redor do mundo, fuso horário por fuso horário.
+
+Mostra uma contagem regressiva ao vivo e monta, para cada um dos 37 fusos horários, a saudação pronta para publicar nas redes, com as bandeiras e cidades que estão comemorando naquele momento: de UTC+14 em Kiribati até UTC−12.
+
+- Contagem regressiva ao vivo.
+- Abas de Ano Novo e de Natal, com um botão para copiar cada saudação.
+- Mais de 300 cidades, com o nome no idioma local e em inglês.
+- Saudação editável; o ano se atualiza sozinho.
+- Uma aba com o Ano Novo de outros calendários: chinês, judaico, islâmico, persa, etíope e tailandês.

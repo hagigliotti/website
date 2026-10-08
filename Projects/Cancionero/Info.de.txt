@@ -1,0 +1,25 @@
+Título: Cancionero MV
+
+Cancionero MV ist eine Web-App für Musiker, Lobpreisteams und Liedleiter. Sie vereint Liederbuch, adventistisches Gesangbuch und Lagerlieder an einem Ort, mit Akkorden, Tonart und allem, was man zum Spielen oder Anleiten eines Liedes braucht.
+
+Sie wurde für Freiwillige im Missionsdienst der Siebenten-Tags-Adventisten entwickelt. Einmal installiert, funktioniert sie offline und eignet sich zum Üben ebenso wie für den Live-Einsatz: am Notenständer, bei der Probe oder projiziert im Gottesdienst.
+
+- Suche nach Titel, Text, Autor, Komponist, Rhythmus oder Schlagwörtern.
+- Akkorde über dem Text, mit Klang und Griffbildern für Klavier, Gitarre, Bass und Ukulele.
+- Transponieren der Tonart in Halbtonschritten.
+- Teleprompter mit automatischem Bildlauf, um freihändig zu spielen.
+- Meine Listen: eigene Setlists zum Exportieren und Importieren.
+- Meine Gebetsanliegen, mit Bibelvers, Foto und passendem Lied.
+- Metronom, Stimmgerät und Musik-Notizblock.
+- Lieder auf Spanisch, Englisch, Guaraní, Italienisch und Portugiesisch.
+
+Auf dem Handy wird sie wie jede andere App benutzt. Der Simulator zeigt die echte App in Aktion: Probier sie aus.
+
+## [imac] Am Computer
+Auf einem PC oder Mac hat der Text mehr Raum, die Buchstabenleiste lässt sich mit Pfeilen durchblättern und alle Werkzeuge sind griffbereit. Ideal, um die Lieder für den Sabbat vorzubereiten oder mit dem Team zu proben.
+
+## [proyector] Gemeindemodus: Beamer
+Über das Menü Gemeindemodus → Beamer wechselt die App zu riesigem Text auf schwarzem Hintergrund, gedacht für die Projektion im Gottesdienst. Werkzeuge, die auf einer großen Leinwand nur stören, wie das Stimmgerät oder die Griffbilder, werden ausgeblendet. Verfügbar auf Tablet, PC und Mac.
+
+## [tv] TV-Modus mit Fernbedienung
+Auf einem Android TV oder Smart TV schaltet er sich von selbst ein. Bedient wird er mit der Fernbedienung: Die Pfeile bewegen den Fokus, OK öffnet das Lied, Zurück schließt, und Kanal +/– scrollt durch den Text.

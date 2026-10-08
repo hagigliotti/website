@@ -1,0 +1,13 @@
+Título: Año Nuevo
+Enlace: https://hagigliotti.github.io/new_year/
+Dispositivos: iphone
+
+Una página para seguir la llegada del Año Nuevo y de la Navidad alrededor del mundo, zona horaria por zona horaria.
+
+Muestra una cuenta regresiva en vivo y arma, para cada una de las 37 zonas horarias, el saludo listo para publicar en redes, con las banderas y ciudades que están celebrando en ese momento: desde UTC+14 en Kiribati hasta UTC−12.
+
+- Cuenta regresiva en vivo.
+- Pestañas de Año Nuevo y de Navidad, con un botón para copiar cada saludo.
+- Más de 300 ciudades, con su nombre en el idioma local y en inglés.
+- Saludo editable; el año se actualiza solo.
+- Una pestaña con el Año Nuevo de otros calendarios: chino, judío, islámico, persa, etíope y tailandés.

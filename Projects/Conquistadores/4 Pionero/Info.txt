@@ -1,0 +1,25 @@
+Título: Pionero
+Color: blanco/gris
+Lista: https://www.youtube.com/playlist?list=PLYkPy0hFVZILfs3FvPxV52GqGn1UF9h2S
+
+Clase 4 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.
+
+[en]
+Título: Ranger
+Class 4 of 6 of the Progressive Classes. All the videos of the class, in order.
+
+[fr]
+Título: Pionnier
+Classe 4 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.
+
+[de]
+Título: Pionier
+Klasse 4 von 6. Alle Videos der Klasse, der Reihe nach.
+
+[pt]
+Título: Pioneiro
+Classe 4 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.
+
+[it]
+Título: Pioniere
+Classe 4 di 6 delle classi progressive. Tutti i video della classe, in ordine.

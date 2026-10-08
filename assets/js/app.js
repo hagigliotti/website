@@ -1,5 +1,6 @@
 import { Lector, miniaturaPDF } from './reader.js';
 import { IDIOMAS, idioma, cambiarIdioma, t, n, L } from './i18n.js';
+import { textoRico, seccionesDe, dispositivo, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace } from './vitrina.js';
 
 /* ==========================================================================
    Utilidades
@@ -412,7 +413,96 @@ function estante(it, docs, imgs) {
   return `<h2 class="subtitulo">${esc(t('para_leer'))}</h2><div class="estante">${libros.join('')}</div>`;
 }
 
+/* Vitrina: explicación a la izquierda y la app funcionando en los dispositivos a la derecha */
+function vistaVitrina(seccion, it) {
+  const conf = SECCIONES[seccion];
+  const { intro, secciones } = seccionesDe(L(it.texto));
+  const demo = (d) => it.demo[d] || it.demo._ || it.enlace;
+  const conDisp = secciones.filter((x) => x.disp);
+  const sueltas = secciones.filter((x) => !x.disp);
+  const cabeza = `
+      <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a></nav>
+      <h1 class="titular vitrina__nombre">${esc(tituloDe(it))}</h1>
+      ${it.enlace ? `<div class="botones vitrina__botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(etiquetaEnlace(it.enlace))} ${icono('flecha')}</a></div>` : ''}`;
+  const filas = it.dispositivos.map((d, i) => {
+    const sec = conDisp.find((x) => x.disp === d);
+    let texto;
+    if (i === 0) {
+      texto = `<div class="vitrina__texto">${cabeza}<div class="encabezado__texto">${textoRico(intro)}${sueltas.map((x) => `<h3 class="vitrina__sub">${esc(x.titulo)}</h3>${textoRico(x.texto)}`).join('')}</div></div>`;
+    } else {
+      texto = `<div class="vitrina__texto vitrina__texto--fijo"><span class="vitrina__chip">${esc(t(`disp_${d}`))}</span><h2 class="vitrina__titulo">${esc(sec ? sec.titulo : t(`disp_${d}`))}</h2>${sec ? `<div class="encabezado__texto">${textoRico(sec.texto)}</div>` : ''}</div>`;
+    }
+    return `<section class="vitrina__fila vitrina__fila--${d}${i === 0 ? ' vitrina__fila--intro' : ''}">${texto}<div class="vitrina__disp">${dispositivo(d, demo(d), tituloDe(it))}</div></section>`;
+  }).join('');
+  const lista = items(seccion);
+  const siguiente = lista[(lista.indexOf(it) + 1) % lista.length];
+  return `
+  <div class="pagina envoltura vitrina">
+    ${filas}
+    ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
+  </div>
+  ${pie()}`;
+}
+
+/* Grupo: proyecto con partes independientes (las clases de Conquistadores) */
+function tarjetaParte(padre, p, i) {
+  const { estilo } = colorDe(p.color);
+  return `
+    <a class="clase revela" href="${enlace(p.ruta)}" style="${estilo}">
+      <span class="clase__num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="clase__nombre">${esc(tituloDe(p))}</span>
+      <span class="clase__ir">${esc(t('ver_clase'))} ${icono('flecha')}</span>
+    </a>`;
+}
+
+function vistaGrupo(seccion, it) {
+  const conf = SECCIONES[seccion];
+  return `
+  <div class="pagina envoltura">
+    <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a></nav>
+    <header class="encabezado">
+      <h1 class="titular">${esc(tituloDe(it))}</h1>
+      <div>
+        <div class="encabezado__datos"><span><b>${it.partes.length}</b>${esc(t('clases'))}</span></div>
+        <div class="encabezado__texto">${textoRico(L(it.texto))}</div>
+        ${it.enlace ? `<div class="botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(etiquetaEnlace(it.enlace))} ${icono('flecha')}</a></div>` : ''}
+      </div>
+    </header>
+    <div class="clases">${it.partes.map((p, i) => tarjetaParte(it, p, i)).join('')}</div>
+  </div>
+  ${pie()}`;
+}
+
+function vistaParte(seccion, padre, p) {
+  const conf = SECCIONES[seccion];
+  const i = padre.partes.indexOf(p);
+  const { estilo } = colorDe(p.color);
+  const tieneLista = !!idLista(p.lista);
+  return `
+  <div class="parte" style="${estilo}">
+    <div class="parte__banda grano">
+      <div class="envoltura">
+        <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a><span aria-hidden="true">/</span><a href="${enlace(padre.ruta)}">${esc(tituloDe(padre))}</a></nav>
+        <span class="parte__num">${String(i + 1).padStart(2, '0')} / ${String(padre.partes.length).padStart(2, '0')}</span>
+        <h1 class="parte__titulo">${esc(tituloDe(p))}</h1>
+        <div class="parte__texto">${textoRico(L(p.texto))}</div>
+      </div>
+    </div>
+    <div class="envoltura parte__cuerpo">
+      ${tieneLista ? `<h2 class="subtitulo">${esc(t('lista_videos'))}</h2>${reproductorLista(p.lista, tituloDe(p))}
+        <div class="botones" style="margin-top:1.25rem"><a class="boton" href="${esc(p.lista)}" target="_blank" rel="noopener">${esc(t('ver_youtube'))} ${icono('flecha')}</a></div>`
+      : `<div class="aviso"><h2>${esc(t('lista_videos'))}</h2><p>${esc(t('pronto'))}</p><div class="botones"><a class="boton" href="${esc(padre.enlace || 'https://www.youtube.com/@hagproducciones')}" target="_blank" rel="noopener">${esc(t('ver_youtube'))} ${icono('flecha')}</a></div></div>`}
+      <nav class="clases-mini" aria-label="${esc(t('clases'))}">
+        ${padre.partes.map((x) => `<a href="${enlace(x.ruta)}" style="${colorDe(x.color).estilo}" ${x === p ? 'aria-current="page"' : ''}>${esc(tituloDe(x))}</a>`).join('')}
+      </nav>
+    </div>
+  </div>
+  ${pie()}`;
+}
+
 function vistaDetalle(seccion, it) {
+  if (it.dispositivos && it.dispositivos.length) return vistaVitrina(seccion, it);
+  if (it.partes && it.partes.length) return vistaGrupo(seccion, it);
   const lista = items(seccion);
   const i = lista.indexOf(it);
   const siguiente = lista[(i + 1) % lista.length];
@@ -435,11 +525,12 @@ function vistaDetalle(seccion, it) {
       <h1 class="titular">${esc(tituloDe(it))}</h1>
       <div>
         ${datos.length ? `<div class="encabezado__datos">${datos.map(([a, b]) => `<span><b>${esc(a)}</b>${esc(b)}</span>`).join('')}</div>` : ''}
-        ${texto ? `<div class="encabezado__texto">${parrafos(texto)}</div>` : ''}
-        ${it.enlace ? `<div class="botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(t('visitar'))} ${icono('flecha')}</a></div>` : ''}
+        ${texto ? `<div class="encabezado__texto">${textoRico(texto)}</div>` : ''}
+        ${it.enlace ? `<div class="botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(etiquetaEnlace(it.enlace))} ${icono('flecha')}</a></div>` : ''}
       </div>
     </header>
-    ${esProyecto && it.portada ? `<div class="portada-grande"><img src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
+    ${idLista(it.lista) ? `<h2 class="subtitulo">${esc(t('ultimos_videos'))}</h2>${reproductorLista(it.lista, tituloDe(it))}<div style="height:clamp(3rem,6vw,5rem)"></div>` : ''}
+    ${esProyecto && it.portada && !idLista(it.lista) ? `<div class="portada-grande"><img src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
     ${docs.length ? estante(it, docs, imgs) : ''}
     ${imgsAlbum.length ? `${docs.length || esProyecto ? `<h2 class="subtitulo">${esc(t('imagenes'))}</h2>` : ''}${galeria(it, imgsAlbum)}` : ''}
     ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
@@ -693,6 +784,7 @@ function activarVista(ctx) {
     $$('img', $('[data-pista]') || document.createElement('div')).forEach((img) => img.addEventListener('load', () => efectos.medir(), { once: true }));
   }
 
+  activarDispositivos();
   revelar();
   efectos.medirLigero();
   $$('.album__foto img').forEach((img) => {
@@ -776,6 +868,10 @@ function resolver() {
   if (SECCIONES[segs[0]]) {
     if (segs.length === 1) return { html: vistaInicio(), titulo: nombre, inicio: true, ancla: SECCIONES[segs[0]].id };
     const it = items(segs[0]).find((x) => x.carpeta === segs[1]);
+    if (it && segs[2]) {
+      const p = (it.partes || []).find((x) => x.carpeta === segs[2]);
+      if (p) return { html: vistaParte(segs[0], it, p), titulo: `${tituloDe(p)} · ${tituloDe(it)}, ${nombre}` };
+    }
     if (it) return { html: vistaDetalle(segs[0], it), titulo: `${tituloDe(it)}, ${nombre}`, item: it, seccion: segs[0] };
   }
   return { html: vistaNoEncontrada(), titulo: nombre };

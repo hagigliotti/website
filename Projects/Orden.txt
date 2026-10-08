@@ -1,6 +1,7 @@
-# Orden manual (opcional): del más nuevo al más viejo, un nombre de carpeta por línea.
-# Las carpetas que subas después y no estén en esta lista aparecen primero, por fecha de subida.
-Tienda online
+# Orden de los proyectos, de izquierda a derecha. Un nombre de carpeta por línea.
+# Las carpetas nuevas que no estén en esta lista aparecen primero.
+New Year
 HAG Producciones
-Guia Conquistadores
+Conquistadores
 Cancionero
+Tienda online
