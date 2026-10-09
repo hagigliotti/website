@@ -1,6 +1,6 @@
 Título: Año Nuevo {ciclo}
 Enlace: https://hagigliotti.github.io/new_year/
-Dispositivos: android
+Dispositivos: celular
 Portada texto: {ciclo}
 
 Una página para seguir la llegada del Año Nuevo y de la Navidad alrededor del mundo, zona horaria por zona horaria.

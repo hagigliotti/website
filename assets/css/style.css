@@ -1161,3 +1161,14 @@ svg { width: 1em; height: 1em; }
 .proyecto__foto { max-height: none; }
 .proyecto__foto img { transform: scale(1.06); }
 .proyecto__sobre { font-size: 17.5cqi; bottom: 18%; left: 8%; }
+
+/* Selector iPhone / Android */
+.celular { display: grid; justify-items: center; gap: 1.1rem; }
+.celular__opcion { width: 100%; }
+.selector { display: inline-flex; padding: 0.25rem; border-radius: 999px; background: var(--grafito); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.selector button { height: 2.5rem; padding: 0 1.1rem; border-radius: 999px; font-weight: 700; font-size: 0.9375rem; color: rgba(242, 240, 236, 0.75); transition: background-color 180ms var(--ease-out), color 180ms ease; }
+.selector button[aria-pressed="true"] { background: var(--naranja); color: var(--negro); }
+@media (hover: hover) and (pointer: fine) { .selector button[aria-pressed="false"]:hover { color: var(--hueso); background: rgba(255, 255, 255, 0.06); } }
+
+/* iMac: círculo negro en el mentón */
+.disp--imac .disp__menton span { width: 1.5rem; height: 1.5rem; background: radial-gradient(circle at 40% 35%, #2a2b2e, #050506 70%); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.5); }

@@ -1,6 +1,6 @@
 import { Lector, miniaturaPDF } from './reader.js';
 import { IDIOMAS, idioma, cambiarIdioma, t, n, L } from './i18n.js';
-import { textoRico, seccionesDe, dispositivo, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace } from './vitrina.js';
+import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace } from './vitrina.js';
 
 /* ==========================================================================
    Utilidades
@@ -440,7 +440,7 @@ function vistaVitrina(seccion, it) {
     } else {
       texto = `<div class="vitrina__texto vitrina__texto--fijo"><span class="vitrina__chip">${esc(t(`disp_${d}`))}</span><h2 class="vitrina__titulo">${esc(sec ? sec.titulo : t(`disp_${d}`))}</h2>${sec ? `<div class="encabezado__texto">${textoRico(sec.texto)}</div>` : ''}</div>`;
     }
-    return `<section class="vitrina__fila vitrina__fila--${d}${i === 0 ? ' vitrina__fila--intro' : ''}">${texto}<div class="vitrina__disp">${dispositivo(d, demo(d), tituloDe(it))}</div></section>`;
+    return `<section class="vitrina__fila vitrina__fila--${d}${i === 0 ? ' vitrina__fila--intro' : ''}">${texto}<div class="vitrina__disp">${d === 'celular' ? celular(demo(d), tituloDe(it)) : dispositivo(d, demo(d), tituloDe(it))}</div></section>`;
   }).join('');
   const lista = items(seccion);
   const siguiente = lista[(lista.indexOf(it) + 1) % lista.length];

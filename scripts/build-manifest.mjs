@@ -33,14 +33,14 @@ const CLAVES = {
   fecha: /^(fecha|date|a[ñn]o|year|datum|data|anno|ann[ée]e)$/i,
   enlace: /^(enlace|link|url|web|sitio)$/i,
   portada: /^(portada|cover|car[áa]tula|tapa)$/i,
-  demo: /^(demo|app|simulador)(\s+(android|iphone|imac|proyector|projector|tv))?$/i,
+  demo: /^(demo|app|simulador)(\s+(celular|android|iphone|imac|proyector|projector|tv))?$/i,
   dispositivos: /^(dispositivos|devices|pantallas)$/i,
   color: /^(color|colore|couleur|farbe|cor)$/i,
   lista: /^(lista|playlist|youtube|videos)$/i,
   directo: /^(directo|redirigir|abrir directo)$/i,
   portadaTexto: /^(portada texto|texto portada|cover text)$/i,
 };
-const DISPOSITIVOS = ['android', 'iphone', 'imac', 'proyector', 'tv'];
+const DISPOSITIVOS = ['celular', 'android', 'iphone', 'imac', 'proyector', 'tv'];
 
 // Separa un texto en bloques por idioma: líneas [es], [en], [fr]... El texto sin marca vale para todos.
 function bloquesPorIdioma(texto) {

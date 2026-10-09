@@ -12,7 +12,7 @@ export const IDIOMAS = {
 
 const T = {
   es: {
-    abrir_app: 'Abrir la app', ver_youtube: 'Ver en YouTube', ultimos_videos: 'Últimos videos', clases: 'clases', ver_clase: 'Ver la clase', lista_videos: 'Lista de videos', pronto: 'Los videos de esta clase están en el canal HAG Producciones.', tocar_usar: 'Tocá para usar', en_vivo: 'app real, en vivo', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Proyector', disp_tv: 'TV',
+    abrir_app: 'Abrir la app', ver_youtube: 'Ver en YouTube', ultimos_videos: 'Últimos videos', clases: 'clases', ver_clase: 'Ver la clase', lista_videos: 'Lista de videos', pronto: 'Los videos de esta clase están en el canal HAG Producciones.', tocar_usar: 'Tocá para usar', en_vivo: 'app real, en vivo', disp_android: 'Android', disp_celular: 'Celular', elegir_celular: 'Elegir celular', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Proyector', disp_tv: 'TV',
     proyectos: 'Proyectos', viajes: 'Viajes', trabajos: 'Trabajos', experiencia: 'Experiencia', estudios: 'Estudios', cv: 'Currículum',
     inicio: 'Inicio', contacto: 'Contacto', menu_abrir: 'Abrir menú', menu_cerrar: 'Cerrar menú', idioma: 'Idioma',
     seguir: 'Bajar', mensaje_de: 'Mensaje de',
@@ -40,7 +40,7 @@ const T = {
     linkedin_cv: 'Ver en LinkedIn', arrastrar: 'Deslizá para ver más',
   },
   en: {
-    abrir_app: 'Open the app', ver_youtube: 'Watch on YouTube', ultimos_videos: 'Latest videos', clases: 'classes', ver_clase: 'View class', lista_videos: 'Video playlist', pronto: 'The videos for this class are on the HAG Producciones channel.', tocar_usar: 'Tap to use', en_vivo: 'real app, live', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Projector', disp_tv: 'TV',
+    abrir_app: 'Open the app', ver_youtube: 'Watch on YouTube', ultimos_videos: 'Latest videos', clases: 'classes', ver_clase: 'View class', lista_videos: 'Video playlist', pronto: 'The videos for this class are on the HAG Producciones channel.', tocar_usar: 'Tap to use', en_vivo: 'real app, live', disp_android: 'Android', disp_celular: 'Phone', elegir_celular: 'Choose phone', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projector', disp_tv: 'TV',
     proyectos: 'Projects', viajes: 'Trips', trabajos: 'Work', experiencia: 'Experience', estudios: 'Education', cv: 'Résumé',
     inicio: 'Home', contacto: 'Contact', menu_abrir: 'Open menu', menu_cerrar: 'Close menu', idioma: 'Language',
     seguir: 'Scroll', mensaje_de: 'Message from',
@@ -68,7 +68,7 @@ const T = {
     linkedin_cv: 'View on LinkedIn', arrastrar: 'Swipe to see more',
   },
   fr: {
-    abrir_app: 'Ouvrir l’application', ver_youtube: 'Voir sur YouTube', ultimos_videos: 'Dernières vidéos', clases: 'classes', ver_clase: 'Voir la classe', lista_videos: 'Liste de vidéos', pronto: 'Les vidéos de cette classe sont sur la chaîne HAG Producciones.', tocar_usar: 'Touchez pour utiliser', en_vivo: 'vraie application, en direct', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Projecteur', disp_tv: 'TV',
+    abrir_app: 'Ouvrir l’application', ver_youtube: 'Voir sur YouTube', ultimos_videos: 'Dernières vidéos', clases: 'classes', ver_clase: 'Voir la classe', lista_videos: 'Liste de vidéos', pronto: 'Les vidéos de cette classe sont sur la chaîne HAG Producciones.', tocar_usar: 'Touchez pour utiliser', en_vivo: 'vraie application, en direct', disp_android: 'Android', disp_celular: 'Téléphone', elegir_celular: 'Choisir le téléphone', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projecteur', disp_tv: 'TV',
     proyectos: 'Projets', viajes: 'Voyages', trabajos: 'Travaux', experiencia: 'Expérience', estudios: 'Formation', cv: 'CV',
     inicio: 'Accueil', contacto: 'Contact', menu_abrir: 'Ouvrir le menu', menu_cerrar: 'Fermer le menu', idioma: 'Langue',
     seguir: 'Défiler', mensaje_de: 'Message de',
@@ -96,7 +96,7 @@ const T = {
     linkedin_cv: 'Voir sur LinkedIn', arrastrar: 'Faites glisser pour voir plus',
   },
   de: {
-    abrir_app: 'App öffnen', ver_youtube: 'Auf YouTube ansehen', ultimos_videos: 'Neueste Videos', clases: 'Klassen', ver_clase: 'Klasse ansehen', lista_videos: 'Videoliste', pronto: 'Die Videos dieser Klasse findest du auf dem Kanal HAG Producciones.', tocar_usar: 'Zum Benutzen tippen', en_vivo: 'echte App, live', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Beamer', disp_tv: 'TV',
+    abrir_app: 'App öffnen', ver_youtube: 'Auf YouTube ansehen', ultimos_videos: 'Neueste Videos', clases: 'Klassen', ver_clase: 'Klasse ansehen', lista_videos: 'Videoliste', pronto: 'Die Videos dieser Klasse findest du auf dem Kanal HAG Producciones.', tocar_usar: 'Zum Benutzen tippen', en_vivo: 'echte App, live', disp_android: 'Android', disp_celular: 'Handy', elegir_celular: 'Handy wählen', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Beamer', disp_tv: 'TV',
     proyectos: 'Projekte', viajes: 'Reisen', trabajos: 'Arbeiten', experiencia: 'Erfahrung', estudios: 'Ausbildung', cv: 'Lebenslauf',
     inicio: 'Start', contacto: 'Kontakt', menu_abrir: 'Menü öffnen', menu_cerrar: 'Menü schließen', idioma: 'Sprache',
     seguir: 'Scrollen', mensaje_de: 'Nachricht von',
@@ -124,7 +124,7 @@ const T = {
     linkedin_cv: 'Auf LinkedIn ansehen', arrastrar: 'Wischen für mehr',
   },
   pt: {
-    abrir_app: 'Abrir o app', ver_youtube: 'Ver no YouTube', ultimos_videos: 'Últimos vídeos', clases: 'classes', ver_clase: 'Ver a classe', lista_videos: 'Lista de vídeos', pronto: 'Os vídeos desta classe estão no canal HAG Producciones.', tocar_usar: 'Toque para usar', en_vivo: 'app real, ao vivo', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Projetor', disp_tv: 'TV',
+    abrir_app: 'Abrir o app', ver_youtube: 'Ver no YouTube', ultimos_videos: 'Últimos vídeos', clases: 'classes', ver_clase: 'Ver a classe', lista_videos: 'Lista de vídeos', pronto: 'Os vídeos desta classe estão no canal HAG Producciones.', tocar_usar: 'Toque para usar', en_vivo: 'app real, ao vivo', disp_android: 'Android', disp_celular: 'Celular', elegir_celular: 'Escolher celular', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projetor', disp_tv: 'TV',
     proyectos: 'Projetos', viajes: 'Viagens', trabajos: 'Trabalhos', experiencia: 'Experiência', estudios: 'Formação', cv: 'Currículo',
     inicio: 'Início', contacto: 'Contato', menu_abrir: 'Abrir menu', menu_cerrar: 'Fechar menu', idioma: 'Idioma',
     seguir: 'Rolar', mensaje_de: 'Mensagem de',
@@ -152,7 +152,7 @@ const T = {
     linkedin_cv: 'Ver no LinkedIn', arrastrar: 'Deslize para ver mais',
   },
   it: {
-    abrir_app: 'Apri l’app', ver_youtube: 'Guarda su YouTube', ultimos_videos: 'Ultimi video', clases: 'classi', ver_clase: 'Vedi la classe', lista_videos: 'Playlist dei video', pronto: 'I video di questa classe sono sul canale HAG Producciones.', tocar_usar: 'Tocca per usare', en_vivo: 'app reale, dal vivo', disp_android: 'Android', disp_iphone: 'iPhone', disp_imac: 'iMac', disp_proyector: 'Proiettore', disp_tv: 'TV',
+    abrir_app: 'Apri l’app', ver_youtube: 'Guarda su YouTube', ultimos_videos: 'Ultimi video', clases: 'classi', ver_clase: 'Vedi la classe', lista_videos: 'Playlist dei video', pronto: 'I video di questa classe sono sul canale HAG Producciones.', tocar_usar: 'Tocca per usare', en_vivo: 'app reale, dal vivo', disp_android: 'Android', disp_celular: 'Telefono', elegir_celular: 'Scegli il telefono', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Proiettore', disp_tv: 'TV',
     proyectos: 'Progetti', viajes: 'Viaggi', trabajos: 'Lavori', experiencia: 'Esperienza', estudios: 'Formazione', cv: 'Curriculum',
     inicio: 'Home', contacto: 'Contatti', menu_abrir: 'Apri menu', menu_cerrar: 'Chiudi menu', idioma: 'Lingua',
     seguir: 'Scorri', mensaje_de: 'Messaggio di',

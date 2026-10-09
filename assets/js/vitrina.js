@@ -25,7 +25,7 @@ export function seccionesDe(texto = '') {
   const intro = partes.shift() || '';
   const secciones = partes.map((p) => {
     const [cabeza, ...resto] = p.split('\n');
-    const m = cabeza.match(/^\[(android|iphone|imac|proyector|tv)\]\s*(.*)$/i);
+    const m = cabeza.match(/^\[(celular|android|iphone|imac|proyector|tv)\]\s*(.*)$/i);
     return { disp: m ? m[1].toLowerCase() : '', titulo: (m ? m[2] : cabeza).trim(), texto: resto.join('\n').trim() };
   });
   return { intro, secciones };
@@ -41,6 +41,42 @@ const NATIVO = {
   proyector: [1280, 720],
   tv: [1920, 1080],
 };
+
+// Celular: muestra un selector iPhone / Android. Por defecto, el mismo tipo de teléfono que usa quien visita.
+const CELULARES = ['iphone', 'android'];
+function celularPreferido() {
+  try { const g = localStorage.getItem('celular'); if (CELULARES.includes(g)) return g; } catch (_) { /* sin almacenamiento */ }
+  return /android/i.test(navigator.userAgent) ? 'android' : 'iphone';
+}
+export function celular(src, titulo) {
+  const elegido = celularPreferido();
+  return `
+    <div class="celular" data-celular>
+      <div class="selector" role="group" aria-label="${esc(t('elegir_celular'))}">
+        ${CELULARES.map((c) => `<button type="button" data-elegir="${c}" aria-pressed="${c === elegido}">${esc(t(`disp_${c}`))}</button>`).join('')}
+      </div>
+      ${CELULARES.map((c) => `<div class="celular__opcion" data-opcion="${c}" ${c === elegido ? '' : 'hidden'}>${dispositivo(c, src, titulo)}</div>`).join('')}
+    </div>`;
+}
+function activarSelectores() {
+  document.querySelectorAll('[data-celular]').forEach((caja) => {
+    caja.querySelectorAll('[data-elegir]').forEach((b) => b.addEventListener('click', () => {
+      const c = b.dataset.elegir;
+      try { localStorage.setItem('celular', c); } catch (_) { /* nada */ }
+      caja.querySelectorAll('[data-elegir]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      caja.querySelectorAll('[data-opcion]').forEach((o) => {
+        o.hidden = o.dataset.opcion !== c;
+        if (!o.hidden) {
+          o.querySelectorAll('.revela').forEach((r) => r.classList.add('visible'));
+          const f = o.querySelector('iframe');
+          if (f && !f.src) f.src = f.dataset.src;
+          const p = o.querySelector('.disp__pantalla');
+          if (p) f.style.transform = `scale(${p.clientWidth / Number(f.dataset.w)})`;
+        }
+      });
+    }));
+  });
+}
 
 export function dispositivo(disp, src, titulo) {
   const [w, h] = NATIVO[disp];
@@ -67,6 +103,7 @@ export function dispositivo(disp, src, titulo) {
 let observadorPantallas;
 let observadorTamano;
 export function activarDispositivos() {
+  activarSelectores();
   if (observadorPantallas) observadorPantallas.disconnect();
   if (observadorTamano) observadorTamano.disconnect();
   const pantallas = Array.from(document.querySelectorAll('.disp__pantalla'));
