@@ -1126,3 +1126,38 @@ svg { width: 1em; height: 1em; }
   .clase__nombre { font-size: 15cqi; }
   .parte__titulo { font-size: 13vw; }
 }
+
+/* Texto que cambia solo sobre la portada (por ejemplo, 2026/2027) */
+.proyecto__foto { position: relative; container-type: inline-size; }
+.proyecto__sobre {
+  position: absolute; left: 8%; right: 6%; bottom: 17%;
+  font-family: var(--f-display); font-weight: 900; line-height: 0.85; letter-spacing: -0.01em;
+  font-size: 23cqi; color: var(--naranja); white-space: nowrap; pointer-events: none;
+}
+
+/* Android tipo Galaxy */
+.disp--android .disp__escena { width: min(100%, 21rem); }
+.vitrina__fila--intro .disp--android .disp__escena { width: min(100%, 21rem, calc((100svh - 12rem) * 0.46)); }
+@media (max-width: 900px) { .vitrina__fila--intro .disp--android .disp__escena { width: min(100%, 19rem); } }
+.disp--android .disp__cuerpo {
+  position: relative; padding: 2.6%; border-radius: 9% / 4.2%;
+  background: linear-gradient(160deg, #6d7076, #2f3135 30%, #1b1c1f 70%, #55585e);
+  box-shadow: inset 0 0 0 1.5px #8a8d93, inset 0 0 0 4px #0c0c0d, 0 40px 80px -30px rgba(0, 0, 0, 0.9);
+}
+.disp--android .disp__pantalla { border-radius: 7% / 3.2%; }
+.disp__camara { position: absolute; top: 3.4%; left: 50%; width: 3.6%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle at 40% 35%, #2c3440, #050506 60%); box-shadow: 0 0 0 2px #050506; z-index: 2; }
+.disp__boton--4 { right: -3px; top: 20%; height: 12%; }
+.disp__boton--5 { right: -3px; top: 35%; height: 6%; }
+
+/* iMac gris (aluminio) con marco negro */
+.disp--imac .disp__cuerpo { background: linear-gradient(180deg, #e9eaec, #c4c6ca); }
+.disp--imac .disp__marco { background: #0d0d0f; margin: 0; padding: 1.6%; border-radius: 2.2% / 3.6% 3.6% 0 0; }
+.disp--imac .disp__menton span { width: 1.4rem; height: 1.4rem; background: radial-gradient(circle at 40% 35%, #f4f4f5, #b8babe 70%); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25); }
+.disp--imac .disp__cuello { background: linear-gradient(90deg, #9fa2a7, #e6e7e9 50%, #9fa2a7); }
+.disp--imac .disp__base { background: linear-gradient(180deg, #e2e3e5, #a9acb1); }
+
+/* Las portadas de proyectos se ven completas (sin recortar el título) */
+.proyecto { width: min(clamp(15rem, 26vw, 25rem), 46svh); }
+.proyecto__foto { max-height: none; }
+.proyecto__foto img { transform: scale(1.06); }
+.proyecto__sobre { font-size: 17.5cqi; bottom: 18%; left: 8%; }

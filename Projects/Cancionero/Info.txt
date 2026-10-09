@@ -1,7 +1,7 @@
 Título: Cancionero MV
 Enlace: https://hagigliotti.github.io/cancionero_mv/
 Demo TV: https://hagigliotti.github.io/cancionero_mv/?tv=1
-Dispositivos: iphone, imac, proyector, tv
+Dispositivos: android, imac, proyector, tv
 
 Cancionero MV es una aplicación web para músicos, equipos de alabanza y directores de canto. Reúne el Cancionero, el Himnario Adventista y los Cantos de Campamento en un solo lugar, con acordes, tonalidad y todo lo necesario para tocar o dirigir una canción.
 

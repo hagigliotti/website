@@ -1,4 +1,4 @@
-Título: Neujahr
+Título: Neujahr {ciclo}
 
 Eine Seite, um die Ankunft von Neujahr und Weihnachten rund um die Welt zu verfolgen, Zeitzone für Zeitzone.
 

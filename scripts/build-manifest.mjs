@@ -33,12 +33,14 @@ const CLAVES = {
   fecha: /^(fecha|date|a[ñn]o|year|datum|data|anno|ann[ée]e)$/i,
   enlace: /^(enlace|link|url|web|sitio)$/i,
   portada: /^(portada|cover|car[áa]tula|tapa)$/i,
-  demo: /^(demo|app|simulador)(\s+(iphone|imac|proyector|projector|tv))?$/i,
+  demo: /^(demo|app|simulador)(\s+(android|iphone|imac|proyector|projector|tv))?$/i,
   dispositivos: /^(dispositivos|devices|pantallas)$/i,
   color: /^(color|colore|couleur|farbe|cor)$/i,
   lista: /^(lista|playlist|youtube|videos)$/i,
+  directo: /^(directo|redirigir|abrir directo)$/i,
+  portadaTexto: /^(portada texto|texto portada|cover text)$/i,
 };
-const DISPOSITIVOS = ['iphone', 'imac', 'proyector', 'tv'];
+const DISPOSITIVOS = ['android', 'iphone', 'imac', 'proyector', 'tv'];
 
 // Separa un texto en bloques por idioma: líneas [es], [en], [fr]... El texto sin marca vale para todos.
 function bloquesPorIdioma(texto) {
@@ -54,7 +56,7 @@ function bloquesPorIdioma(texto) {
 
 // Info.txt: primeras líneas opcionales "Título: …", "Fecha: …", "Enlace: …", "Portada: …"; el resto es la descripción.
 function parsearInfo(texto, idiomaArchivo) {
-  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '' };
+  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '' };
   const bloques = bloquesPorIdioma(texto);
   for (const [lang, contenido] of Object.entries(bloques)) {
     const destino = idiomaArchivo && lang === '_' ? idiomaArchivo : lang;
@@ -72,6 +74,8 @@ function parsearInfo(texto, idiomaArchivo) {
         info.demo[disp] = m[2].trim();
       } else if (clave === 'dispositivos') {
         info.dispositivos = m[2].toLowerCase().replace(/projector/g, 'proyector').split(/[,;\s]+/).filter((d) => DISPOSITIVOS.includes(d));
+      } else if (clave === 'directo') {
+        info.directo = /^(s[ií]|yes|oui|ja|sim|true|1)$/i.test(m[2].trim());
       } else info[clave] = m[2].trim();
     }
     const desc = lineas.slice(i).join('\n').trim();
@@ -123,7 +127,7 @@ async function esParte(abs) {
 async function leerCarpeta(seccion, carpeta, profundidad = 0) {
   const rel = `${seccion}/${carpeta}`;
   const dirAbs = join(RAIZ, rel);
-  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', fotos: {}, archivos: [], partes: [], subido: '' };
+  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', fotos: {}, archivos: [], partes: [], subido: '' };
   const subPartes = [];
   if (profundidad === 0) {
     for (const e of (await readdir(dirAbs, { withFileTypes: true })).sort((a, b) => ordenar(a.name, b.name))) {
@@ -141,7 +145,8 @@ async function leerCarpeta(seccion, carpeta, profundidad = 0) {
       const info = parsearInfo(await readFile(a.abs, 'utf8'), idiomaArch && idiomaArch.toLowerCase());
       Object.assign(item.titulo, info.titulo);
       Object.assign(item.texto, info.texto);
-      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista']) if (info[k]) item[k] = info[k];
+      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto']) if (info[k]) item[k] = info[k];
+      if (info.directo) item.directo = true;
       Object.assign(item.demo, info.demo);
       if (info.dispositivos.length) item.dispositivos = info.dispositivos;
       continue;

@@ -1,4 +1,4 @@
-Título: Nouvel An
+Título: Nouvel An {ciclo}
 
 Une page pour suivre l’arrivée du Nouvel An et de Noël dans le monde, fuseau horaire par fuseau horaire.
 

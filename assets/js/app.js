@@ -37,7 +37,15 @@ async function json(ruta) {
 }
 
 const items = (seccion) => (estado.manifest.secciones[seccion] && estado.manifest.secciones[seccion].items) || [];
-const tituloDe = (it) => L(it.titulo) || bonito(it.carpeta);
+// Marcadores que se completan solos: {ciclo} = "2026/2027" hasta el 1 de enero, después "2027/2028" (igual que la app de Año Nuevo).
+function marcadores(texto = '') {
+  const hoy = new Date();
+  const hoy0 = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+  let y = hoy.getFullYear();
+  if (new Date(y, 0, 1) < hoy0) y += 1;
+  return String(texto).replace(/\{ciclo\}/gi, `${y - 1}/${y}`).replace(/\{(año|anio)\}/gi, String(hoy.getFullYear()));
+}
+const tituloDe = (it) => marcadores(L(it.titulo)) || bonito(it.carpeta);
 const imagenesDe = (it) => it.archivos.filter((a) => a.tipo === 'imagen');
 const documentosDe = (it) => it.archivos.filter((a) => a.tipo !== 'imagen');
 const anio = (it) => (it.fecha || '').slice(0, 4);
@@ -324,9 +332,9 @@ function vistaInicio() {
       ${proyectos.length ? `
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
-          <a class="proyecto revela" href="${enlace(p.ruta)}">
-            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}</div>
-            <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(t('ver_proyecto'))}</span></div>
+          <a class="proyecto revela" ${p.directo && p.enlace ? `href="${esc(p.enlace)}" target="_blank" rel="noopener"` : `href="${enlace(p.ruta)}"`}>
+            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}</div>
+            <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(p.directo && p.enlace ? etiquetaEnlace(p.enlace) : t('ver_proyecto'))}${p.directo ? ' ↗' : ''}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
     </div>
@@ -725,7 +733,7 @@ const efectos = {
         const r = el.parentElement.getBoundingClientRect();
         if (r.right < 0 || r.left > vw) continue;
         const d = (r.left + r.width / 2 - vw / 2) / vw;
-        el.style.transform = `translate3d(${(d * -12).toFixed(2)}%,0,0) scale(1.2)`;
+        el.style.transform = `translate3d(${(d * -4).toFixed(2)}%,0,0) scale(1.08)`;
       }
     }
     if (this.palabras.length && !reduceMotion()) {
@@ -874,6 +882,13 @@ function resolver() {
     }
     if (it) return { html: vistaDetalle(segs[0], it), titulo: `${tituloDe(it)}, ${nombre}`, item: it, seccion: segs[0] };
   }
+  // Enlaces viejos (por ejemplo "Guia Conquistadores"): llevar a la carpeta con el nombre más parecido.
+  if (SECCIONES[segs[0]] && segs[1]) {
+    const norm = (x) => x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+    const buscado = norm(segs[1]);
+    const parecido = items(segs[0]).find((x) => buscado.includes(norm(x.carpeta)) || norm(x.carpeta).includes(buscado));
+    if (parecido) { location.replace(enlace(parecido.ruta)); return null; }
+  }
   return { html: vistaNoEncontrada(), titulo: nombre };
 }
 
@@ -882,6 +897,7 @@ let rutaAnterior = '';
 async function navegar(opciones = {}) {
   const app = $('#app');
   const ctx = resolver();
+  if (!ctx) return;
   const misma = opciones.mismoLugar;
   const yAntes = window.scrollY;
   // Si ya estamos en la portada y solo cambia la sección, desplazar sin volver a pintar.

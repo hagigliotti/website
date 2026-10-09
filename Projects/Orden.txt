@@ -1,7 +1,7 @@
 # Orden de los proyectos, de izquierda a derecha. Un nombre de carpeta por línea.
 # Las carpetas nuevas que no estén en esta lista aparecen primero.
-New Year
+Cancionero
 HAG Producciones
 Conquistadores
-Cancionero
+New Year
 Tienda online

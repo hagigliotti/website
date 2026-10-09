@@ -1,4 +1,4 @@
-Título: Ano Novo
+Título: Ano Novo {ciclo}
 
 Uma página para acompanhar a chegada do Ano Novo e do Natal ao redor do mundo, fuso horário por fuso horário.
 

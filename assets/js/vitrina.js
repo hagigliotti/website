@@ -25,7 +25,7 @@ export function seccionesDe(texto = '') {
   const intro = partes.shift() || '';
   const secciones = partes.map((p) => {
     const [cabeza, ...resto] = p.split('\n');
-    const m = cabeza.match(/^\[(iphone|imac|proyector|tv)\]\s*(.*)$/i);
+    const m = cabeza.match(/^\[(android|iphone|imac|proyector|tv)\]\s*(.*)$/i);
     return { disp: m ? m[1].toLowerCase() : '', titulo: (m ? m[2] : cabeza).trim(), texto: resto.join('\n').trim() };
   });
   return { intro, secciones };
@@ -35,6 +35,7 @@ export function seccionesDe(texto = '') {
 /* Dispositivos                                                             */
 /* ------------------------------------------------------------------------ */
 const NATIVO = {
+  android: [412, 915],
   iphone: [390, 844],
   imac: [1440, 900],
   proyector: [1280, 720],
@@ -50,6 +51,7 @@ export function dispositivo(disp, src, titulo) {
       <button class="disp__activar" type="button" data-activar>${esc(t('tocar_usar'))}</button>
     </div>`;
   const cuerpos = {
+    android: `<div class="disp__cuerpo"><span class="disp__boton disp__boton--4"></span><span class="disp__boton disp__boton--5"></span>${pantalla}<span class="disp__camara"></span></div>`,
     iphone: `<div class="disp__cuerpo"><span class="disp__boton disp__boton--1"></span><span class="disp__boton disp__boton--2"></span><span class="disp__boton disp__boton--3"></span>${pantalla}<span class="disp__isla"></span></div>`,
     imac: `<div class="disp__cuerpo"><div class="disp__marco">${pantalla}</div><div class="disp__menton"><span></span></div></div><div class="disp__cuello"></div><div class="disp__base"></div>`,
     proyector: `<div class="disp__tela"><div class="disp__rollo"></div><div class="disp__lienzo">${pantalla}</div></div><div class="disp__haz" aria-hidden="true"></div><div class="disp__equipo" aria-hidden="true"><span class="disp__lente"></span><span class="disp__rejilla"></span></div>`,

@@ -1,4 +1,4 @@
-Título: Capodanno
+Título: Capodanno {ciclo}
 
 Una pagina per seguire l’arrivo del Capodanno e del Natale nel mondo, fuso orario per fuso orario.
 

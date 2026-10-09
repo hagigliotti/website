@@ -1,4 +1,4 @@
-Título: New Year
+Título: New Year {ciclo}
 
 A page to follow the arrival of the New Year and Christmas around the world, time zone by time zone.
 
