@@ -1354,3 +1354,7 @@ body.con-mini .pie { padding-bottom: 6rem; }
 .hero__firma { font-size: clamp(4.5rem, 13vw, 12rem); bottom: 36%; }
 .mensaje__firma { font-size: clamp(2.8rem, 4.2vw, 3.6rem); }
 @media (max-width: 480px) { .nav__marca { font-size: 1.95rem; padding: 0.1rem 0.85rem 0; } }
+
+/* Firma "hag": palabra corta, un poco más grande */
+.nav__marca { font-size: 2.1rem; padding: 0.15rem 1.15rem 0; }
+.hero__firma { font-size: clamp(4rem, 12vw, 11rem); }

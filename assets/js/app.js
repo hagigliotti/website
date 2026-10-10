@@ -338,7 +338,7 @@ function vistaInicio() {
       <div class="mensaje__lado">
         <span class="mensaje__comilla" aria-hidden="true">“</span>
         <span class="etiqueta">${esc(t('mensaje_de'))}</span>
-        <span class="mensaje__firma">${esc(config.firma || config.nombre)}</span>
+        <span class="mensaje__firma">${esc(config.nombre)}</span>
       </div>
       <blockquote class="frase" data-frase>${fraseConPalabras(L(config.frase))}<span class="frase__cierre" aria-hidden="true">”</span></blockquote>
     </div>
