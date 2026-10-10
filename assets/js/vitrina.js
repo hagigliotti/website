@@ -205,6 +205,41 @@ export function reproductorLista(u, titulo) {
     </div>`;
 }
 
+// Lista completa de videos (leída al publicar): reproductor grande + todos los videos para elegir.
+const mmss = (s) => (s ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : '');
+export function listaDeVideos(item, titulo) {
+  const v = item.videosLista || [];
+  if (!v.length) return reproductorLista(item.lista, titulo);
+  const lista = idLista(item.lista);
+  const src = (id, auto) => `https://www.youtube-nocookie.com/embed/${esc(id)}?list=${esc(lista)}&rel=0${auto ? '&autoplay=1' : ''}`;
+  return `
+    <div class="videos revela" data-videos>
+      <div class="video videos__actual"><iframe src="${src(v[0].id)}" data-src-base="${esc(lista)}" title="${esc(titulo)}" loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+      <div class="videos__lista">
+        <p class="videos__cuenta">${v.length} ${esc(v.length === 1 ? t('video') : t('videos'))}</p>
+        <ol>${v.map((x, i) => `
+          <li><button type="button" class="vid${i === 0 ? ' vid--actual' : ''}" data-video="${esc(x.id)}" aria-current="${i === 0}">
+            <span class="vid__num">${i + 1}</span>
+            <span class="vid__mini"><img src="https://i.ytimg.com/vi/${esc(x.id)}/mqdefault.jpg" alt="" loading="lazy">${x.segundos ? `<small>${mmss(x.segundos)}</small>` : ''}</span>
+            <span class="vid__titulo">${esc(x.titulo)}</span>
+          </button></li>`).join('')}</ol>
+      </div>
+    </div>`;
+}
+export function activarVideos() {
+  document.querySelectorAll('[data-videos]').forEach((caja) => {
+    const f = caja.querySelector('iframe');
+    caja.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-video]');
+      if (!b) return;
+      f.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.video)}?list=${encodeURIComponent(f.dataset.srcBase)}&rel=0&autoplay=1`;
+      caja.querySelectorAll('[data-video]').forEach((x) => { x.classList.toggle('vid--actual', x === b); x.setAttribute('aria-current', String(x === b)); });
+      if (window.matchMedia('(max-width: 860px)').matches) caja.querySelector('.videos__actual').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+}
+
 export function etiquetaEnlace(u = '') {
   if (/youtube\.com|youtu\.be/i.test(u)) return t('ver_youtube');
   if (/github\.io/i.test(u)) return t('abrir_app');

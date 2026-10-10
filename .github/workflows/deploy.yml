@@ -6,6 +6,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'   # todos los días: suma los videos nuevos de las listas de YouTube
 
 permissions:
   contents: read

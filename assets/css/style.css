@@ -1358,3 +1358,29 @@ body.con-mini .pie { padding-bottom: 6rem; }
 /* Firma "hag": palabra corta, un poco más grande */
 .nav__marca { font-size: 2.1rem; padding: 0.15rem 1.15rem 0; }
 .hero__firma { font-size: clamp(4rem, 12vw, 11rem); }
+
+/* Lista de videos de cada clase (todos los videos, con reproductor) */
+.videos { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr); gap: clamp(1rem, 2vw, 1.5rem); align-items: start; }
+.videos .video { opacity: 1; transform: none; clip-path: none; }
+.videos__actual { position: sticky; top: 6rem; }
+.videos__lista { min-width: 0; padding: 0.5rem; border-radius: 1.25rem; background: var(--grafito); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+.videos__cuenta { margin: 0.5rem 0.75rem 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--gris); }
+.videos__lista ol { list-style: none; margin: 0; padding: 0; max-height: min(70svh, 40rem); overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
+.vid { display: grid; grid-template-columns: 1.6rem 8rem minmax(0, 1fr); align-items: center; gap: 0.75rem; width: 100%; padding: 0.45rem; border-radius: 0.85rem; text-align: left; transition: background-color 120ms ease; }
+.vid__num { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: var(--gris); text-align: center; }
+.vid__mini { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 0.55rem; overflow: hidden; background: var(--acero); }
+.vid__mini img { width: 100%; height: 100%; object-fit: cover; }
+.vid__mini small { position: absolute; right: 0.3rem; bottom: 0.3rem; padding: 0.05rem 0.3rem; border-radius: 0.3rem; background: rgba(0, 0, 0, 0.8); font-size: 0.6875rem; font-weight: 600; color: #fff; }
+.vid__titulo { font-size: 0.875rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.vid--actual { background: rgba(255, 255, 255, 0.08); }
+.vid--actual .vid__num { color: var(--c1, var(--naranja)); font-weight: 800; }
+.vid--actual .vid__titulo { color: var(--hueso); }
+.vid--actual .vid__mini { box-shadow: 0 0 0 2px var(--c1, var(--naranja)); }
+.vid:active { background: rgba(255, 255, 255, 0.12); }
+@media (hover: hover) and (pointer: fine) { .vid:hover { background: rgba(255, 255, 255, 0.06); } }
+@media (max-width: 860px) {
+  .videos { grid-template-columns: 1fr; }
+  .videos__actual { position: static; }
+  .videos__lista ol { max-height: none; }
+  .vid { grid-template-columns: 1.4rem 7.5rem minmax(0, 1fr); }
+}

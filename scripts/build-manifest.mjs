@@ -213,6 +213,66 @@ async function leerSeccion(seccion) {
 
 const manifest = { generado: new Date().toISOString(), idiomas: LANGS, secciones: {}, cv: {} };
 for (const s of SECCIONES) manifest.secciones[s] = await leerSeccion(s);
+
+// ---------------------------------------------------------------------------
+// Videos de las listas de YouTube ("Lista:" en Info.txt).
+// Se leen al publicar (GitHub Actions corre esto también una vez por día),
+// así un video nuevo en la lista aparece solo en el sitio.
+// ---------------------------------------------------------------------------
+const idDeLista = (u = '') => (String(u).match(/[?&]list=([\w-]{10,})/) || [])[1] || '';
+const NAV = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36', 'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8', Cookie: 'CONSENT=YES+1; SOCS=CAI' };
+
+function juntarVideos(nodo, salida) {
+  if (!nodo || typeof nodo !== 'object') return;
+  if (Array.isArray(nodo)) { nodo.forEach((x) => juntarVideos(x, salida)); return; }
+  const r = nodo.playlistVideoRenderer;
+  if (r && r.videoId) {
+    const titulo = (r.title && (r.title.simpleText || (r.title.runs || []).map((x) => x.text).join(''))) || '';
+    salida.push({ id: r.videoId, titulo, segundos: Number(r.lengthSeconds) || 0 });
+    return;
+  }
+  for (const k of Object.keys(nodo)) juntarVideos(nodo[k], salida);
+}
+
+async function videosDeLista(id) {
+  const ctrl = AbortSignal.timeout(15000);
+  try {
+    const html = await (await fetch(`https://www.youtube.com/playlist?list=${id}&hl=es`, { headers: NAV, signal: ctrl })).text();
+    const m = html.match(/var ytInitialData\s*=\s*(\{[\s\S]*?\});\s*<\/script>/) || html.match(/ytInitialData"\]\s*=\s*(\{[\s\S]*?\});/);
+    if (m) {
+      const lista = [];
+      juntarVideos(JSON.parse(m[1]), lista);
+      const vistos = new Set();
+      const unicos = lista.filter((v) => !vistos.has(v.id) && vistos.add(v.id) && !/^\[(private|deleted)/i.test(v.titulo));
+      if (unicos.length) return unicos;
+    }
+  } catch (_) { /* se prueba con el feed */ }
+  try {
+    const xml = await (await fetch(`https://www.youtube.com/feeds/videos.xml?playlist_id=${id}`, { headers: NAV, signal: AbortSignal.timeout(15000) })).text();
+    const entradas = xml.split('<entry>').slice(1).map((e) => ({
+      id: (e.match(/<yt:videoId>([^<]+)/) || [])[1],
+      titulo: ((e.match(/<title>([^<]*)/) || [])[1] || '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'"),
+      segundos: 0,
+    })).filter((v) => v.id);
+    // El feed trae primero lo más nuevo; en una lista de clases conviene el orden de la lista.
+    return entradas.reverse();
+  } catch (_) {
+    return null;
+  }
+}
+
+const conLista = [];
+for (const s of SECCIONES) for (const it of manifest.secciones[s].items) {
+  if (idDeLista(it.lista)) conLista.push(it);
+  for (const p of it.partes || []) if (idDeLista(p.lista)) conLista.push(p);
+}
+const resumen = [];
+await Promise.all(conLista.map(async (it) => {
+  const v = await videosDeLista(idDeLista(it.lista));
+  if (v && v.length) it.videosLista = v;
+  resumen.push(`${it.carpeta}: ${v ? v.length : 'sin conexión'}`);
+}));
+if (resumen.length) console.log(`${process.env.GITHUB_ACTIONS ? '::notice title=Videos de YouTube::' : '✓ videos: '}${resumen.join(' · ')}`);
 manifest.cv.pdf = (await existe(join(RAIZ, 'cv/cv.pdf'))) ? 'cv/cv.pdf' : null;
 await writeFile(join(RAIZ, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 

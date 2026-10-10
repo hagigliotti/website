@@ -1,7 +1,7 @@
 import { Lector, miniaturaPDF } from './reader.js';
 import { IDIOMAS, idioma, cambiarIdioma, t, n, L, locale } from './i18n.js';
 import { vistaMusica, activarMusica, salirDeMusica } from './musica.js';
-import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace } from './vitrina.js';
+import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace, listaDeVideos, activarVideos } from './vitrina.js';
 
 /* ==========================================================================
    Utilidades
@@ -521,7 +521,7 @@ function vistaParte(seccion, padre, p) {
       </div>
     </div>
     <div class="envoltura parte__cuerpo">
-      ${tieneLista ? `<h2 class="subtitulo">${esc(t('lista_videos'))}</h2>${reproductorLista(p.lista, tituloDe(p))}
+      ${tieneLista ? `<h2 class="subtitulo">${esc(t('lista_videos'))}</h2>${listaDeVideos(p, tituloDe(p))}
         <div class="botones" style="margin-top:1.25rem"><a class="boton" href="${esc(p.lista)}" target="_blank" rel="noopener">${esc(t('ver_youtube'))} ${icono('flecha')}</a></div>`
       : `<div class="aviso"><h2>${esc(t('lista_videos'))}</h2><p>${esc(t('pronto'))}</p><div class="botones"><a class="boton" href="${esc(padre.enlace || 'https://www.youtube.com/@hagproducciones')}" target="_blank" rel="noopener">${esc(t('ver_youtube'))} ${icono('flecha')}</a></div></div>`}
       <nav class="clases-mini" aria-label="${esc(t('clases'))}">
@@ -576,7 +576,7 @@ function vistaDetalle(seccion, it) {
         ${it.enlace ? `<div class="botones"><a class="boton" href="${esc(it.enlace)}" target="_blank" rel="noopener">${esc(etiquetaEnlace(it.enlace))} ${icono('flecha')}</a></div>` : ''}
       </div>
     </header>
-    ${idLista(it.lista) ? `<h2 class="subtitulo">${esc(t('ultimos_videos'))}</h2>${reproductorLista(it.lista, tituloDe(it))}<div style="height:clamp(3rem,6vw,5rem)"></div>` : ''}
+    ${idLista(it.lista) ? `<h2 class="subtitulo">${esc(t('ultimos_videos'))}</h2>${listaDeVideos(it, tituloDe(it))}<div style="height:clamp(3rem,6vw,5rem)"></div>` : ''}
     ${esProyecto && it.portada && !idLista(it.lista) ? `<div class="portada-grande"><img src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
     ${docs.length ? estante(it, docs, imgs) : ''}
     ${imgsAlbum.length ? `${docs.length || esProyecto ? `<h2 class="subtitulo">${esc(t('imagenes'))}</h2>` : ''}${galeria(it, imgsAlbum)}` : ''}
@@ -833,6 +833,7 @@ function activarVista(ctx) {
   }
 
   activarDispositivos();
+  activarVideos();
   if (ctx.item && ctx.item.reproductor) activarMusica(ctx.item); else salirDeMusica();
   revelar();
   efectos.medirLigero();
