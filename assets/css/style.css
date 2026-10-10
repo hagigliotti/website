@@ -15,7 +15,7 @@
 
   --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
   --f-texto: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
-  --f-firma: "Kaushan Script", "Brush Script MT", cursive;
+  --f-firma: "Great Vibes", "Brush Script MT", cursive;
   --f-libro: "Newsreader", Georgia, serif;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -1173,14 +1173,14 @@ svg { width: 1em; height: 1em; }
 /* iMac: círculo negro en el mentón */
 .disp--imac .disp__menton span { width: 1.5rem; height: 1.5rem; background: radial-gradient(circle at 40% 35%, #2a2b2e, #050506 70%); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.5); }
 
-/* Firma con Kaushan Script: trazo de marcador, más legible */
-.nav__marca { font-size: 1.45rem; padding: 0 1.1rem; letter-spacing: 0.01em; }
-.hero__firma { font-size: clamp(2.4rem, 6.5vw, 6rem); line-height: 1.15; transform: rotate(-7deg); bottom: 40%; }
-.mensaje__firma { font-size: clamp(1.7rem, 2.6vw, 2.2rem); color: var(--naranja); }
-.pag-portada span { font-size: calc(var(--tam-portada, 52px) * 0.5); }
-.cargador__a { font-size: clamp(6.5rem, 20vw, 12rem); margin: 0 0.02em; transform: translateY(-0.02em); }
-.pie__monograma .cargador__a { font-size: clamp(8rem, 27vw, 24rem); }
-@media (max-width: 480px) { .nav__marca { font-size: 1.2rem; padding: 0 0.8rem; } }
+/* Firma con Great Vibes: cursiva elegante y legible */
+.nav__marca { font-size: 1.85rem; padding: 0.2rem 1.1rem 0; letter-spacing: 0; }
+.hero__firma { font-size: clamp(3.2rem, 9vw, 8.5rem); line-height: 1.2; transform: rotate(-7deg); bottom: 38%; }
+.mensaje__firma { font-size: clamp(2.3rem, 3.4vw, 3rem); color: var(--hueso); }
+.pag-portada span { font-size: calc(var(--tam-portada, 52px) * 0.7); }
+.cargador__a { font-size: clamp(9rem, 28vw, 17rem); margin: 0 -0.05em 0 -0.08em; transform: translateY(0.04em); }
+.pie__monograma .cargador__a { font-size: clamp(12rem, 40vw, 34rem); }
+@media (max-width: 480px) { .nav__marca { font-size: 1.55rem; padding: 0.15rem 0.8rem 0; } }
 
 /* Comillas de cierre de la frase */
 .frase__cierre { font-family: var(--f-display); font-style: normal; font-weight: 900; color: var(--naranja); font-size: 2.4em; line-height: 0; vertical-align: -0.42em; margin-left: 0.06em; }
@@ -1260,20 +1260,20 @@ svg { width: 1em; height: 1em; }
 .musica__pestanas button[aria-selected="true"] { background: var(--hueso); color: var(--negro); }
 .musica__buscar input { width: 100%; height: 2.75rem; padding: 0 1rem; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--hueso); font: inherit; font-size: 16px; margin-bottom: 0.75rem; }
 .musica__buscar input::placeholder { color: rgba(242, 240, 236, 0.5); }
-.pistas { list-style: none; margin: 0; padding: 0; max-height: min(70svh, 44rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
-.pistas__vacio { padding: 1.5rem 0.75rem; color: rgba(242, 240, 236, 0.6); }
-.pista { display: grid; grid-template-columns: 2rem 3rem minmax(0, 1fr) auto; align-items: center; gap: 0.85rem; width: 100%; padding: 0.45rem 0.75rem 0.45rem 0.5rem; border-radius: 0.75rem; text-align: left; transition: background-color 120ms ease; }
-.pista__num { display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: 0.875rem; color: rgba(242, 240, 236, 0.55); }
-.pista__num .eq { display: none; }
-.pista__texto { display: grid; min-width: 0; }
-.pista__texto b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pista__texto small { font-size: 0.8125rem; color: rgba(242, 240, 236, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pista__dur { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.6); }
-.pista--actual .pista__texto b { color: var(--naranja); }
-.pista--actual .pista__num > span { display: none; }
-.pista--actual .pista__num .eq { display: inline-flex; }
-.pista:active { background: rgba(255, 255, 255, 0.1); }
-@media (hover: hover) and (pointer: fine) { .pista:hover { background: rgba(255, 255, 255, 0.07); } }
+.temas { list-style: none; margin: 0; padding: 0; max-height: min(70svh, 44rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
+.temas__vacio { padding: 1.5rem 0.75rem; color: rgba(242, 240, 236, 0.6); }
+.tema { display: grid; grid-template-columns: 2rem 3rem minmax(0, 1fr) auto; align-items: center; gap: 0.85rem; width: 100%; padding: 0.45rem 0.75rem 0.45rem 0.5rem; border-radius: 0.75rem; text-align: left; transition: background-color 120ms ease; }
+.tema__num { display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: 0.875rem; color: rgba(242, 240, 236, 0.55); }
+.tema__num .eq { display: none; }
+.tema__texto { display: grid; min-width: 0; }
+.tema__texto b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tema__texto small { font-size: 0.8125rem; color: rgba(242, 240, 236, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tema__dur { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.6); }
+.tema--actual .tema__texto b { color: var(--naranja); }
+.tema--actual .tema__num > span { display: none; }
+.tema--actual .tema__num .eq { display: inline-flex; }
+.tema:active { background: rgba(255, 255, 255, 0.1); }
+@media (hover: hover) and (pointer: fine) { .tema:hover { background: rgba(255, 255, 255, 0.07); } }
 .eq { align-items: flex-end; gap: 2px; height: 0.9rem; }
 .eq b { width: 3px; height: 100%; border-radius: 1px; background: var(--naranja); transform-origin: bottom; animation: eq 900ms ease-in-out infinite; }
 .eq b:nth-child(2) { animation-delay: -300ms; }
@@ -1300,7 +1300,7 @@ svg { width: 1em; height: 1em; }
   .musica { grid-template-columns: 1fr; border-radius: 1.5rem; }
   .musica__ahora { position: static; }
   .musica__tapa { width: min(100%, 20rem); margin-inline: auto; }
-  .pistas, .letra { max-height: none; }
+  .temas, .letra { max-height: none; }
 }
 
 /* Mini reproductor flotante (se ve en todo el sitio mientras suena) */
@@ -1335,3 +1335,16 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .mini { animation: none; }
   .musica__tapa .tapa { transition: none; }
 }
+
+/* Panel de experiencia y estudios: la lista va pegada al texto, el botón al final */
+.panel .hitos { margin: 0; }
+.panel .boton-flecha { margin-top: auto; }
+.panel { min-height: 0; }
+
+/* Emblema de Conquistadores sobre cada franja */
+.emblemas { position: absolute; left: 0; right: 0; top: 13%; display: grid; grid-template-columns: repeat(var(--n), 1fr); justify-items: center; pointer-events: none; }
+.emblemas img { width: 64%; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35)); }
+.clase__emblema { position: absolute; top: clamp(1rem, 2vw, 1.4rem); right: clamp(1rem, 2vw, 1.4rem); width: clamp(2.6rem, 18cqi, 4.2rem); aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35)); }
+.parte__emblema { display: block; width: clamp(4rem, 9vw, 6.5rem); aspect-ratio: 1; object-fit: contain; margin-top: 1.25rem; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3)); }
+.proyecto__sobre { font-size: 15.5cqi; }
+.panel .hitos .hito { padding: 0.85rem 0; }

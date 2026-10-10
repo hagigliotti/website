@@ -1,5 +1,5 @@
 {
-  "generado": "2026-10-08T15:42:12.075Z",
+  "generado": "2026-10-10T01:12:12.151Z",
   "idiomas": [
     "es",
     "en",
@@ -12,32 +12,98 @@
     "Projects": {
       "items": [
         {
-          "carpeta": "Tienda online",
-          "ruta": "Projects/Tienda online",
+          "carpeta": "Cancionero",
+          "ruta": "Projects/Cancionero",
           "titulo": {
-            "_": "Tienda online"
+            "de": "Cancionero MV",
+            "en": "Cancionero MV",
+            "fr": "Cancionero MV",
+            "it": "Cancionero MV",
+            "pt": "Cancionero MV",
+            "_": "Cancionero MV"
           },
           "texto": {
-            "es": "Diseño y armado de una tienda online. (Texto de muestra: editalo en Info.txt.)",
-            "en": "Design and build of an online store. (Sample text: edit it in Info.txt.)",
-            "fr": "Conception et création d’une boutique en ligne. (Texte d’exemple : modifiez-le dans Info.txt.)",
-            "de": "Gestaltung und Aufbau eines Onlineshops. (Beispieltext: in Info.txt bearbeiten.)",
-            "pt": "Design e montagem de uma loja online. (Texto de exemplo: edite em Info.txt.)",
-            "it": "Progettazione e realizzazione di un negozio online. (Testo di esempio: modificalo in Info.txt.)"
+            "de": "Cancionero MV ist eine Web-App für Musiker, Lobpreisteams und Liedleiter. Sie vereint Liederbuch, adventistisches Gesangbuch und Lagerlieder an einem Ort, mit Akkorden, Tonart und allem, was man zum Spielen oder Anleiten eines Liedes braucht.\n\nSie wurde für Freiwillige im Missionsdienst der Siebenten-Tags-Adventisten entwickelt. Einmal installiert, funktioniert sie offline und eignet sich zum Üben ebenso wie für den Live-Einsatz: am Notenständer, bei der Probe oder projiziert im Gottesdienst.\n\n- Suche nach Titel, Text, Autor, Komponist, Rhythmus oder Schlagwörtern.\n- Akkorde über dem Text, mit Klang und Griffbildern für Klavier, Gitarre, Bass und Ukulele.\n- Transponieren der Tonart in Halbtonschritten.\n- Teleprompter mit automatischem Bildlauf, um freihändig zu spielen.\n- Meine Listen: eigene Setlists zum Exportieren und Importieren.\n- Meine Gebetsanliegen, mit Bibelvers, Foto und passendem Lied.\n- Metronom, Stimmgerät und Musik-Notizblock.\n- Lieder auf Spanisch, Englisch, Guaraní, Italienisch und Portugiesisch.\n\nAuf dem Handy wird sie wie jede andere App benutzt. Der Simulator zeigt die echte App in Aktion: Probier sie aus.\n\n## [imac] Am Computer\nAuf einem PC oder Mac hat der Text mehr Raum, die Buchstabenleiste lässt sich mit Pfeilen durchblättern und alle Werkzeuge sind griffbereit. Ideal, um die Lieder für den Sabbat vorzubereiten oder mit dem Team zu proben.\n\n## [proyector] Gemeindemodus: Beamer\nÜber das Menü Gemeindemodus → Beamer wechselt die App zu riesigem Text auf schwarzem Hintergrund, gedacht für die Projektion im Gottesdienst. Werkzeuge, die auf einer großen Leinwand nur stören, wie das Stimmgerät oder die Griffbilder, werden ausgeblendet. Verfügbar auf Tablet, PC und Mac.\n\n## [tv] TV-Modus mit Fernbedienung\nAuf einem Android TV oder Smart TV schaltet er sich von selbst ein. Bedient wird er mit der Fernbedienung: Die Pfeile bewegen den Fokus, OK öffnet das Lied, Zurück schließt, und Kanal +/– scrollt durch den Text.",
+            "en": "Cancionero MV is a web app for musicians, worship teams and song leaders. It brings together the songbook, the Adventist Hymnal and camp songs in one place, with chords, key and everything you need to play or lead a song.\n\nIt was built for volunteers in the missionary service of the Seventh-day Adventist Church. Once installed it works offline, and it is just as useful for practice as for live moments: on the music stand, at rehearsal, or projected during the service.\n\n- Search by title, lyrics, author, composer, rhythm or tags.\n- Chords above the lyrics, with their sound and piano, guitar, bass and ukulele diagrams.\n- Key transposition, one semitone at a time.\n- Teleprompter with auto-scroll, to play hands-free.\n- My Lists: your own setlists, which can be exported and imported.\n- My Prayer Requests, with a Bible verse, a photo and a related song.\n- Metronome, tuner and music notepad.\n- Songs in Spanish, English, Guarani, Italian and Portuguese.\n\nOn a phone it works like any other app. The simulator shows the real app running: try it.\n\n## [imac] On the computer\nOn a PC or Mac the lyrics have more room to breathe, the letter bar can be browsed with arrows and every tool is within reach. Perfect for preparing Saturday's setlist or rehearsing with the team.\n\n## [proyector] Church mode: projector\nFrom the menu Church mode → Projector, the app switches to giant lyrics on a black background, designed to be projected during the service. Tools that only get in the way on a big screen, like the tuner or chord diagrams, are hidden. Available on tablet, PC and Mac.\n\n## [tv] TV mode with remote control\nOn an Android TV or Smart TV it turns on by itself. It is controlled with the remote: the arrows move the focus, OK opens the song, Back closes, and channel +/– scrolls the lyrics.",
+            "fr": "Cancionero MV est une application web pour les musiciens, les équipes de louange et les chefs de chant. Elle réunit le recueil de chants, l’hymnaire adventiste et les chants de camp au même endroit, avec les accords, la tonalité et tout le nécessaire pour jouer ou diriger un chant.\n\nElle a été conçue pour les volontaires du service missionnaire de l’Église adventiste du septième jour. Une fois installée, elle fonctionne hors ligne et sert autant pour s’exercer que pour le direct : sur le pupitre, en répétition ou projetée pendant le culte.\n\n- Recherche par titre, paroles, auteur, compositeur, rythme ou étiquettes.\n- Accords au-dessus des paroles, avec leur son et des diagrammes pour piano, guitare, basse et ukulélé.\n- Transposition de la tonalité, demi-ton par demi-ton.\n- Téléprompteur à défilement automatique pour jouer les mains libres.\n- Mes listes : vos propres répertoires, exportables et importables.\n- Mes demandes de prière, avec un verset, une photo et un chant associé.\n- Métronome, accordeur et bloc-notes musical.\n- Chants en espagnol, anglais, guarani, italien et portugais.\n\nSur le téléphone, elle s’utilise comme n’importe quelle application. Le simulateur montre la vraie application en marche : essayez-la.\n\n## [imac] Sur l’ordinateur\nSur un PC ou un Mac, les paroles respirent davantage, la barre des lettres se parcourt avec des flèches et tous les outils sont à portée de main. Idéal pour préparer le répertoire du sabbat ou répéter avec l’équipe.\n\n## [proyector] Mode église : projecteur\nDepuis le menu Mode église → Projecteur, l’application passe à un affichage des paroles en très grand sur fond noir, pensé pour être projeté pendant le culte. Les outils qui gênent sur un grand écran, comme l’accordeur ou les diagrammes d’accords, sont masqués. Disponible sur tablette, PC et Mac.\n\n## [tv] Mode TV avec télécommande\nSur une Android TV ou une Smart TV, il s’active tout seul. Il se pilote avec la télécommande : les flèches déplacent la sélection, OK ouvre le chant, Retour ferme, et chaîne +/– fait défiler les paroles.",
+            "it": "Cancionero MV è un’applicazione web per musicisti, gruppi di lode e direttori di canto. Riunisce il canzoniere, l’Innario Avventista e i canti da campeggio in un solo posto, con accordi, tonalità e tutto il necessario per suonare o dirigere un canto.\n\nÈ pensata per i volontari nel servizio missionario della Chiesa Cristiana Avventista del Settimo Giorno. Una volta installata funziona offline, ed è utile sia per esercitarsi sia dal vivo: sul leggio, alle prove o proiettata durante il culto.\n\n- Ricerca per titolo, testo, autore, compositore, ritmo o etichette.\n- Accordi sopra il testo, con il loro suono e i diagrammi per pianoforte, chitarra, basso e ukulele.\n- Trasposizione della tonalità, mezzo tono alla volta.\n- Gobbo elettronico con scorrimento automatico per suonare a mani libere.\n- Le mie liste: repertori personali, esportabili e importabili.\n- Le mie richieste di preghiera, con versetto, foto e canto collegato.\n- Metronomo, accordatore e blocco note musicale.\n- Canti in spagnolo, inglese, guaraní, italiano e portoghese.\n\nSul telefono si usa come qualsiasi altra app. Il simulatore mostra l’app vera in funzione: provala.\n\n## [imac] Sul computer\nSu un PC o un Mac il testo respira di più, la barra delle lettere si scorre con le frecce e tutti gli strumenti sono a portata di mano. Ideale per preparare il repertorio del sabato o provare con il gruppo.\n\n## [proyector] Modalità chiesa: proiettore\nDal menu Modalità chiesa → Proiettore, l’app passa a una vista con il testo gigante su sfondo nero, pensata per la proiezione durante il culto. Gli strumenti che su uno schermo grande danno solo fastidio, come l’accordatore o i diagrammi degli accordi, vengono nascosti. Disponibile su tablet, PC e Mac.\n\n## [tv] Modalità TV con telecomando\nSu una Android TV o Smart TV si attiva da sola. Si usa con il telecomando: le frecce spostano la selezione, OK apre il canto, Indietro chiude e canale +/– fa scorrere il testo.",
+            "pt": "O Cancionero MV é um aplicativo web para músicos, equipes de louvor e regentes. Reúne o cancioneiro, o Hinário Adventista e os cânticos de acampamento em um só lugar, com acordes, tonalidade e tudo o que é preciso para tocar ou dirigir uma música.\n\nFoi pensado para os voluntários no serviço missionário da Igreja Adventista do Sétimo Dia. Depois de instalado funciona sem internet, e serve tanto para praticar quanto para o momento ao vivo: na estante, no ensaio ou projetado durante o culto.\n\n- Busca por título, letra, autor, compositor, ritmo ou etiquetas.\n- Acordes sobre a letra, com o som e diagramas de piano, violão, baixo e ukulele.\n- Transposição de tom, meio tom por vez.\n- Teleprompter com rolagem automática para tocar com as mãos livres.\n- Minhas Listas: repertórios próprios que podem ser exportados e importados.\n- Meus Pedidos de Oração, com versículo, foto e cântico relacionado.\n- Metrônomo, afinador e bloco musical.\n- Músicas em espanhol, inglês, guarani, italiano e português.\n\nNo celular ele é usado como qualquer outro aplicativo. O simulador mostra o aplicativo real funcionando: experimente.\n\n## [imac] No computador\nEm um PC ou Mac a letra fica mais espaçosa, a barra de letras é percorrida com setas e todas as ferramentas ficam à mão. Ideal para preparar o repertório do sábado ou ensaiar com a equipe.\n\n## [proyector] Modo igreja: projetor\nNo menu Modo igreja → Projetor, o aplicativo passa para uma visualização com letra gigante sobre fundo preto, pensada para projetar durante o culto. As ferramentas que só atrapalham em uma tela grande, como o afinador ou os diagramas de acordes, ficam ocultas. Disponível em tablet, PC e Mac.\n\n## [tv] Modo TV com controle remoto\nEm uma Android TV ou Smart TV ele é ativado sozinho. É controlado pelo controle remoto: as setas movem o foco, OK abre a música, Voltar fecha, e canal +/– rola a letra.",
+            "_": "Cancionero MV es una aplicación web para músicos, equipos de alabanza y directores de canto. Reúne el Cancionero, el Himnario Adventista y los Cantos de Campamento en un solo lugar, con acordes, tonalidad y todo lo necesario para tocar o dirigir una canción.\n\nEstá pensada para los voluntarios en el servicio misionero de la Iglesia Adventista del Séptimo Día. Una vez instalada funciona sin conexión, y sirve tanto para practicar como para el momento en vivo: en el atril, en el ensayo o proyectada durante el culto.\n\n- Buscador por título, letra, autor, compositor, ritmo o etiquetas.\n- Acordes sobre la letra, con su sonido y diagramas de piano, guitarra, bajo y ukelele.\n- Transposición de tonalidad, medio tono por vez.\n- Teleprónter con desplazamiento automático para tocar con las manos libres.\n- Mis Listas: repertorios propios que se pueden exportar e importar.\n- Mis Pedidos de Oración, con versículo, foto y canto relacionado.\n- Metrónomo, afinador y bloc musical.\n- Canciones en español, inglés, guaraní, italiano y portugués.\n\nEn el celular se usa como una app más. El simulador muestra la app real funcionando: probala.\n\n## [imac] En la computadora\nEn una PC o Mac la letra se lee con más aire, la barra de letras se recorre con flechas y todas las herramientas quedan a mano. Ideal para preparar el repertorio del sábado o ensayar con el equipo.\n\n## [proyector] Modo iglesia: proyector\nDesde el menú Modo iglesia → Proyector, la app cambia a una vista de letra gigante sobre fondo negro, pensada para proyectar durante el servicio. Se ocultan las herramientas que en una pantalla grande solo estorban, como el afinador o los diagramas de acordes. Disponible en tablet, PC y Mac.\n\n## [tv] Modo TV con control remoto\nEn una Android TV o Smart TV se activa solo. Se maneja con el control remoto: las flechas mueven el foco, OK abre la canción, Atrás cierra, y canal +/– recorre la letra."
           },
           "fecha": "",
-          "enlace": "",
-          "portada": "Projects/Tienda online/portada.jpg",
+          "enlace": "https://hagigliotti.github.io/cancionero_mv/",
+          "portada": "Projects/Cancionero/portada.jpg",
+          "demo": {
+            "tv": "https://hagigliotti.github.io/cancionero_mv/?tv=1",
+            "_": "https://hagigliotti.github.io/cancionero_mv/"
+          },
+          "dispositivos": [
+            "celular",
+            "imac",
+            "proyector",
+            "tv"
+          ],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
               "nombre": "portada.jpg",
-              "ruta": "Projects/Tienda online/portada.jpg",
+              "ruta": "Projects/Cancionero/portada.jpg",
               "tipo": "imagen",
-              "bytes": 81524
+              "bytes": 183584
             }
           ],
-          "subido": "2026-10-08T13:26:30.411Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
+        },
+        {
+          "carpeta": "Mis Cantos",
+          "ruta": "Projects/Mis Cantos",
+          "titulo": {
+            "_": "Mis Cantos",
+            "en": "My Songs",
+            "fr": "Mes chants",
+            "de": "Meine Lieder",
+            "pt": "Meus Cânticos",
+            "it": "I miei canti"
+          },
+          "texto": {
+            "_": "Cantos y alabanzas que produje, con voz, arreglos y portada. Escuchalos acá mismo, con la letra de cada canto.\n\nLa música sigue sonando mientras recorrés el resto del sitio. Cada vez que subo un canto nuevo al repositorio, aparece solo en la lista.",
+            "en": "Songs of praise that I produced, with vocals, arrangements and cover art. Listen to them right here, with the lyrics of each song.\n\nThe music keeps playing while you browse the rest of the site. Every time I upload a new song to the repository, it shows up in the list by itself.",
+            "fr": "Des chants de louange que j’ai produits, avec la voix, les arrangements et la pochette. Écoutez-les ici même, avec les paroles de chaque chant.\n\nLa musique continue pendant que vous parcourez le reste du site. Chaque fois que j’ajoute un nouveau chant au dépôt, il apparaît tout seul dans la liste.",
+            "de": "Lobpreislieder, die ich produziert habe, mit Gesang, Arrangements und Cover. Hör sie dir direkt hier an, mit dem Text jedes Liedes.\n\nDie Musik läuft weiter, während du den Rest der Seite ansiehst. Jedes neue Lied, das ich ins Repository hochlade, erscheint automatisch in der Liste.",
+            "pt": "Cânticos e louvores que produzi, com voz, arranjos e capa. Ouça aqui mesmo, com a letra de cada cântico.\n\nA música continua tocando enquanto você navega pelo resto do site. Cada vez que envio um cântico novo ao repositório, ele aparece sozinho na lista.",
+            "it": "Canti di lode che ho prodotto, con voce, arrangiamenti e copertina. Ascoltali qui, con il testo di ogni canto.\n\nLa musica continua a suonare mentre esplori il resto del sito. Ogni volta che carico un nuovo canto nel repository, compare da solo nella lista."
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Projects/Mis Cantos/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "_cantos.json",
+          "emblema": "",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/Mis Cantos/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 187892
+            }
+          ],
+          "partes": [],
+          "subido": "2026-10-09T21:57:24-03:00"
         },
         {
           "carpeta": "HAG Producciones",
@@ -56,136 +122,383 @@
           "fecha": "",
           "enlace": "https://www.youtube.com/@hagproducciones",
           "portada": "Projects/HAG Producciones/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "https://www.youtube.com/playlist?list=UURR5pcYQZJLb48KMOjIzzEw",
+          "directo": true,
+          "portadaTexto": "",
+          "videos": [
+            "Bc6t_6DBjZo",
+            "l-pt5GTNkRY",
+            "FZFp048IJFs",
+            "3UU4XWLlKyY",
+            "cmTHP8pf_lY",
+            "tVE93z5JJ30"
+          ],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
               "nombre": "portada.jpg",
               "ruta": "Projects/HAG Producciones/portada.jpg",
               "tipo": "imagen",
-              "bytes": 86726
+              "bytes": 77428
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         },
         {
-          "carpeta": "Guia Conquistadores",
-          "ruta": "Projects/Guia Conquistadores",
+          "carpeta": "Conquistadores",
+          "ruta": "Projects/Conquistadores",
           "titulo": {
-            "_": "Guía Conquistadores"
+            "_": "Conquistadores",
+            "en": "Pathfinders",
+            "fr": "Explorateurs",
+            "de": "Pfadfinder",
+            "pt": "Desbravadores",
+            "it": "Esploratori"
           },
           "texto": {
-            "es": "Guía de recursos para el club de Conquistadores. (Texto de muestra: editalo en Info.txt.)",
-            "en": "Resource guide for the Pathfinder club. (Sample text: edit it in Info.txt.)",
-            "fr": "Guide de ressources pour le club des Explorateurs. (Texte d’exemple : modifiez-le dans Info.txt.)",
-            "de": "Materialsammlung für den Pfadfinderclub. (Beispieltext: in Info.txt bearbeiten.)",
-            "pt": "Guia de recursos para o clube de Desbravadores. (Texto de exemplo: edite em Info.txt.)",
-            "it": "Guida di risorse per il club degli Esploratori. (Testo di esempio: modificalo in Info.txt.)"
+            "_": "Clases Progresivas de Conquistadores en video, publicadas en el canal HAG Producciones. Cada clase tiene su color y su propia lista de videos: elegí una para verla.",
+            "en": "Pathfinder Progressive Classes on video, published on the HAG Producciones channel. Each class has its own color and its own video playlist: pick one to watch it.",
+            "fr": "Les classes progressives des Explorateurs en vidéo, publiées sur la chaîne HAG Producciones. Chaque classe a sa couleur et sa propre liste de vidéos : choisissez-en une pour la regarder.",
+            "de": "Die Klassen der Pfadfinder als Videos, veröffentlicht auf dem Kanal HAG Producciones. Jede Klasse hat ihre eigene Farbe und ihre eigene Playlist: Wähle eine aus, um sie anzusehen.",
+            "pt": "Classes Regulares de Desbravadores em vídeo, publicadas no canal HAG Producciones. Cada classe tem sua cor e sua própria lista de vídeos: escolha uma para assistir.",
+            "it": "Le classi progressive degli Esploratori in video, pubblicate sul canale HAG Producciones. Ogni classe ha il suo colore e la sua playlist di video: scegline una per guardarla."
           },
           "fecha": "",
-          "enlace": "",
-          "portada": "Projects/Guia Conquistadores/portada.jpg",
+          "enlace": "https://www.youtube.com/@hagproducciones/playlists",
+          "portada": "Projects/Conquistadores/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Emblema_del_Club_de_Conquistadores.svg",
           "fotos": {},
           "archivos": [
             {
               "nombre": "portada.jpg",
-              "ruta": "Projects/Guia Conquistadores/portada.jpg",
+              "ruta": "Projects/Conquistadores/portada.jpg",
               "tipo": "imagen",
-              "bytes": 83078
+              "bytes": 254084
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [
+            {
+              "carpeta": "1 Amigo",
+              "ruta": "Projects/Conquistadores/1 Amigo",
+              "titulo": {
+                "_": "Amigo",
+                "en": "Friend",
+                "fr": "Ami",
+                "de": "Freund",
+                "pt": "Amigo",
+                "it": "Amico"
+              },
+              "texto": {
+                "_": "Clase 1 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 1 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 1 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 1 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 1 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 1 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "azul",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZIKrBTO4SLoSuLJQaRqIEgo0",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            },
+            {
+              "carpeta": "2 Companero",
+              "ruta": "Projects/Conquistadores/2 Companero",
+              "titulo": {
+                "_": "Compañero",
+                "en": "Companion",
+                "fr": "Compagnon",
+                "de": "Gefährte",
+                "pt": "Companheiro",
+                "it": "Compagno"
+              },
+              "texto": {
+                "_": "Clase 2 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 2 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 2 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 2 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 2 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 2 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "rojo",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZIIRbiy6etAn5FFhd0XI7rW8",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            },
+            {
+              "carpeta": "3 Explorador",
+              "ruta": "Projects/Conquistadores/3 Explorador",
+              "titulo": {
+                "_": "Explorador",
+                "en": "Explorer",
+                "fr": "Explorateur",
+                "de": "Entdecker",
+                "pt": "Pesquisador",
+                "it": "Esploratore"
+              },
+              "texto": {
+                "_": "Clase 3 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 3 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 3 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 3 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 3 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 3 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "verde",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZII676L9_VlmiTUU0h1JKy6w",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            },
+            {
+              "carpeta": "4 Pionero",
+              "ruta": "Projects/Conquistadores/4 Pionero",
+              "titulo": {
+                "_": "Pionero",
+                "en": "Ranger",
+                "fr": "Pionnier",
+                "de": "Pionier",
+                "pt": "Pioneiro",
+                "it": "Pioniere"
+              },
+              "texto": {
+                "_": "Clase 4 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 4 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 4 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 4 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 4 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 4 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "blanco/gris",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZILfs3FvPxV52GqGn1UF9h2S",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            },
+            {
+              "carpeta": "5 Excursionista",
+              "ruta": "Projects/Conquistadores/5 Excursionista",
+              "titulo": {
+                "_": "Excursionista",
+                "en": "Voyager",
+                "fr": "Voyageur",
+                "de": "Wanderer",
+                "pt": "Excursionista",
+                "it": "Escursionista"
+              },
+              "texto": {
+                "_": "Clase 5 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 5 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 5 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 5 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 5 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 5 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "violeta/vinotinto",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZIL4DZH4ERLdzx-EujtSJcdY",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            },
+            {
+              "carpeta": "6 Guia",
+              "ruta": "Projects/Conquistadores/6 Guia",
+              "titulo": {
+                "_": "Guía",
+                "en": "Guide",
+                "fr": "Guide",
+                "de": "Leiter",
+                "pt": "Guia",
+                "it": "Guida"
+              },
+              "texto": {
+                "_": "Clase 6 de 6 de las Clases Progresivas. Todos los videos de la clase, en orden.",
+                "en": "Class 6 of 6 of the Progressive Classes. All the videos of the class, in order.",
+                "fr": "Classe 6 sur 6 des classes progressives. Toutes les vidéos de la classe, dans l’ordre.",
+                "de": "Klasse 6 von 6. Alle Videos der Klasse, der Reihe nach.",
+                "pt": "Classe 6 de 6 das Classes Regulares. Todos os vídeos da classe, em ordem.",
+                "it": "Classe 6 di 6 delle classi progressive. Tutti i video della classe, in ordine."
+              },
+              "fecha": "",
+              "enlace": "",
+              "portada": "",
+              "demo": {},
+              "dispositivos": [],
+              "color": "amarillo",
+              "lista": "https://www.youtube.com/playlist?list=PLYkPy0hFVZIIuXvHiRji6j030sKq9SJ99",
+              "directo": false,
+              "portadaTexto": "",
+              "videos": [],
+              "reproductor": "",
+              "emblema": "",
+              "fotos": {},
+              "archivos": [],
+              "partes": [],
+              "subido": "2026-10-08T14:47:59-03:00"
+            }
+          ],
+          "subido": "2026-10-08T14:47:59-03:00"
         },
         {
-          "carpeta": "Cancionero",
-          "ruta": "Projects/Cancionero",
+          "carpeta": "New Year",
+          "ruta": "Projects/New Year",
           "titulo": {
-            "_": "Cancionero"
+            "de": "Neujahr {ciclo}",
+            "en": "New Year {ciclo}",
+            "fr": "Nouvel An {ciclo}",
+            "it": "Capodanno {ciclo}",
+            "pt": "Ano Novo {ciclo}",
+            "_": "Año Nuevo {ciclo}"
           },
           "texto": {
-            "es": "Cancionero digital con un reproductor al estilo Spotify y listas de canciones.",
-            "en": "Digital songbook with a Spotify-style player and song playlists.",
-            "fr": "Recueil de chants numérique avec un lecteur façon Spotify et des listes de lecture.",
-            "de": "Digitales Liederbuch mit einem Player im Spotify-Stil und Playlists.",
-            "pt": "Cancioneiro digital com um player no estilo Spotify e playlists.",
-            "it": "Canzoniere digitale con un lettore in stile Spotify e playlist."
+            "de": "Eine Seite, um die Ankunft von Neujahr und Weihnachten rund um die Welt zu verfolgen, Zeitzone für Zeitzone.\n\nSie zeigt einen Live-Countdown und erstellt für jede der 37 Zeitzonen einen Gruß, fertig zum Posten in sozialen Netzwerken, mit den Flaggen und Städten, die gerade feiern: von UTC+14 in Kiribati bis UTC−12.\n\n- Live-Countdown.\n- Reiter für Neujahr und Weihnachten, mit einer Schaltfläche zum Kopieren jedes Grußes.\n- Über 300 Städte, mit ihrem Namen in der Landessprache und auf Englisch.\n- Bearbeitbarer Gruß; das Jahr aktualisiert sich von selbst.\n- Ein Reiter mit dem Neujahr anderer Kalender: chinesisch, jüdisch, islamisch, persisch, äthiopisch und thailändisch.",
+            "en": "A page to follow the arrival of the New Year and Christmas around the world, time zone by time zone.\n\nIt shows a live countdown and, for each of the 37 time zones, builds a greeting ready to post on social media, with the flags and cities celebrating at that moment: from UTC+14 in Kiribati to UTC−12.\n\n- Live countdown.\n- New Year and Christmas tabs, with a button to copy each greeting.\n- More than 300 cities, named in the local language and in English.\n- Editable greeting; the year updates itself.\n- A tab with the New Year of other calendars: Chinese, Jewish, Islamic, Persian, Ethiopian and Thai.",
+            "fr": "Une page pour suivre l’arrivée du Nouvel An et de Noël dans le monde, fuseau horaire par fuseau horaire.\n\nElle affiche un compte à rebours en direct et prépare, pour chacun des 37 fuseaux horaires, un message prêt à publier sur les réseaux, avec les drapeaux et les villes qui fêtent à ce moment-là : de UTC+14 à Kiribati jusqu’à UTC−12.\n\n- Compte à rebours en direct.\n- Onglets Nouvel An et Noël, avec un bouton pour copier chaque message.\n- Plus de 300 villes, avec leur nom dans la langue locale et en anglais.\n- Message modifiable ; l’année se met à jour toute seule.\n- Un onglet avec le Nouvel An d’autres calendriers : chinois, juif, islamique, persan, éthiopien et thaï.",
+            "it": "Una pagina per seguire l’arrivo del Capodanno e del Natale nel mondo, fuso orario per fuso orario.\n\nMostra un conto alla rovescia in diretta e prepara, per ognuno dei 37 fusi orari, un augurio pronto da pubblicare sui social, con le bandiere e le città che stanno festeggiando in quel momento: da UTC+14 a Kiribati fino a UTC−12.\n\n- Conto alla rovescia in diretta.\n- Schede per Capodanno e Natale, con un pulsante per copiare ogni augurio.\n- Più di 300 città, con il nome nella lingua locale e in inglese.\n- Augurio modificabile; l’anno si aggiorna da solo.\n- Una scheda con il Capodanno di altri calendari: cinese, ebraico, islamico, persiano, etiope e thailandese.",
+            "pt": "Uma página para acompanhar a chegada do Ano Novo e do Natal ao redor do mundo, fuso horário por fuso horário.\n\nMostra uma contagem regressiva ao vivo e monta, para cada um dos 37 fusos horários, a saudação pronta para publicar nas redes, com as bandeiras e cidades que estão comemorando naquele momento: de UTC+14 em Kiribati até UTC−12.\n\n- Contagem regressiva ao vivo.\n- Abas de Ano Novo e de Natal, com um botão para copiar cada saudação.\n- Mais de 300 cidades, com o nome no idioma local e em inglês.\n- Saudação editável; o ano se atualiza sozinho.\n- Uma aba com o Ano Novo de outros calendários: chinês, judaico, islâmico, persa, etíope e tailandês.",
+            "_": "Una página para seguir la llegada del Año Nuevo y de la Navidad alrededor del mundo, zona horaria por zona horaria.\n\nMuestra una cuenta regresiva en vivo y arma, para cada una de las 37 zonas horarias, el saludo listo para publicar en redes, con las banderas y ciudades que están celebrando en ese momento: desde UTC+14 en Kiribati hasta UTC−12.\n\n- Cuenta regresiva en vivo.\n- Pestañas de Año Nuevo y de Navidad, con un botón para copiar cada saludo.\n- Más de 300 ciudades, con su nombre en el idioma local y en inglés.\n- Saludo editable; el año se actualiza solo.\n- Una pestaña con el Año Nuevo de otros calendarios: chino, judío, islámico, persa, etíope y tailandés."
           },
           "fecha": "",
-          "enlace": "",
-          "portada": "Projects/Cancionero/portada.jpg",
+          "enlace": "https://hagigliotti.github.io/new_year/",
+          "portada": "Projects/New Year/portada.jpg",
+          "demo": {
+            "_": "https://hagigliotti.github.io/new_year/"
+          },
+          "dispositivos": [
+            "celular"
+          ],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "{ciclo}",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
               "nombre": "portada.jpg",
-              "ruta": "Projects/Cancionero/portada.jpg",
+              "ruta": "Projects/New Year/portada.jpg",
               "tipo": "imagen",
-              "bytes": 86563
+              "bytes": 216216
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [],
+          "subido": "2026-10-08T14:47:59-03:00"
+        },
+        {
+          "carpeta": "Tienda online",
+          "ruta": "Projects/Tienda online",
+          "titulo": {
+            "_": "Tienda online"
+          },
+          "texto": {
+            "es": "Acceso a mi tienda online.",
+            "en": "Access to my online store.",
+            "fr": "Accès à ma boutique en ligne.",
+            "de": "Zugang zu meinem Onlineshop.",
+            "pt": "Acesso à minha loja online.",
+            "it": "Accesso al mio negozio online."
+          },
+          "fecha": "",
+          "enlace": "https://www.gestionresellers.com.ar/login?forward_url=/extranet/destacados/",
+          "portada": "Projects/Tienda online/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
+          "fotos": {},
+          "archivos": [
+            {
+              "nombre": "portada.jpg",
+              "ruta": "Projects/Tienda online/portada.jpg",
+              "tipo": "imagen",
+              "bytes": 81524
+            }
+          ],
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         }
       ]
     },
     "Trips": {
       "items": [
-        {
-          "carpeta": "SanMarino",
-          "ruta": "Trips/SanMarino",
-          "titulo": {
-            "_": "San Marino"
-          },
-          "texto": {
-            "_": "Una de las repúblicas más antiguas del mundo, sobre el monte Titano. (Texto de muestra.)",
-            "en": "One of the oldest republics in the world, on Mount Titano. (Sample text.)"
-          },
-          "fecha": "",
-          "enlace": "",
-          "portada": "Trips/SanMarino/sanmarino-01.jpg",
-          "fotos": {
-            "sanmarino-01.jpg": {
-              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
-              "en": "Description of photo 1."
-            },
-            "sanmarino-02.jpg": {
-              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
-              "en": "Description of photo 2."
-            },
-            "sanmarino-03.jpg": {
-              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
-              "en": "Description of photo 3."
-            },
-            "sanmarino-04.jpg": {
-              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
-              "en": "Description of photo 4."
-            }
-          },
-          "archivos": [
-            {
-              "nombre": "sanmarino-01.jpg",
-              "ruta": "Trips/SanMarino/sanmarino-01.jpg",
-              "tipo": "imagen",
-              "bytes": 43567
-            },
-            {
-              "nombre": "sanmarino-02.jpg",
-              "ruta": "Trips/SanMarino/sanmarino-02.jpg",
-              "tipo": "imagen",
-              "bytes": 44285
-            },
-            {
-              "nombre": "sanmarino-03.jpg",
-              "ruta": "Trips/SanMarino/sanmarino-03.jpg",
-              "tipo": "imagen",
-              "bytes": 47549
-            },
-            {
-              "nombre": "sanmarino-04.jpg",
-              "ruta": "Trips/SanMarino/sanmarino-04.jpg",
-              "tipo": "imagen",
-              "bytes": 44835
-            }
-          ],
-          "subido": "2026-10-08T13:26:30.415Z"
-        },
         {
           "carpeta": "Barcelona",
           "ruta": "Trips/Barcelona",
@@ -199,6 +512,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Trips/Barcelona/barcelona-01.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {
             "barcelona-01.jpg": {
               "_": "Descripción de la foto 1 (editala en Fotos.txt).",
@@ -243,7 +565,8 @@
               "bytes": 45645
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         },
         {
           "carpeta": "Berna",
@@ -258,6 +581,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Trips/Berna/berna-01.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {
             "berna-01.jpg": {
               "_": "Descripción de la foto 1 (editala en Fotos.txt).",
@@ -302,7 +634,8 @@
               "bytes": 46504
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         },
         {
           "carpeta": "Forli",
@@ -317,6 +650,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Trips/Forli/forli-01.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {
             "forli-01.jpg": {
               "_": "Descripción de la foto 1 (editala en Fotos.txt).",
@@ -361,7 +703,77 @@
               "bytes": 42611
             }
           ],
-          "subido": "2026-10-08T13:26:30.414Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
+        },
+        {
+          "carpeta": "SanMarino",
+          "ruta": "Trips/SanMarino",
+          "titulo": {
+            "_": "San Marino"
+          },
+          "texto": {
+            "_": "Una de las repúblicas más antiguas del mundo, sobre el monte Titano. (Texto de muestra.)",
+            "en": "One of the oldest republics in the world, on Mount Titano. (Sample text.)"
+          },
+          "fecha": "",
+          "enlace": "",
+          "portada": "Trips/SanMarino/sanmarino-01.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
+          "fotos": {
+            "sanmarino-01.jpg": {
+              "_": "Descripción de la foto 1 (editala en Fotos.txt).",
+              "en": "Description of photo 1."
+            },
+            "sanmarino-02.jpg": {
+              "_": "Descripción de la foto 2 (editala en Fotos.txt).",
+              "en": "Description of photo 2."
+            },
+            "sanmarino-03.jpg": {
+              "_": "Descripción de la foto 3 (editala en Fotos.txt).",
+              "en": "Description of photo 3."
+            },
+            "sanmarino-04.jpg": {
+              "_": "Descripción de la foto 4 (editala en Fotos.txt).",
+              "en": "Description of photo 4."
+            }
+          },
+          "archivos": [
+            {
+              "nombre": "sanmarino-01.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-01.jpg",
+              "tipo": "imagen",
+              "bytes": 43567
+            },
+            {
+              "nombre": "sanmarino-02.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-02.jpg",
+              "tipo": "imagen",
+              "bytes": 44285
+            },
+            {
+              "nombre": "sanmarino-03.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-03.jpg",
+              "tipo": "imagen",
+              "bytes": 47549
+            },
+            {
+              "nombre": "sanmarino-04.jpg",
+              "ruta": "Trips/SanMarino/sanmarino-04.jpg",
+              "tipo": "imagen",
+              "bytes": 44835
+            }
+          ],
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         }
       ]
     },
@@ -380,6 +792,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Works/BilancioSociale/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
@@ -401,7 +822,8 @@
               "bytes": 83459
             }
           ],
-          "subido": "2026-10-08T13:26:30.415Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         },
         {
           "carpeta": "Calendarios",
@@ -416,6 +838,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Works/Calendarios/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
@@ -431,7 +862,8 @@
               "bytes": 78117
             }
           ],
-          "subido": "2026-10-08T13:26:30.415Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         },
         {
           "carpeta": "CD",
@@ -446,6 +878,15 @@
           "fecha": "",
           "enlace": "",
           "portada": "Works/CD/portada.jpg",
+          "demo": {},
+          "dispositivos": [],
+          "color": "",
+          "lista": "",
+          "directo": false,
+          "portadaTexto": "",
+          "videos": [],
+          "reproductor": "",
+          "emblema": "",
           "fotos": {},
           "archivos": [
             {
@@ -461,7 +902,8 @@
               "bytes": 70841
             }
           ],
-          "subido": "2026-10-08T13:26:30.415Z"
+          "partes": [],
+          "subido": "2026-10-08T12:54:01-03:00"
         }
       ]
     }

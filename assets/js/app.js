@@ -221,6 +221,11 @@ function fechaCorta(f = '') {
   if (!m) return String(f);
   return new Date(Number(m[1]), Number(m[2]) - 1, 15).toLocaleDateString(locale(), { month: 'short', year: 'numeric' }).replace('.', '');
 }
+// Emblema repetido sobre cada franja de color de la portada.
+function emblemas(src, cantidad) {
+  return `<span class="emblemas" style="--n:${cantidad}" aria-hidden="true">${Array.from({ length: cantidad }, () => `<img src="${esc(src)}" alt="" loading="lazy" onerror="this.parentNode.remove()">`).join('')}</span>`;
+}
+
 // Miniaturas de videos de YouTube sobre la portada (se cargan en el navegador de quien visita).
 function mosaicoVideos(ids) {
   return `<span class="mosaico" aria-hidden="true">${ids.slice(0, 6).map((id) => `<img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`).join('')}</span>`;
@@ -349,7 +354,7 @@ function vistaInicio() {
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
           <a class="proyecto revela" ${p.directo && p.enlace ? `href="${esc(p.enlace)}" target="_blank" rel="noopener"` : `href="${enlace(p.ruta)}"`}>
-            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos) : ''}</div>
+            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos) : ''}${p.emblema && p.partes && p.partes.length ? emblemas(p.emblema, p.partes.length) : ''}</div>
             <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(p.directo && p.enlace ? etiquetaEnlace(p.enlace) : t('ver_proyecto'))}${p.directo ? ' ↗' : ''}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
@@ -383,7 +388,7 @@ function vistaInicio() {
       <article class="panel liso-naranja revela">
         <h2 data-titulo-desliza class="titulo-seccion"><span>${esc(t('exp_l1'))}</span><span>${esc(t('exp_l2'))}</span></h2>
         <p class="bajada">${esc(t('exp_bajada'))}</p>
-        <ol class="hitos">${exp.slice(0, 4).map(hitoBreve).join('')}</ol>
+        <ol class="hitos">${exp.map(hitoBreve).join('')}</ol>
         ${botonFlecha('#/cv', t('ver_cv'))}
       </article>
       <article class="panel rayas revela" id="estudios">
@@ -474,6 +479,7 @@ function tarjetaParte(padre, p, i) {
   const { estilo } = colorDe(p.color);
   return `
     <a class="clase revela" href="${enlace(p.ruta)}" style="${estilo}">
+      ${padre.emblema ? `<img class="clase__emblema" src="${esc(padre.emblema)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
       <span class="clase__num">${String(i + 1).padStart(2, '0')}</span>
       <span class="clase__nombre">${esc(tituloDe(p))}</span>
       <span class="clase__ir">${esc(t('ver_clase'))} ${icono('flecha')}</span>
@@ -508,6 +514,7 @@ function vistaParte(seccion, padre, p) {
     <div class="parte__banda grano">
       <div class="envoltura">
         <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a><span aria-hidden="true">/</span><a href="${enlace(padre.ruta)}">${esc(tituloDe(padre))}</a></nav>
+        ${padre.emblema ? `<img class="parte__emblema" src="${esc(padre.emblema)}" alt="" onerror="this.remove()">` : ''}
         <span class="parte__num">${String(i + 1).padStart(2, '0')} / ${String(padre.partes.length).padStart(2, '0')}</span>
         <h1 class="parte__titulo">${esc(tituloDe(p))}</h1>
         <div class="parte__texto">${textoRico(L(p.texto))}</div>

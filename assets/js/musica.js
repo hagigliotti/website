@@ -273,7 +273,7 @@ export function vistaMusica(item) {
         </div>
         <div data-m-vista="lista">
           <div class="musica__buscar"><input type="search" placeholder="${esc(tx('buscar'))}" aria-label="${esc(tx('buscar'))}" enterkeyhint="search" data-m-buscar></div>
-          <ol class="pistas" data-m-pistas><li class="pistas__vacio">${esc(tx('cargando'))}</li></ol>
+          <ol class="temas" data-m-pistas><li class="temas__vacio">${esc(tx('cargando'))}</li></ol>
         </div>
         <div class="letra" data-m-vista="letra" hidden></div>
       </div>
@@ -283,11 +283,11 @@ export function vistaMusica(item) {
 function filaHTML(p, i) {
   return `
     <li>
-      <button class="pista" type="button" data-pista="${i}">
-        <span class="pista__num"><span>${i + 1}</span><i class="eq" aria-hidden="true"><b></b><b></b><b></b></i></span>
+      <button class="tema" type="button" data-pista="${i}">
+        <span class="tema__num"><span>${i + 1}</span><i class="eq" aria-hidden="true"><b></b><b></b><b></b></i></span>
         ${tapaHTML(p, 'tapa--chica')}
-        <span class="pista__texto"><b>${esc(p.titulo)}</b><small>${esc(p.artista)}${p.album ? ` · ${esc(p.album)}` : ''}</small></span>
-        <span class="pista__dur">${mmss(p.duracion)}</span>
+        <span class="tema__texto"><b>${esc(p.titulo)}</b><small>${esc(p.artista)}${p.album ? ` · ${esc(p.album)}` : ''}</small></span>
+        <span class="tema__dur">${mmss(p.duracion)}</span>
       </button>
     </li>`;
 }
@@ -298,7 +298,7 @@ export async function activarMusica(item) {
   if (!raiz) return;
   const q = (s) => raiz.querySelector(s);
   try { await cargarMusica(item); } catch (e) {
-    q('[data-m-pistas]').innerHTML = `<li class="pistas__vacio">${esc(tx('error'))}</li>`;
+    q('[data-m-pistas]').innerHTML = `<li class="temas__vacio">${esc(tx('error'))}</li>`;
     return;
   }
   if (!raiz.isConnected) return;
@@ -355,7 +355,7 @@ async function pintarLetra() {
 function pintarLista() {
   const ol = raiz && raiz.querySelector('[data-m-pistas]');
   if (!ol) return;
-  ol.innerHTML = est.pistas.map(filaHTML).join('') + `<li class="pistas__vacio" data-m-sin hidden>${esc(tx('sin_resultados'))}</li>`;
+  ol.innerHTML = est.pistas.map(filaHTML).join('') + `<li class="temas__vacio" data-m-sin hidden>${esc(tx('sin_resultados'))}</li>`;
   filtrar();
 }
 
@@ -413,9 +413,9 @@ function pintar() {
   raiz.classList.toggle('musica--sonando', sonando);
   raiz.querySelectorAll('[data-pista]').forEach((b) => {
     const es = p && est.pistas[Number(b.dataset.pista)] === p;
-    b.classList.toggle('pista--actual', !!es);
+    b.classList.toggle('tema--actual', !!es);
     b.setAttribute('aria-current', es ? 'true' : 'false');
-    const d = b.querySelector('.pista__dur');
+    const d = b.querySelector('.tema__dur');
     const pp = est.pistas[Number(b.dataset.pista)];
     if (pp.duracion && d.textContent !== mmss(pp.duracion)) d.textContent = mmss(pp.duracion);
   });

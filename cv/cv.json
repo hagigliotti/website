@@ -206,8 +206,22 @@
         "it": "Laurea in sistemi informativi"
       },
       "lugar": "Universidad Adventista del Plata",
-      "desde": "2001",
+      "desde": "2003",
       "hasta": "2009",
+      "url": "https://www.linkedin.com/school/449599/"
+    },
+    {
+      "puesto": {
+        "es": "Analista en Sistemas",
+        "en": "Systems Analyst",
+        "fr": "Analyste en systèmes",
+        "de": "Systemanalytiker",
+        "pt": "Analista de Sistemas",
+        "it": "Analista di sistemi"
+      },
+      "lugar": "Universidad Adventista del Plata",
+      "desde": "2001",
+      "hasta": "2008",
       "url": "https://www.linkedin.com/school/449599/"
     }
   ],
