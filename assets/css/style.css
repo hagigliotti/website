@@ -1348,3 +1348,9 @@ body.con-mini .pie { padding-bottom: 6rem; }
 .parte__emblema { display: block; width: clamp(4rem, 9vw, 6.5rem); aspect-ratio: 1; object-fit: contain; margin-top: 1.25rem; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3)); }
 .proyecto__sobre { font-size: 15.5cqi; }
 .panel .hitos .hito { padding: 0.85rem 0; }
+
+/* Firma "hag": palabra corta, se ve más grande */
+.nav__marca { font-size: 2.35rem; padding: 0.1rem 1.15rem 0; }
+.hero__firma { font-size: clamp(4.5rem, 13vw, 12rem); bottom: 36%; }
+.mensaje__firma { font-size: clamp(2.8rem, 4.2vw, 3.6rem); }
+@media (max-width: 480px) { .nav__marca { font-size: 1.95rem; padding: 0.1rem 0.85rem 0; } }
