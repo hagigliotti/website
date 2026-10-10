@@ -1,5 +1,6 @@
 import { Lector, miniaturaPDF } from './reader.js';
-import { IDIOMAS, idioma, cambiarIdioma, t, n, L } from './i18n.js';
+import { IDIOMAS, idioma, cambiarIdioma, t, n, L, locale } from './i18n.js';
+import { vistaMusica, activarMusica, salirDeMusica } from './musica.js';
 import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace } from './vitrina.js';
 
 /* ==========================================================================
@@ -214,19 +215,34 @@ function fraseConPalabras(texto) {
   return html;
 }
 
-function hito(h) {
-  const hasta = /^actual/i.test(h.hasta || '') ? t('actualidad') : h.hasta;
-  const fechas = h.desde && hasta && h.desde !== hasta ? `${h.desde} – ${hasta}` : (h.desde || hasta || '');
+// "2024-11" → "nov 2024" en el idioma de quien visita; "2018" queda igual.
+function fechaCorta(f = '') {
+  const m = String(f).match(/^(\d{4})-(\d{2})$/);
+  if (!m) return String(f);
+  return new Date(Number(m[1]), Number(m[2]) - 1, 15).toLocaleDateString(locale(), { month: 'short', year: 'numeric' }).replace('.', '');
+}
+// Miniaturas de videos de YouTube sobre la portada (se cargan en el navegador de quien visita).
+function mosaicoVideos(ids) {
+  return `<span class="mosaico" aria-hidden="true">${ids.slice(0, 6).map((id) => `<img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`).join('')}</span>`;
+}
+
+function hito(h, { completo = true } = {}) {
+  const hasta = /^actual/i.test(h.hasta || '') ? t('actualidad') : fechaCorta(h.hasta);
+  const desde = fechaCorta(h.desde);
+  const fechas = desde && hasta && desde !== hasta ? `${desde} – ${hasta}` : (desde || hasta || '');
+  const lugar = L(h.lugar);
   return `
     <li class="hito revela">
       <div class="hito__fechas">${esc(fechas)}</div>
       <div>
         <h3 class="hito__puesto">${esc(L(h.puesto))}</h3>
-        ${h.lugar ? `<p class="hito__lugar">${esc(L(h.lugar))}</p>` : ''}
-        ${h.descripcion ? `<p class="hito__desc">${esc(L(h.descripcion))}</p>` : ''}
+        ${lugar ? `<p class="hito__lugar">${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(lugar)}</a>` : esc(lugar)}</p>` : ''}
+        ${completo && h.descripcion ? `<div class="hito__desc">${textoRico(L(h.descripcion))}</div>` : ''}
+        ${completo && h.enlaces ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
       </div>
     </li>`;
 }
+const hitoBreve = (h) => hito(h, { completo: false });
 
 function ficha(it, alta = false) {
   const imgs = imagenesDe(it);
@@ -319,7 +335,7 @@ function vistaInicio() {
         <span class="etiqueta">${esc(t('mensaje_de'))}</span>
         <span class="mensaje__firma">${esc(config.firma || config.nombre)}</span>
       </div>
-      <blockquote class="frase" data-frase>${fraseConPalabras(L(config.frase))}</blockquote>
+      <blockquote class="frase" data-frase>${fraseConPalabras(L(config.frase))}<span class="frase__cierre" aria-hidden="true">”</span></blockquote>
     </div>
   </section>
 
@@ -333,7 +349,7 @@ function vistaInicio() {
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
           <a class="proyecto revela" ${p.directo && p.enlace ? `href="${esc(p.enlace)}" target="_blank" rel="noopener"` : `href="${enlace(p.ruta)}"`}>
-            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}</div>
+            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos) : ''}</div>
             <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(p.directo && p.enlace ? etiquetaEnlace(p.enlace) : t('ver_proyecto'))}${p.directo ? ' ↗' : ''}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
@@ -367,13 +383,14 @@ function vistaInicio() {
       <article class="panel liso-naranja revela">
         <h2 data-titulo-desliza class="titulo-seccion"><span>${esc(t('exp_l1'))}</span><span>${esc(t('exp_l2'))}</span></h2>
         <p class="bajada">${esc(t('exp_bajada'))}</p>
-        <ol class="hitos">${exp.slice(0, 4).map(hito).join('')}</ol>
+        <ol class="hitos">${exp.slice(0, 4).map(hitoBreve).join('')}</ol>
         ${botonFlecha('#/cv', t('ver_cv'))}
       </article>
       <article class="panel rayas revela" id="estudios">
         <h2 data-titulo-desliza class="titulo-seccion titulo-seccion--naranja"><span>${esc(t('est_l1'))}</span><span>${esc(t('est_l2'))}</span></h2>
         <p class="bajada">${esc(t('est_bajada'))}</p>
-        <ol class="hitos">${est.slice(0, 4).map(hito).join('')}</ol>
+        <ol class="hitos">${est.slice(0, 4).map(hitoBreve).join('')}</ol>
+        ${cv && cv.certificaciones && cv.certificaciones.length ? `<h3 class="panel__sub">${esc(t('certificaciones'))}</h3><ul class="certs">${cv.certificaciones.map((c) => `<li><b>${esc(L(c.puesto))}</b><span>${esc(L(c.lugar))} · ${esc(fechaCorta(c.desde))}</span></li>`).join('')}</ul>` : ''}
         ${botonFlecha('#/cv', t('ver_cv'))}
       </article>
     </div>
@@ -508,7 +525,22 @@ function vistaParte(seccion, padre, p) {
   ${pie()}`;
 }
 
+function vistaReproductor(seccion, it) {
+  const conf = SECCIONES[seccion];
+  return `
+  <div class="pagina envoltura">
+    <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a></nav>
+    <header class="encabezado encabezado--musica">
+      <h1 class="titular">${esc(tituloDe(it))}</h1>
+      <div class="encabezado__texto">${textoRico(L(it.texto))}</div>
+    </header>
+    ${vistaMusica(it)}
+  </div>
+  ${pie()}`;
+}
+
 function vistaDetalle(seccion, it) {
+  if (it.reproductor) return vistaReproductor(seccion, it);
   if (it.dispositivos && it.dispositivos.length) return vistaVitrina(seccion, it);
   if (it.partes && it.partes.length) return vistaGrupo(seccion, it);
   const lista = items(seccion);
@@ -569,8 +601,9 @@ function vistaCV() {
     </header>
     <div class="cv">
       <div>
-        ${cv && cv.experiencia && cv.experiencia.length ? `<h2 class="subtitulo">${esc(t('experiencia'))}</h2><ol class="linea-tiempo">${cv.experiencia.map(hito).join('')}</ol>` : ''}
-        ${cv && cv.estudios && cv.estudios.length ? `<h2 class="subtitulo">${esc(t('estudios'))}</h2><ol class="linea-tiempo">${cv.estudios.map(hito).join('')}</ol>` : ''}
+        ${cv && cv.experiencia && cv.experiencia.length ? `<h2 class="subtitulo">${esc(t('experiencia'))}</h2><ol class="linea-tiempo">${cv.experiencia.map((h) => hito(h)).join('')}</ol>` : ''}
+        ${cv && cv.estudios && cv.estudios.length ? `<h2 class="subtitulo">${esc(t('estudios'))}</h2><ol class="linea-tiempo">${cv.estudios.map((h) => hito(h)).join('')}</ol>` : ''}
+        ${cv && cv.certificaciones && cv.certificaciones.length ? `<h2 class="subtitulo">${esc(t('certificaciones'))}</h2><ol class="linea-tiempo">${cv.certificaciones.map((h) => hito(h)).join('')}</ol>` : ''}
       </div>
       <aside class="cv__lateral">
         ${lista(t('habilidades'), cv && cv.habilidades)}
@@ -793,6 +826,7 @@ function activarVista(ctx) {
   }
 
   activarDispositivos();
+  if (ctx.item && ctx.item.reproductor) activarMusica(ctx.item); else salirDeMusica();
   revelar();
   efectos.medirLigero();
   $$('.album__foto img').forEach((img) => {

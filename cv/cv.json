@@ -1,38 +1,341 @@
 {
-  "_nota": "Completá con tus datos de LinkedIn. Cada texto puede ir en un solo idioma (\"texto\") o traducido: {\"es\": \"…\", \"en\": \"…\", \"fr\": \"…\", \"de\": \"…\", \"pt\": \"…\", \"it\": \"…\"}. En \"hasta\" escribí \"actualidad\" si seguís ahí.",
+  "_nota": "Datos tomados de LinkedIn. Cada texto puede ir en un solo idioma o traducido {\"es\": …, \"en\": …, \"fr\": …, \"de\": …, \"pt\": …, \"it\": …}. Fechas como \"2024-11\"; \"actualidad\" si seguís ahí.",
   "experiencia": [
     {
-      "puesto": { "es": "Puesto actual", "en": "Current role", "fr": "Poste actuel", "de": "Aktuelle Position", "pt": "Cargo atual", "it": "Ruolo attuale" },
-      "lugar": "Empresa · Ciudad",
-      "desde": "2023",
+      "puesto": {
+        "es": "Desarrollador",
+        "en": "Developer",
+        "fr": "Développeur",
+        "de": "Entwickler",
+        "pt": "Desenvolvedor",
+        "it": "Sviluppatore"
+      },
+      "lugar": "Tumidei srl · Predappio, Emilia-Romagna, Italia",
+      "desde": "2024-11",
       "hasta": "actualidad",
-      "descripcion": { "es": "Contá qué hacés y qué lograste. Copiá el texto de tu experiencia en LinkedIn.", "en": "Describe what you do and what you achieved." }
+      "descripcion": {
+        "es": "Programación web (HTML, Python, JavaScript, JSON) y programación 3Cad.",
+        "en": "Web programming (HTML, Python, JavaScript, JSON) and 3Cad programming.",
+        "fr": "Programmation web (HTML, Python, JavaScript, JSON) et programmation 3Cad.",
+        "de": "Webprogrammierung (HTML, Python, JavaScript, JSON) und 3Cad-Programmierung.",
+        "pt": "Programação web (HTML, Python, JavaScript, JSON) e programação 3Cad.",
+        "it": "Programmazione web (HTML, Python, JavaScript, JSON) e programmazione 3Cad."
+      },
+      "aptitudes": [
+        "Programación",
+        "CAD"
+      ]
     },
     {
-      "puesto": { "es": "Puesto anterior", "en": "Previous role", "fr": "Poste précédent", "de": "Frühere Position", "pt": "Cargo anterior", "it": "Ruolo precedente" },
-      "lugar": "Empresa · Ciudad",
-      "desde": "2019",
-      "hasta": "2023",
-      "descripcion": { "es": "Descripción del puesto.", "en": "Role description." }
+      "puesto": {
+        "es": "Responsable de Sistemas (IT System Manager)",
+        "en": "IT System Manager",
+        "fr": "Responsable des systèmes informatiques",
+        "de": "IT-Systemmanager",
+        "pt": "Gerente de Sistemas de TI",
+        "it": "Responsabile dei sistemi informatici"
+      },
+      "lugar": "Casa di Riposo «Casa Mia» · Forlì-Cesena, Italia",
+      "desde": "2022-04",
+      "hasta": "2025-12",
+      "descripcion": {
+        "es": "Gestión de la red local y de los equipos informáticos. Filmé y edité el video institucional por los 40 años de la casa.",
+        "en": "Management of the local network and IT equipment. I filmed and edited the institutional video for the home’s 40th anniversary.",
+        "fr": "Gestion du réseau local et du parc informatique. J’ai filmé et monté la vidéo institutionnelle des 40 ans de la maison.",
+        "de": "Verwaltung des lokalen Netzwerks und der IT-Geräte. Ich habe das Imagevideo zum 40-jährigen Bestehen des Hauses gedreht und geschnitten.",
+        "pt": "Gestão da rede local e dos equipamentos de informática. Filmei e editei o vídeo institucional dos 40 anos da casa.",
+        "it": "Gestione della rete locale e delle apparecchiature informatiche. Ho girato e montato il video istituzionale per i 40 anni della casa."
+      },
+      "aptitudes": [
+        "Redes LAN",
+        "Gestión de redes",
+        "Edición de video"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Profesional independiente",
+        "en": "Freelancer",
+        "fr": "Indépendant",
+        "de": "Freiberufler",
+        "pt": "Profissional autônomo",
+        "it": "Libero professionista"
+      },
+      "lugar": "Buenos Aires, Argentina",
+      "desde": "2010-12",
+      "hasta": "2023-11",
+      "descripcion": {
+        "es": "- Edición de video y fotografía aérea, terrestre y acuática.\n- Diseño web, libros y anuarios escolares.\n- Soporte técnico: instalación y mantenimiento de equipos, redes de datos y backups.\n- Asesoría y consultoría en IT.\n- Capacitaciones a particulares y docentes.\n- Venta de insumos informáticos por internet.",
+        "en": "- Video editing and aerial, ground and underwater photography.\n- Web, book and school yearbook design.\n- Tech support: installation and maintenance of computers, data networks and backups.\n- IT advisory and consulting.\n- Training for individuals and teachers.\n- Online sales of computer supplies.",
+        "fr": "- Montage vidéo et photographie aérienne, terrestre et aquatique.\n- Conception de sites web, de livres et d’annuaires scolaires.\n- Support technique : installation et maintenance d’ordinateurs, de réseaux et de sauvegardes.\n- Conseil en informatique.\n- Formations pour particuliers et enseignants.\n- Vente en ligne de fournitures informatiques.",
+        "de": "- Videoschnitt sowie Luft-, Land- und Unterwasserfotografie.\n- Gestaltung von Websites, Büchern und Schuljahrbüchern.\n- Technischer Support: Installation und Wartung von Computern, Netzwerken und Backups.\n- IT-Beratung.\n- Schulungen für Privatpersonen und Lehrkräfte.\n- Online-Verkauf von Computerzubehör.",
+        "pt": "- Edição de vídeo e fotografia aérea, terrestre e aquática.\n- Design de sites, livros e anuários escolares.\n- Suporte técnico: instalação e manutenção de equipamentos, redes e backups.\n- Assessoria e consultoria em TI.\n- Capacitações para particulares e professores.\n- Venda online de suprimentos de informática.",
+        "it": "- Montaggio video e fotografia aerea, terrestre e subacquea.\n- Progettazione di siti web, libri e annuari scolastici.\n- Assistenza tecnica: installazione e manutenzione di computer, reti e backup.\n- Consulenza informatica.\n- Corsi di formazione per privati e insegnanti.\n- Vendita online di materiale informatico."
+      },
+      "aptitudes": [
+        "Edición de video",
+        "Diseño web",
+        "Redes LAN"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Profesor de Pensamiento Computacional",
+        "en": "Computational Thinking Teacher",
+        "fr": "Professeur de pensée informatique",
+        "de": "Lehrer für Computational Thinking",
+        "pt": "Professor de Pensamento Computacional",
+        "it": "Insegnante di pensiero computazionale"
+      },
+      "lugar": "British Council · Uruguay, en remoto",
+      "desde": "2020-08",
+      "hasta": "2022-12",
+      "descripcion": {
+        "es": "Clases a distancia del Plan Ceibal para 4.º, 5.º y 6.º año de primaria en escuelas públicas de Uruguay.",
+        "en": "Remote classes for Plan Ceibal, for 4th to 6th grade in public primary schools in Uruguay.",
+        "fr": "Cours à distance du Plan Ceibal pour les classes de CM1 à 6e dans les écoles publiques de l’Uruguay.",
+        "de": "Fernunterricht im Rahmen des Plan Ceibal für die 4. bis 6. Klasse an öffentlichen Grundschulen in Uruguay.",
+        "pt": "Aulas a distância do Plano Ceibal para o 4.º, 5.º e 6.º ano do ensino fundamental em escolas públicas do Uruguai.",
+        "it": "Lezioni a distanza del Plan Ceibal per la 4ª, 5ª e 6ª classe nelle scuole primarie pubbliche dell’Uruguay."
+      },
+      "aptitudes": [
+        "Enseñanza",
+        "Gestión de grupo"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Profesor de informática y robótica",
+        "en": "Computer Science and Robotics Teacher",
+        "fr": "Professeur d’informatique et de robotique",
+        "de": "Lehrer für Informatik und Robotik",
+        "pt": "Professor de informática e robótica",
+        "it": "Insegnante di informatica e robotica"
+      },
+      "lugar": "Scuole CCI · Olivos, Buenos Aires",
+      "desde": "2021-04",
+      "hasta": "2022-04",
+      "descripcion": {
+        "es": "Informática y robótica para nivel inicial (sala de 5) y primaria (1.º a 3.º año).",
+        "en": "Computer science and robotics for kindergarten (age 5) and primary school (1st to 3rd grade).",
+        "fr": "Informatique et robotique en maternelle (5 ans) et en primaire (CP au CE2).",
+        "de": "Informatik und Robotik im Kindergarten (5 Jahre) und in der Grundschule (1. bis 3. Klasse).",
+        "pt": "Informática e robótica para a educação infantil (5 anos) e o ensino fundamental (1.º ao 3.º ano).",
+        "it": "Informatica e robotica alla scuola dell’infanzia (5 anni) e alla primaria (dalla 1ª alla 3ª classe)."
+      },
+      "enlaces": [
+        {
+          "texto": "Mi amigo el robot",
+          "url": "https://www.youtube.com/watch?v=cXM6jcfzF-M"
+        }
+      ],
+      "aptitudes": [
+        "Robótica",
+        "Enseñanza"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Preceptor del nivel secundario",
+        "en": "Secondary School Supervisor",
+        "fr": "Surveillant au secondaire",
+        "de": "Aufsichtslehrer in der Sekundarstufe",
+        "pt": "Inspetor do ensino médio",
+        "it": "Coordinatore della scuola secondaria"
+      },
+      "lugar": "Instituto Adventista Florida · Vicente López, Buenos Aires",
+      "desde": "2020-03",
+      "hasta": "2020-12",
+      "descripcion": {
+        "es": "Suplencia como preceptor del nivel secundario.",
+        "en": "Substitute supervisor at secondary level.",
+        "fr": "Remplacement comme surveillant au secondaire.",
+        "de": "Vertretung als Aufsicht in der Sekundarstufe.",
+        "pt": "Substituição como inspetor do ensino médio.",
+        "it": "Supplenza come coordinatore della scuola secondaria."
+      }
+    },
+    {
+      "puesto": {
+        "es": "Jefe del Departamento de Sistemas y Supervisor",
+        "en": "Head of IT and Supervisor",
+        "fr": "Responsable du service informatique et superviseur",
+        "de": "Leiter der IT-Abteilung und Supervisor",
+        "pt": "Chefe do Departamento de Sistemas e Supervisor",
+        "it": "Responsabile dell’ufficio sistemi e supervisore"
+      },
+      "lugar": "Asesco Gloser S.A. · Buenos Aires",
+      "desde": "2009-06",
+      "hasta": "2010-11",
+      "descripcion": {
+        "es": "Responsable del área de sistemas y programación, bases de datos y análisis. Supervisión del call center.",
+        "en": "In charge of IT and programming, databases and analysis. Call center supervision.",
+        "fr": "Responsable de l’informatique et de la programmation, des bases de données et de l’analyse. Supervision du centre d’appels.",
+        "de": "Verantwortlich für IT und Programmierung, Datenbanken und Analyse. Leitung des Callcenters.",
+        "pt": "Responsável pela área de sistemas e programação, bancos de dados e análise. Supervisão do call center.",
+        "it": "Responsabile dei sistemi e della programmazione, dei database e dell’analisi. Supervisione del call center."
+      },
+      "aptitudes": [
+        "Microsoft Access",
+        "Visual Basic"
+      ]
     }
   ],
   "estudios": [
     {
-      "puesto": { "es": "Título o carrera", "en": "Degree", "fr": "Diplôme", "de": "Abschluss", "pt": "Formação", "it": "Titolo di studio" },
-      "lugar": "Universidad · Ciudad",
-      "desde": "2014",
-      "hasta": "2018"
+      "puesto": {
+        "es": "Especialización Superior para el Ejercicio de la Docencia en los Niveles Medio y Superior",
+        "en": "Postgraduate Specialization in Secondary and Higher Education Teaching",
+        "fr": "Spécialisation en enseignement secondaire et supérieur",
+        "de": "Aufbaustudium Lehramt für Sekundar- und Hochschulbildung",
+        "pt": "Especialização em Docência para o Ensino Médio e Superior",
+        "it": "Specializzazione per l’insegnamento nella scuola secondaria e superiore"
+      },
+      "lugar": "Universidad Nacional de Santiago del Estero",
+      "desde": "2018",
+      "hasta": "2019",
+      "url": "https://www.linkedin.com/school/15091522/"
     },
     {
-      "puesto": { "es": "Curso o certificación", "en": "Course or certification", "fr": "Cours ou certification", "de": "Kurs oder Zertifikat", "pt": "Curso ou certificação", "it": "Corso o certificazione" },
-      "lugar": "Institución",
-      "desde": "2021",
-      "hasta": "2021"
+      "puesto": {
+        "es": "Licenciatura en Sistemas de Información",
+        "en": "Bachelor’s Degree in Information Systems",
+        "fr": "Licence en systèmes d’information",
+        "de": "Bachelor in Wirtschaftsinformatik",
+        "pt": "Bacharelado em Sistemas de Informação",
+        "it": "Laurea in sistemi informativi"
+      },
+      "lugar": "Universidad Adventista del Plata",
+      "desde": "2001",
+      "hasta": "2009",
+      "url": "https://www.linkedin.com/school/449599/"
     }
   ],
-  "habilidades": ["Diseño gráfico", "Diseño editorial", "Producción audiovisual"],
+  "certificaciones": [
+    {
+      "puesto": "Formazione specifica sulla salute e sicurezza per lavoratori di aziende a rischio alto",
+      "lugar": "Ecol Studio",
+      "desde": "2023-03",
+      "aptitudes": [
+        "Seguridad en el trabajo"
+      ]
+    },
+    {
+      "puesto": "La privacy aggiornata al GDPR",
+      "lugar": "Robyone S.r.l.",
+      "desde": "2023-01",
+      "aptitudes": [
+        "Protección de datos personales"
+      ]
+    },
+    {
+      "puesto": "Formazione generale sulla salute e sicurezza per lavoratori",
+      "lugar": "Ecol Studio",
+      "desde": "2022-02",
+      "aptitudes": [
+        "Prevención de riesgos laborales"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Robótica Arduino",
+        "en": "Arduino Robotics",
+        "fr": "Robotique Arduino",
+        "de": "Arduino-Robotik",
+        "pt": "Robótica Arduino",
+        "it": "Robotica Arduino"
+      },
+      "lugar": "Grupo Inteligencia Educativa",
+      "desde": "2021-07",
+      "descripcion": {
+        "es": "Curso de 25 horas: electrónica, programación y entorno Arduino, con trabajo integrador.",
+        "en": "25-hour course: electronics, programming and the Arduino environment, with a final project.",
+        "fr": "Cours de 25 heures : électronique, programmation et environnement Arduino, avec un projet final.",
+        "de": "25-stündiger Kurs: Elektronik, Programmierung und Arduino-Umgebung, mit Abschlussprojekt.",
+        "pt": "Curso de 25 horas: eletrônica, programação e ambiente Arduino, com trabalho final.",
+        "it": "Corso di 25 ore: elettronica, programmazione e ambiente Arduino, con progetto finale."
+      },
+      "aptitudes": [
+        "Robótica",
+        "Arduino"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Curso de Árbitro de Fútbol",
+        "en": "Football Referee Course",
+        "fr": "Formation d’arbitre de football",
+        "de": "Ausbildung zum Fußballschiedsrichter",
+        "pt": "Curso de Árbitro de Futebol",
+        "it": "Corso per arbitro di calcio"
+      },
+      "lugar": "Centro Universitario Vicente López",
+      "desde": "2020-12",
+      "descripcion": {
+        "es": "Curso de dos años de duración.",
+        "en": "Two-year course.",
+        "fr": "Formation de deux ans.",
+        "de": "Zweijährige Ausbildung.",
+        "pt": "Curso de dois anos.",
+        "it": "Corso biennale."
+      },
+      "aptitudes": [
+        "Liderazgo",
+        "Gestión de grupo"
+      ]
+    },
+    {
+      "puesto": {
+        "es": "Producción Audiovisual",
+        "en": "Audiovisual Production",
+        "fr": "Production audiovisuelle",
+        "de": "Audiovisuelle Produktion",
+        "pt": "Produção Audiovisual",
+        "it": "Produzione audiovisiva"
+      },
+      "lugar": "Universidad Nacional Autónoma de México (UNAM)",
+      "desde": "2018-05",
+      "aptitudes": [
+        "Producción audiovisual"
+      ]
+    }
+  ],
+  "habilidades": [
+    "Programación web",
+    "Python",
+    "JavaScript",
+    "HTML",
+    "CAD",
+    "Redes LAN",
+    "Soporte técnico",
+    "Edición de video",
+    "Fotografía",
+    "Diseño web",
+    "Diseño editorial",
+    "Robótica",
+    "Arduino",
+    "Enseñanza",
+    "Liderazgo",
+    "Gestión de grupo",
+    "Bases de datos",
+    "Protección de datos (GDPR)"
+  ],
   "idiomas": [
-    { "es": "Español", "en": "Spanish", "fr": "Espagnol", "de": "Spanisch", "pt": "Espanhol", "it": "Spagnolo" },
-    { "es": "Italiano", "en": "Italian", "fr": "Italien", "de": "Italienisch", "pt": "Italiano", "it": "Italiano" }
+    {
+      "es": "Español",
+      "en": "Spanish",
+      "fr": "Espagnol",
+      "de": "Spanisch",
+      "pt": "Espanhol",
+      "it": "Spagnolo"
+    },
+    {
+      "es": "Italiano",
+      "en": "Italian",
+      "fr": "Italien",
+      "de": "Italienisch",
+      "pt": "Italiano",
+      "it": "Italiano"
+    }
   ]
 }

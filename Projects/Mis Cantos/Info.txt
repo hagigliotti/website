@@ -1,0 +1,36 @@
+Título: Mis Cantos
+Reproductor: _cantos.json
+
+Cantos y alabanzas que produje, con voz, arreglos y portada. Escuchalos acá mismo, con la letra de cada canto.
+
+La música sigue sonando mientras recorrés el resto del sitio. Cada vez que subo un canto nuevo al repositorio, aparece solo en la lista.
+
+[en]
+Título: My Songs
+Songs of praise that I produced, with vocals, arrangements and cover art. Listen to them right here, with the lyrics of each song.
+
+The music keeps playing while you browse the rest of the site. Every time I upload a new song to the repository, it shows up in the list by itself.
+
+[fr]
+Título: Mes chants
+Des chants de louange que j’ai produits, avec la voix, les arrangements et la pochette. Écoutez-les ici même, avec les paroles de chaque chant.
+
+La musique continue pendant que vous parcourez le reste du site. Chaque fois que j’ajoute un nouveau chant au dépôt, il apparaît tout seul dans la liste.
+
+[de]
+Título: Meine Lieder
+Lobpreislieder, die ich produziert habe, mit Gesang, Arrangements und Cover. Hör sie dir direkt hier an, mit dem Text jedes Liedes.
+
+Die Musik läuft weiter, während du den Rest der Seite ansiehst. Jedes neue Lied, das ich ins Repository hochlade, erscheint automatisch in der Liste.
+
+[pt]
+Título: Meus Cânticos
+Cânticos e louvores que produzi, com voz, arranjos e capa. Ouça aqui mesmo, com a letra de cada cântico.
+
+A música continua tocando enquanto você navega pelo resto do site. Cada vez que envio um cântico novo ao repositório, ele aparece sozinho na lista.
+
+[it]
+Título: I miei canti
+Canti di lode che ho prodotto, con voce, arrangiamenti e copertina. Ascoltali qui, con il testo di ogni canto.
+
+La musica continua a suonare mentre esplori il resto del sito. Ogni volta che carico un nuovo canto nel repository, compare da solo nella lista.

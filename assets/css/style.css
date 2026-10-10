@@ -15,7 +15,7 @@
 
   --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
   --f-texto: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
-  --f-firma: "Mrs Saint Delafield", "Brush Script MT", cursive;
+  --f-firma: "Kaushan Script", "Brush Script MT", cursive;
   --f-libro: "Newsreader", Georgia, serif;
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -1172,3 +1172,166 @@ svg { width: 1em; height: 1em; }
 
 /* iMac: círculo negro en el mentón */
 .disp--imac .disp__menton span { width: 1.5rem; height: 1.5rem; background: radial-gradient(circle at 40% 35%, #2a2b2e, #050506 70%); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.5); }
+
+/* Firma con Kaushan Script: trazo de marcador, más legible */
+.nav__marca { font-size: 1.45rem; padding: 0 1.1rem; letter-spacing: 0.01em; }
+.hero__firma { font-size: clamp(2.4rem, 6.5vw, 6rem); line-height: 1.15; transform: rotate(-7deg); bottom: 40%; }
+.mensaje__firma { font-size: clamp(1.7rem, 2.6vw, 2.2rem); color: var(--naranja); }
+.pag-portada span { font-size: calc(var(--tam-portada, 52px) * 0.5); }
+.cargador__a { font-size: clamp(6.5rem, 20vw, 12rem); margin: 0 0.02em; transform: translateY(-0.02em); }
+.pie__monograma .cargador__a { font-size: clamp(8rem, 27vw, 24rem); }
+@media (max-width: 480px) { .nav__marca { font-size: 1.2rem; padding: 0 0.8rem; } }
+
+/* Comillas de cierre de la frase */
+.frase__cierre { font-family: var(--f-display); font-style: normal; font-weight: 900; color: var(--naranja); font-size: 2.4em; line-height: 0; vertical-align: -0.42em; margin-left: 0.06em; }
+
+/* Certificaciones y enlaces del CV */
+.panel__sub { margin: 1.75rem 0 0.5rem; font-family: var(--f-display); font-weight: 800; font-size: 1.5rem; color: var(--naranja); }
+.certs { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.certs li { display: grid; gap: 0.1rem; padding-top: 0.6rem; border-top: 1px solid rgba(127, 127, 127, 0.3); }
+.certs b { font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
+.certs span { font-size: 0.8125rem; opacity: 0.7; }
+.hito__desc { margin: 0.6rem 0 0; opacity: 0.85; max-width: 62ch; }
+.hito__desc p { margin: 0 0 0.5rem; }
+.hito__desc .lista-puntos { margin: 0; gap: 0.3rem; }
+.hito__lugar a { text-decoration: underline; text-decoration-color: rgba(255, 122, 0, 0.6); text-underline-offset: 3px; }
+.hito__enlaces { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin: 0.6rem 0 0; }
+.hito__enlaces a { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--naranja); font-weight: 600; font-size: 0.9375rem; }
+
+/* ==========================================================================
+   Reproductor de música (Mis Cantos)
+   ========================================================================== */
+.encabezado--musica { grid-template-columns: 1fr minmax(16rem, 34rem); margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.musica {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: grid; grid-template-columns: minmax(18rem, 25rem) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding: clamp(1.25rem, 3vw, 2.5rem); border-radius: 2rem;
+  background: #141416; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  margin-bottom: var(--seccion);
+}
+.musica__fondo {
+  position: absolute; inset: -10%; z-index: -1;
+  background-size: cover; background-position: center; filter: blur(70px) saturate(1.4) brightness(0.55);
+  opacity: 0.85; transform: scale(1.1); transition: background-image 600ms ease;
+}
+.musica__fondo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 20, 22, 0.2), rgba(20, 20, 22, 0.85)); }
+.musica__fondo--gen { background: radial-gradient(circle at 30% 30%, hsl(var(--h, 25) 70% 45%), transparent 60%), radial-gradient(circle at 80% 70%, hsl(calc(var(--h, 25) + 40) 70% 35%), transparent 60%); }
+.musica__ahora { position: sticky; top: 6rem; align-self: start; display: grid; gap: 1.1rem; }
+.musica__tapa .tapa { width: 100%; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.85); transition: transform 500ms var(--ease-out); }
+.musica:not(.musica--sonando) .musica__tapa .tapa { transform: scale(0.94); }
+.musica__info { display: grid; gap: 0.15rem; min-width: 0; }
+.musica__etiqueta { font-size: 0.8125rem; font-weight: 600; color: var(--naranja); }
+.musica__titulo { font-family: var(--f-display); font-weight: 900; font-size: clamp(1.9rem, 3vw, 2.6rem); line-height: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.musica__artista { color: rgba(242, 240, 236, 0.7); font-size: 0.9375rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.musica__tiempo { display: grid; gap: 0.35rem; }
+.musica__rango, .musica__volumen input {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 1.25rem; background: transparent; cursor: pointer; --avance: 0%;
+}
+.musica__rango::-webkit-slider-runnable-track, .musica__volumen input::-webkit-slider-runnable-track { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--hueso) var(--avance), rgba(255, 255, 255, 0.2) var(--avance)); }
+.musica__rango::-moz-range-track, .musica__volumen input::-moz-range-track { height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.2); }
+.musica__rango::-moz-range-progress, .musica__volumen input::-moz-range-progress { height: 4px; border-radius: 4px; background: var(--hueso); }
+.musica__rango::-webkit-slider-thumb, .musica__volumen input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%; background: var(--hueso); opacity: 0; transition: opacity 150ms ease; }
+.musica__rango::-moz-range-thumb, .musica__volumen input::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: var(--hueso); }
+.musica__rango:hover::-webkit-slider-thumb, .musica__rango:focus-visible::-webkit-slider-thumb, .musica__volumen input:hover::-webkit-slider-thumb { opacity: 1; }
+.musica__rango:hover::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--naranja) var(--avance), rgba(255, 255, 255, 0.2) var(--avance)); }
+.musica__marcas { display: flex; justify-content: space-between; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.6); }
+.musica__controles { display: flex; justify-content: space-between; align-items: center; }
+.mboton { position: relative; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 999px; color: rgba(242, 240, 236, 0.75); transition: color 150ms ease, transform 120ms var(--ease-out), background-color 150ms ease; }
+.mboton svg { width: 1.35rem; height: 1.35rem; }
+.mboton--m svg { width: 1.8rem; height: 1.8rem; }
+.mboton:active { transform: scale(0.92); }
+.mboton[aria-pressed="true"] { color: var(--naranja); }
+.mboton[aria-pressed="true"]::after { content: ""; position: absolute; bottom: 0.2rem; width: 4px; height: 4px; border-radius: 50%; background: var(--naranja); }
+.mboton i { display: none; position: absolute; top: 0.45rem; right: 0.45rem; font-style: normal; font-size: 0.6rem; font-weight: 800; width: 0.85rem; height: 0.85rem; border-radius: 50%; background: var(--naranja); color: var(--negro); line-height: 0.85rem; }
+.mboton--uno i { display: block; }
+.mboton--play { width: 4rem; height: 4rem; background: var(--hueso); color: var(--negro); }
+.mboton--play svg { width: 1.7rem; height: 1.7rem; }
+.musica__volumen { display: flex; align-items: center; gap: 0.5rem; }
+.musica__error { margin: 0; min-height: 1.2em; font-size: 0.875rem; color: #ffb27a; }
+@media (hover: hover) and (pointer: fine) {
+  .mboton:hover { color: var(--hueso); }
+  .mboton--play:hover { transform: scale(1.05); background: #fff; color: var(--negro); }
+}
+@media (pointer: coarse) { .musica__volumen { display: none; } }
+
+.musica__panel { min-width: 0; display: flex; flex-direction: column; }
+.musica__pestanas { display: inline-flex; gap: 0.25rem; margin-bottom: 1rem; }
+.musica__pestanas button { height: 2.4rem; padding: 0 1rem; border-radius: 999px; font-weight: 700; font-size: 0.9375rem; background: rgba(255, 255, 255, 0.08); color: rgba(242, 240, 236, 0.8); transition: background-color 150ms ease; }
+.musica__pestanas button[aria-selected="true"] { background: var(--hueso); color: var(--negro); }
+.musica__buscar input { width: 100%; height: 2.75rem; padding: 0 1rem; border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--hueso); font: inherit; font-size: 16px; margin-bottom: 0.75rem; }
+.musica__buscar input::placeholder { color: rgba(242, 240, 236, 0.5); }
+.pistas { list-style: none; margin: 0; padding: 0; max-height: min(70svh, 44rem); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
+.pistas__vacio { padding: 1.5rem 0.75rem; color: rgba(242, 240, 236, 0.6); }
+.pista { display: grid; grid-template-columns: 2rem 3rem minmax(0, 1fr) auto; align-items: center; gap: 0.85rem; width: 100%; padding: 0.45rem 0.75rem 0.45rem 0.5rem; border-radius: 0.75rem; text-align: left; transition: background-color 120ms ease; }
+.pista__num { display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: 0.875rem; color: rgba(242, 240, 236, 0.55); }
+.pista__num .eq { display: none; }
+.pista__texto { display: grid; min-width: 0; }
+.pista__texto b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pista__texto small { font-size: 0.8125rem; color: rgba(242, 240, 236, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pista__dur { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.6); }
+.pista--actual .pista__texto b { color: var(--naranja); }
+.pista--actual .pista__num > span { display: none; }
+.pista--actual .pista__num .eq { display: inline-flex; }
+.pista:active { background: rgba(255, 255, 255, 0.1); }
+@media (hover: hover) and (pointer: fine) { .pista:hover { background: rgba(255, 255, 255, 0.07); } }
+.eq { align-items: flex-end; gap: 2px; height: 0.9rem; }
+.eq b { width: 3px; height: 100%; border-radius: 1px; background: var(--naranja); transform-origin: bottom; animation: eq 900ms ease-in-out infinite; }
+.eq b:nth-child(2) { animation-delay: -300ms; }
+.eq b:nth-child(3) { animation-delay: -600ms; }
+.musica:not(.musica--sonando) .eq b { animation-play-state: paused; transform: scaleY(0.35); }
+@keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
+.tapa { position: relative; display: block; aspect-ratio: 1; border-radius: 0.6rem; overflow: hidden; background: var(--acero); }
+.tapa img { width: 100%; height: 100%; object-fit: cover; }
+.tapa--grande { border-radius: 1.25rem; }
+.tapa--gen { display: grid; place-items: center; background: linear-gradient(140deg, hsl(var(--h) 72% 52%), hsl(calc(var(--h) + 50) 65% 28%)); }
+.tapa--gen::after { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 75% 120%, transparent 0 14px, rgba(255, 255, 255, 0.06) 14px 15px); }
+.tapa--gen b { position: relative; z-index: 1; font-family: var(--f-display); font-weight: 900; font-size: 1.4rem; color: rgba(255, 255, 255, 0.92); }
+.tapa--grande.tapa--gen b { font-size: clamp(5rem, 14vw, 9rem); }
+
+.letra { max-height: min(76svh, 48rem); overflow-y: auto; padding-right: 0.5rem; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.18; color: rgba(242, 240, 236, 0.92); scrollbar-width: thin; }
+.letra p { margin: 0 0 1.4em; }
+.letra__titulo { margin: 0 0 1rem; font-family: var(--f-texto); font-size: 0.9375rem; font-weight: 600; color: var(--naranja); }
+.letra__et { display: block; font-family: var(--f-texto); font-size: 0.8125rem; font-weight: 700; color: rgba(242, 240, 236, 0.5); text-transform: none; margin-bottom: 0.2rem; }
+.letra__vacia { font-family: var(--f-texto); font-weight: 500; font-size: 1rem; color: rgba(242, 240, 236, 0.7); }
+
+@media (max-width: 860px) {
+  .encabezado--musica { grid-template-columns: 1fr; }
+  .musica { grid-template-columns: 1fr; border-radius: 1.5rem; }
+  .musica__ahora { position: static; }
+  .musica__tapa { width: min(100%, 20rem); margin-inline: auto; }
+  .pistas, .letra { max-height: none; }
+}
+
+/* Mini reproductor flotante (se ve en todo el sitio mientras suena) */
+.mini {
+  position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem); z-index: 35;
+  display: flex; align-items: center; gap: 0.25rem; width: min(calc(100% - 1.5rem), 30rem);
+  padding: 0.4rem 0.5rem 0.4rem 0.4rem; border-radius: 1.1rem; overflow: hidden;
+  background: rgba(28, 29, 32, 0.88); backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 50px -14px rgba(0, 0, 0, 0.8);
+  transform: translateX(-50%); animation: mini-entra 350ms var(--ease-out);
+}
+.mini[hidden] { display: none; }
+@keyframes mini-entra { from { transform: translate(-50%, 120%); } }
+.mini__ir { flex: 1; display: flex; align-items: center; gap: 0.7rem; min-width: 0; }
+.mini__tapa { width: 2.75rem; flex: 0 0 auto; }
+.mini__tapa .tapa { border-radius: 0.55rem; }
+.mini__texto { display: grid; min-width: 0; }
+.mini__texto b { font-size: 0.9375rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini__texto small { font-size: 0.75rem; color: rgba(242, 240, 236, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini .mboton { width: 2.5rem; height: 2.5rem; color: var(--hueso); }
+.mini__cerrar svg { width: 1.05rem; height: 1.05rem; }
+.mini__barra { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--naranja); transform-origin: left; transform: scaleX(var(--avance, 0)); }
+body.con-mini .pie { padding-bottom: 6rem; }
+
+/* Mosaico de miniaturas de YouTube sobre la portada de HAG Producciones */
+.mosaico { position: absolute; left: 0; right: 0; top: 0; height: 62%; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 3px; padding: 3px; overflow: hidden; pointer-events: none; }
+.mosaico img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.4rem; filter: saturate(1.05); }
+.mosaico::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, #121315); }
+
+@media (prefers-reduced-motion: reduce) {
+  .eq b { animation: none; transform: scaleY(0.6); }
+  .mini { animation: none; }
+  .musica__tapa .tapa { transition: none; }
+}
