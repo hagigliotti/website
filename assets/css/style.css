@@ -1384,3 +1384,7 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .videos__lista ol { max-height: none; }
   .vid { grid-template-columns: 1.4rem 7.5rem minmax(0, 1fr); }
 }
+.videos .video > div, .videos .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.videos__nav { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 0.85rem; }
+.videos__nav .boton { height: 2.6rem; padding: 0 1.1rem; font-size: 0.9375rem; }
+.videos__ahora { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gris); }
