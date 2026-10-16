@@ -84,7 +84,7 @@ Título: Burro
 Juego: index.html
 ```
 
-La página del proyecto muestra el juego funcionando, con un botón para abrirlo en pantalla completa. Los archivos `.md` de la carpeta (por ejemplo `Reglamento.md`) se muestran completos debajo del juego, con un botón para descargarlos.
+La página del proyecto muestra el juego funcionando, con un botón para abrirlo en pantalla completa. Los archivos de la carpeta (por ejemplo `Reglamento.md`) aparecen debajo del juego como libros que se abren y se hojean, y el botón «Reglamento» abre directamente el primer `.md`.
 
 ## Partes independientes (las clases de Conquistadores)
 

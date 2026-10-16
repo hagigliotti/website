@@ -546,14 +546,14 @@ function vistaReproductor(seccion, it) {
   ${pie()}`;
 }
 
-/* Juego: el juego funcionando dentro de la página y, debajo, sus reglas (los .md de la carpeta) */
+/* Juego: el juego funcionando dentro de la página y, debajo, sus reglas como libro que se hojea */
 function vistaJuego(seccion, it) {
   const conf = SECCIONES[seccion];
   const lista = items(seccion);
   const siguiente = lista[(lista.indexOf(it) + 1) % lista.length];
   const src = /^https?:/i.test(it.juego) ? it.juego : url(it.juego);
-  const reglas = documentosDe(it).filter((d) => d.tipo === 'markdown');
-  const otros = documentosDe(it).filter((d) => d.tipo !== 'markdown');
+  const docs = documentosDe(it);
+  const iReglas = docs.findIndex((d) => d.tipo === 'markdown');
   const texto = L(it.texto);
   return `
   <div class="pagina envoltura">
@@ -564,7 +564,7 @@ function vistaJuego(seccion, it) {
         ${texto ? `<div class="encabezado__texto">${textoRico(texto)}</div>` : ''}
         <div class="botones">
           <button class="boton" type="button" data-ir="jugar">${esc(t('jugar'))} ${icono('flecha')}</button>
-          ${reglas.length ? `<button class="boton boton--sec" type="button" data-ir="reglamento">${esc(t('reglamento'))}</button>` : ''}
+          ${iReglas >= 0 ? `<button class="boton boton--sec" type="button" data-leer="${iReglas}">${esc(t('reglamento'))}</button>` : ''}
         </div>
       </div>
     </header>
@@ -577,33 +577,10 @@ function vistaJuego(seccion, it) {
         <a class="boton boton--sec" href="${esc(src)}" target="_blank" rel="noopener">${esc(t('pantalla_completa'))} ${icono('flecha')}</a>
       </div>
     </section>
-    ${reglas.map((d) => `
-    <section class="reglas" id="reglamento">
-      <div class="reglas__cabeza">
-        <h2 class="subtitulo">${esc(t('reglamento'))}</h2>
-        <a class="boton boton--sec" href="${url(d.ruta)}" download>${esc(t('descargar'))}</a>
-      </div>
-      <article class="reglas__texto" data-md="${esc(d.ruta)}"><p>${esc(t('abriendo'))}</p></article>
-    </section>`).join('')}
-    ${otros.length ? estante(it, otros, imagenesDe(it)) : ''}
+    ${docs.length ? estante(it, docs, []) : ''}
     ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
   </div>
   ${pie()}`;
-}
-
-async function cargarReglas() {
-  for (const el of $$('[data-md]')) {
-    try {
-      const r = await fetch(url(el.dataset.md), { cache: 'no-cache' });
-      if (!r.ok) throw new Error(r.status);
-      const md = await r.text();
-      el.innerHTML = window.marked ? window.marked.parse(md) : parrafos(md);
-      // Los enlaces del texto no deben cambiar la ruta del sitio.
-      $$('a[href^="#"]', el).forEach((a) => a.removeAttribute('href'));
-    } catch (_) {
-      el.innerHTML = `<p>${esc(t('error_abrir'))}</p>`;
-    }
-  }
 }
 
 function vistaDetalle(seccion, it) {
@@ -906,8 +883,7 @@ function activarVista(ctx) {
   const it = ctx.item;
   if (it) {
     const imgs = imagenesDe(it);
-    const docs = it.juego ? documentosDe(it).filter((d) => d.tipo !== 'markdown') : documentosDe(it);
-    if (it.juego) cargarReglas();
+    const docs = documentosDe(it);
     const enAlbum = ctx.seccion === 'Projects' ? imgs.filter((x) => x.ruta !== it.portada) : imgs;
     $$('[data-foto]').forEach((b) => b.addEventListener('click', () => {
       visor.abrir(it, enAlbum, enAlbum.findIndex((x) => x.ruta === b.dataset.foto));

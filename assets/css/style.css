@@ -1390,7 +1390,7 @@ body.con-mini .pie { padding-bottom: 6rem; }
 .videos__ahora { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gris); }
 
 /* ==========================================================================
-   Juego dentro de la página (Burro) y su reglamento
+   Juego dentro de la página (Burro)
    ========================================================================== */
 .juego { margin-bottom: clamp(3rem, 6vw, 5rem); scroll-margin-top: 6rem; }
 .juego__marco { padding: 0.4rem; border-radius: 2rem; background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 80px -40px rgba(255, 122, 0, 0.35); }
@@ -1401,16 +1401,3 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .juego__pantalla { height: 92svh; border-radius: 1rem; }
 }
 
-.reglas { scroll-margin-top: 6rem; margin-bottom: clamp(3rem, 6vw, 5rem); padding-top: clamp(2.5rem, 5vw, 4rem); border-top: 1px solid rgba(255, 255, 255, 0.12); }
-.reglas__cabeza { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
-.reglas__cabeza .subtitulo { margin: 0; }
-.reglas__texto { max-width: 46rem; color: rgba(242, 240, 236, 0.85); font-size: 1.0625rem; line-height: 1.65; }
-.reglas__texto h1 { margin: 0 0 2rem; font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: clamp(2rem, 4vw, 3rem); line-height: 0.95; color: var(--hueso); }
-.reglas__texto h2 { margin: 2.75rem 0 0.85rem; font-family: var(--f-display); font-weight: 800; font-size: clamp(1.4rem, 2.4vw, 1.85rem); line-height: 1.1; color: var(--naranja); }
-.reglas__texto h3 { margin: 1.75rem 0 0.6rem; font-size: 1.125rem; color: var(--hueso); }
-.reglas__texto p { margin: 0 0 1rem; }
-.reglas__texto ul, .reglas__texto ol { margin: 0 0 1.25rem; padding-left: 1.4rem; }
-.reglas__texto li { margin-bottom: 0.45rem; }
-.reglas__texto li::marker { color: var(--naranja); font-weight: 700; }
-.reglas__texto strong { color: var(--hueso); }
-.reglas__texto em { color: var(--gris); }

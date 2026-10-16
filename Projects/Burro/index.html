@@ -6,87 +6,117 @@
 <title>Burro · Juego de fichas</title>
 <style>
 :root{
-  --felt:#1d1e21; --felt2:#121315; --ink:#f2f0ec; --muted:#8e9096; --panel:rgba(255,255,255,.05);
-  --tile:#fbf7ec; --accent:#ff7a00; --danger:#e0533d; --ok:#6fe08c; --mesa:#174a37; --mesa2:#0e2f23;
+  --ink:#f6efe3; --muted:#e2cfb4; --accent:#ff7a00; --danger:#d8452f; --ok:#7dff9e;
+  --wood:#7a4a26; --wood-d:#4f2c14; --wood-l:#9a6436;
+  --tile:#fbf6ea; --tile2:#efe5cf; --tile-edge:#d6c6a1; --tile-edge2:#b8a57b;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(ellipse at 50% 40%,var(--felt) 0%,var(--felt2) 100%);background-attachment:fixed;color:var(--ink);min-height:100vh}
-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:rgba(0,0,0,.28)}
-h1{margin:0;font-size:1.35rem;letter-spacing:.06em}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);min-height:100vh;
+  background-color:var(--wood);
+  background-image:
+    radial-gradient(ellipse at 50% 35%,rgba(255,220,170,.18),rgba(0,0,0,0) 55%),
+    radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.45) 100%),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 2px,rgba(0,0,0,0) 2px 240px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,rgba(0,0,0,0) 1px 7px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 3px,rgba(0,0,0,0) 3px 19px),
+    repeating-linear-gradient(88deg,rgba(255,200,140,.05) 0 40px,rgba(0,0,0,.05) 40px 75px,rgba(0,0,0,0) 75px 130px),
+    linear-gradient(180deg,var(--wood-l),var(--wood) 40%,var(--wood-d));
+  background-attachment:fixed}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:linear-gradient(#18120d,#120d09);box-shadow:0 2px 10px rgba(0,0,0,.5)}
+h1{margin:0;font-size:1.35rem;letter-spacing:.08em;font-weight:900}
 h1 b{color:var(--accent)}
 .hbtns{display:flex;gap:8px}
 button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:8px 14px;background:#f1ede2;color:#222;font-weight:600}
-button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.35)}
+button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.3)}
 .layout{display:grid;grid-template-columns:1fr 290px;gap:14px;padding:14px;max-width:1300px;margin:0 auto}
 @media(max-width:920px){.layout{grid-template-columns:1fr}}
 .board{display:flex;flex-direction:column;gap:14px;min-width:0}
-.section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 6px}
+.section-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0 0 8px;text-shadow:0 1px 1px rgba(0,0,0,.5)}
 
-/* rivales */
-#opps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-.seat{background:var(--panel);border-radius:14px;padding:8px 10px;min-width:160px;border:2px solid transparent;transition:border-color .2s,opacity .2s}
-.seat.turn{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,0,.18)}
+/* zonas de la mesa: hundidas en la madera */
+.zone,.seat,.me,aside,.table{background:rgba(35,18,6,.32);box-shadow:inset 0 2px 6px rgba(0,0,0,.45),inset 0 -1px 0 rgba(255,220,180,.08)}
+#opps{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.seat{border-radius:14px;padding:9px 11px;min-width:160px;outline:2px solid transparent;transition:outline-color .2s,opacity .2s}
+.seat.turn{outline-color:var(--accent)}
 .seat.finished{opacity:.55}
-.seat-name{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.badge{font-size:.72rem;font-weight:600;background:rgba(255,255,255,.12);padding:2px 7px;border-radius:999px;white-space:nowrap}
-.piles{display:flex;gap:10px;align-items:flex-end;margin-top:8px}
-.pile-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.seat-name{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px;text-shadow:0 1px 1px rgba(0,0,0,.5)}
+.badge{font-size:.72rem;font-weight:600;background:rgba(0,0,0,.35);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.piles{display:flex;gap:12px;align-items:flex-end;margin-top:10px}
+.pile-col{display:flex;flex-direction:column;align-items:center;gap:6px}
 .lbl{font-size:.68rem;color:var(--muted)}
 .solo{color:var(--muted);font-style:italic;padding:10px}
 
-/* fichas */
-.tile{--c:#999;width:58px;height:78px;border-radius:10px;background:var(--tile);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c);position:relative;user-select:none;transition:transform .15s}
-.tile.small{width:44px;height:60px;font-size:1.3rem;border-radius:8px}
-.tile.stack{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c),3px 3px 0 -1px #d8d2c2,3px 6px 0 -1px rgba(0,0,0,.3)}
-.tile.stack2{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c),3px 3px 0 -1px #d8d2c2,6px 6px 0 -1px #cfc8b6,6px 9px 0 -1px rgba(0,0,0,.3)}
-.tile.back{background:repeating-linear-gradient(45deg,#7d2f2f 0 6px,#913a3a 6px 12px);box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px #f2d7a0}
-.tile.back .cnt{background:rgba(0,0,0,.55);color:#fff;font-size:.85rem;padding:2px 7px;border-radius:999px}
-.tile.empty{background:transparent;box-shadow:none;border:2px dashed rgba(255,255,255,.3);color:rgba(255,255,255,.45);font-size:1rem}
-.lift .tile{transform:translateY(-8px) rotate(-4deg);box-shadow:0 12px 18px rgba(0,0,0,.45),inset 0 0 0 3px var(--c)}
+/* ===== fichas tipo Burako ===== */
+.tile{width:54px;height:74px;border-radius:9px;position:relative;user-select:none;transition:transform .15s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 35% 20%,#fffefa 0%,var(--tile) 45%,var(--tile2) 100%);
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -2px 3px rgba(120,90,40,.28),inset 2px 0 2px rgba(255,255,255,.5),inset -2px 0 3px rgba(120,90,40,.15),
+    0 3px 0 var(--tile-edge),0 5px 0 var(--tile-edge2),0 9px 12px rgba(0,0,0,.45);
+  margin-bottom:5px}
+.tile .num{font-family:"Arial Black","Helvetica Neue",Arial,sans-serif;font-weight:900;font-size:1.75rem;line-height:1;letter-spacing:-.02em;
+  text-shadow:0 1px 0 rgba(255,255,255,.9),0 -1px 0 rgba(0,0,0,.28)}
+.tile .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;background:currentColor;box-shadow:inset 0 1px 1px rgba(0,0,0,.35),0 1px 0 rgba(255,255,255,.8)}
+.tile.c0{color:#c41f2b}.tile.c1{color:#1c1c1c}.tile.c2{color:#1450b4}.tile.c3{color:#e08600}
+.tile.small{width:40px;height:56px;border-radius:7px}
+.tile.small .num{font-size:1.3rem}
+.tile.small .dot{width:7px;height:7px;margin-top:4px}
+/* pila: se ve el grosor de varias fichas */
+.tile.stack{box-shadow:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -2px 3px rgba(120,90,40,.28),
+  0 3px 0 var(--tile-edge),0 5px 0 var(--tile-edge2),0 6px 0 #8f7d55,0 8px 0 var(--tile-edge),0 10px 0 var(--tile-edge2),0 14px 14px rgba(0,0,0,.45);margin-bottom:10px}
+.tile.stack2{box-shadow:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -2px 3px rgba(120,90,40,.28),
+  0 3px 0 var(--tile-edge),0 5px 0 var(--tile-edge2),0 6px 0 #8f7d55,0 8px 0 var(--tile-edge),0 10px 0 var(--tile-edge2),0 11px 0 #8f7d55,0 13px 0 var(--tile-edge),0 15px 0 var(--tile-edge2),0 19px 16px rgba(0,0,0,.45);margin-bottom:15px}
+/* dorso: plástico liso con el óvalo grabado */
+.tile.back{background:radial-gradient(ellipse at 35% 20%,#f7efdc 0%,#eadcbc 55%,#dccaa2 100%)}
+.tile.back::before{content:"";width:58%;height:62%;border-radius:50%;box-shadow:inset 0 1px 2px rgba(110,80,30,.35),0 1px 0 rgba(255,255,255,.7)}
+.tile.back .cnt{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:999px}
+.tile.small.back .cnt{bottom:-24px}
+.tile.empty{background:rgba(0,0,0,.18);box-shadow:inset 0 2px 5px rgba(0,0,0,.5),0 1px 0 rgba(255,220,180,.12);color:rgba(255,240,220,.45);font-size:.9rem;font-weight:700}
+.lift .tile{transform:translateY(-12px) rotate(-5deg);box-shadow:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -2px 3px rgba(120,90,40,.28),0 3px 0 var(--tile-edge),0 5px 0 var(--tile-edge2),0 22px 22px rgba(0,0,0,.5)}
 .target{border-radius:10px}
 .clickable{cursor:pointer}
-.clickable:hover .tile{transform:translateY(-3px)}
-.hint{outline:3px solid var(--ok);outline-offset:4px}
+.clickable:hover .tile{transform:translateY(-4px)}
+.hint{outline:3px solid var(--ok);outline-offset:5px}
+.pile-col:has(.back) .lbl{margin-top:18px}
 
-/* mesa */
-.table{background:radial-gradient(ellipse at 50% 40%,var(--mesa) 0%,var(--mesa2) 100%);border:2px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;min-height:130px}
-#center{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
-.cpile{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border-radius:10px}
-.cpile.done{opacity:.6}
-.cpile.done .tile{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--accent)}
+/* centro de la mesa */
+.table{border-radius:18px;padding:12px 14px 16px;min-height:140px}
+#center{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
+.cpile{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border-radius:10px}
+.cpile.done{opacity:.7}
+.cpile.done .lbl{color:var(--accent);font-weight:700}
 
 /* jugador */
-.me{background:var(--panel);border-radius:18px;padding:12px;border:2px solid transparent}
-.me.turn{border-color:var(--accent)}
+.me{border-radius:18px;padding:12px;outline:2px solid transparent}
+.me.turn{outline-color:var(--accent)}
 .me-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
-.me .piles{gap:18px;margin-top:10px}
-#status{margin-top:10px;font-size:.95rem;min-height:1.4em}
-#burro{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7a62,var(--danger) 60%,#a8321f);color:#fff;font-size:1.25rem;font-weight:900;letter-spacing:.03em;box-shadow:0 6px 0 #7a2416,0 10px 20px rgba(0,0,0,.4);transition:transform .08s}
-#burro:active{transform:translateY(4px);box-shadow:0 2px 0 #7a2416}
+.me .piles{gap:20px;margin-top:12px}
+#status{margin-top:12px;font-size:.95rem;min-height:1.4em;text-shadow:0 1px 1px rgba(0,0,0,.5)}
+#burro{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a6a,var(--danger) 60%,#9c2d1b);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 7px 0 #6e1f12,0 12px 22px rgba(0,0,0,.5);transition:transform .08s}
+#burro:active{transform:translateY(5px);box-shadow:0 2px 0 #6e1f12}
 #burro small{display:block;font-size:.65rem;font-weight:600;opacity:.85}
 
 /* registro */
-aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(100vh - 90px);overflow:auto;position:sticky;top:12px}
-@media(max-width:920px){aside{position:static;max-height:260px}}
+aside{border-radius:14px;padding:10px;max-height:calc(100vh - 90px);overflow:auto;position:sticky;top:12px}
+@media(max-width:920px){aside{position:static;max-height:240px}}
 #log{list-style:none;margin:0;padding:0;font-size:.82rem;line-height:1.35}
-#log li{padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.07)}
-#log li.burro{color:#ffb4a6;font-weight:600}
-#log li.win{color:var(--accent);font-weight:600}
+#log li{padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.08)}
+#log li.burro{color:#ffc2b3;font-weight:600}
+#log li.win{color:#ffb35c;font-weight:600}
 #log li.sys{color:var(--muted)}
 
-/* overlays */
+/* avisos */
 #flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:40}
-#flash div{font-size:clamp(1.8rem,6vw,3.4rem);font-weight:900;background:rgba(0,0,0,.72);padding:18px 30px;border-radius:20px;text-align:center;opacity:0;transform:scale(.8);transition:all .25s}
+#flash div{font-size:clamp(1.8rem,6vw,3.4rem);font-weight:900;background:rgba(15,10,6,.82);padding:18px 30px;border-radius:20px;text-align:center;opacity:0;transform:scale(.8);transition:all .25s}
 #flash.show div{opacity:1;transform:scale(1)}
-#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);background:#222;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;transition:all .25s;z-index:41;max-width:90vw;text-align:center;font-size:.9rem}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);background:#1b140e;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;transition:all .25s;z-index:41;max-width:90vw;text-align:center;font-size:.9rem}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
 .modal.open{display:flex}
-.card{background:#fbf7ec;color:#222;border-radius:18px;padding:20px 22px;max-width:620px;width:100%;max-height:90vh;overflow:auto}
+.card{background:#fbf6ea;color:#222;border-radius:18px;padding:20px 22px;max-width:620px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .card h2{margin-top:0}
 .card label{display:block;font-weight:600;margin:12px 0 4px;font-size:.9rem}
-.card input[type=text],.card select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #bbb;font:inherit}
+.card input[type=text],.card select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #bbb;font:inherit;background:#fff}
 .card .check{display:flex;gap:8px;align-items:center;font-weight:500}
 .card .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
 .card button.primary{background:var(--accent);color:#000}
@@ -95,12 +125,12 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
 .rank{list-style:none;padding:0;font-size:1.05rem}
 .rank li{padding:6px 0;border-bottom:1px solid #ddd}
 @media(max-width:520px){
-  .tile{width:48px;height:66px;font-size:1.5rem}
-  .tile.small{width:38px;height:52px;font-size:1.1rem}
-  #burro{width:96px;height:96px;font-size:1.05rem}
+  .tile{width:46px;height:64px}.tile .num{font-size:1.5rem}
+  .tile.small{width:36px;height:50px}.tile.small .num{font-size:1.1rem}
+  #burro{width:94px;height:94px;font-size:1rem}
   .seat{min-width:0;flex:1 1 135px;max-width:180px;padding:7px 8px}
   .seat-name{flex-wrap:wrap;gap:2px 6px}
-  .piles{gap:6px}
+  .piles{gap:8px}
   header{padding:8px 12px}
   .layout{padding:10px;gap:10px}
 }
@@ -108,7 +138,7 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
 </head>
 <body>
 <header>
-  <h1>🫏 <b>BURRO</b></h1>
+  <h1><b>BURRO</b></h1>
   <div class="hbtns">
     <button class="ghost" data-act="rules">Reglas</button>
     <button class="ghost" data-act="setup">Nueva partida</button>
@@ -157,8 +187,9 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
     </select>
     <label for="fDiff">Dificultad de los rivales</label>
     <select id="fDiff">
+      <option value="muyfacil">Muy fácil · se equivocan muchísimo y casi no te vigilan</option>
       <option value="facil">Fácil · se equivocan seguido y se distraen</option>
-      <option value="normal" selected>Normal</option>
+      <option value="normal" selected>Normal · fallan a veces</option>
       <option value="dificil">Difícil · casi no fallan y cantan «Burro» rápido</option>
     </select>
     <label for="fSpeed">Velocidad de los rivales</label>
@@ -223,10 +254,13 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
 'use strict';
 const $ = s => document.querySelector(s);
 const BOT_NAMES = ['Ana','Luis','Marta','Pablo','Sofía','Tomás','Lucía','Diego','Valeria','Mateo','Julia'];
+// mistake: probabilidad de equivocarse en cada decisión · attention: probabilidad de ver una infracción
+// falso: probabilidad de cantar «Burro» sin motivo al terminar cada turno ajeno
 const DIFF = {
-  facil:   {mistake:.16, attention:.35, react:[1400,3400]},
-  normal:  {mistake:.07, attention:.6,  react:[900,2400]},
-  dificil: {mistake:.02, attention:.9,  react:[450,1500]}
+  muyfacil:{mistake:.42, attention:.2,  react:[2000,4200], falso:.025},
+  facil:   {mistake:.26, attention:.35, react:[1500,3500], falso:.012},
+  normal:  {mistake:.08, attention:.6,  react:[900,2400],  falso:.003},
+  dificil: {mistake:.02, attention:.9,  react:[450,1500],  falso:0}
 };
 const SPEED = {lento:1400, normal:900, rapido:500};
 const WINDOW_NEXT = 5000; // ms que tiene el siguiente jugador para revisar la jugada anterior
@@ -294,6 +328,7 @@ function endTurn(){
   G.lastTurn = {pid:t.pid, id:t.id, endedAt:Date.now()};
   G.turn = null;
   if(checkGameOver()){ render(); return; }
+  botFalseCalls(t.pid);
   render();
   const gid = G.gameId;
   setTimeout(() => {
@@ -477,6 +512,19 @@ function penalize(pid, msg){
 }
 
 /* ---------- rivales automáticos ---------- */
+// En los niveles fáciles los rivales a veces se confunden y cantan «Burro» sin motivo.
+function botFalseCalls(prevPid){
+  const gid = G.gameId;
+  G.players.forEach(b => {
+    if(b.human || b.finished || b.id === prevPid || Math.random() >= G.diff.falso) return;
+    setTimeout(() => {
+      if(!G || G.gameId !== gid || G.over || b.finished) return;
+      if(G.infractions.some(i => callable(i, b.id))) return; // si hay infracción real, la cantaría con razón
+      penalize(b.id, `${b.name} cantó «¡Burro!» sin infracción: se confundió y es Burro.`);
+    }, rand(300, 1200));
+  });
+}
+
 function pickOpp(ids){
   const min = Math.min(...ids.map(id => tilesOf(P(id))));
   const best = ids.filter(id => tilesOf(P(id)) === min);
@@ -516,12 +564,12 @@ async function botTurn(pid, tid, gid){
 
 /* ---------- interfaz ---------- */
 function tileHTML(t, cls='', depth=1){
-  const h = (t.n-1)*24;
   const st = depth > 2 ? 'stack2' : depth > 1 ? 'stack' : '';
-  return `<div class="tile ${cls} ${st}" style="--c:hsl(${h} 65% 45%)"><span style="color:hsl(${h} 60% 30%)">${t.n}</span></div>`;
+  return `<div class="tile c${(t.n-1)%4} ${cls} ${st}"><span class="num">${t.n}</span><span class="dot"></span></div>`;
 }
 function backHTML(count, cls=''){
-  return count ? `<div class="tile back ${cls}"><span class="cnt">${count}</span></div>` : `<div class="tile empty ${cls}">0</div>`;
+  const st = count > 2 ? 'stack2' : count > 1 ? 'stack' : '';
+  return count ? `<div class="tile back ${cls} ${st}"><span class="cnt">${count}</span></div>` : `<div class="tile empty ${cls}">0</div>`;
 }
 function placeLabel(p){
   const i = G.ranking.indexOf(p.id);
