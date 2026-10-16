@@ -229,7 +229,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
     <h2>En esta versión digital</h2>
     <ul>
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
-      <li>La ficha que un rival tiene «en la mano» se ve levantada sobre su bandeja: vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
+      <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado.</li>
       <li>La partida sigue hasta que queda un solo jugador con fichas: ese es el Burro.</li>
       <li>Las reglas 16 y 17 (entregar fichas de más, ayudar o distraer) son de la mesa real y no se aplican contra la computadora.</li>
@@ -378,7 +378,7 @@ function drawReserve(pid){
   }
   t.held = p.reserve.pop(); t.from = 'reserve';
   if(inf) inf.tileId = t.held.id;
-  log(`${p.name} toma de la reserva: ${t.held.n}.`);
+  log(p.human ? `${p.name} toma de la reserva: ${t.held.n}.` : `${p.name} toma una ficha de la reserva.`);
   render();
   return true;
 }
@@ -572,8 +572,10 @@ function towerHTML(count, topTile, size='', attrs=''){
   const cnt = topTile ? '' : `<span class="cnt">${count}</span>`;
   return `<div class="tower ${size}" style="--h:${h}px" ${attrs}>${face}${cnt}</div>`;
 }
-function handHTML(held, size=''){
-  return `<div class="hand ${held?'lift':''}">${held ? faceHTML(held, size) : `<div class="tile empty ${size}"></div>`}</div>`;
+// oculta: la ficha que un rival saca de su reserva no se le ve el número hasta que la apoya.
+function handHTML(held, size='', oculta=false){
+  const ficha = !held ? `<div class="tile empty ${size}"></div>` : oculta ? `<div class="tile back ${size}"></div>` : faceHTML(held, size);
+  return `<div class="hand ${held?'lift':''}">${ficha}</div>`;
 }
 function placeLabel(p){
   const i = G.ranking.indexOf(p.id);
@@ -605,7 +607,7 @@ function render(){
       <div class="piles">
         <div class="pile-col">${towerHTML(p.reserve.length, null, 'small', `data-res="${p.id}"`)}<div class="lbl">reserva</div></div>
         <div class="pile-col"><div class="target ${held&&myTurn?'clickable':''} ${hO.includes(p.id)?'hint':''}" data-act="opp" data-pid="${p.id}">${towerHTML(p.visible.length, vt, 'small')}</div><div class="lbl">visible</div></div>
-        <div class="pile-col">${handHTML(h,'small')}<div class="lbl ${h?'hot':''}">en la mano</div></div>
+        <div class="pile-col">${handHTML(h,'small', isT && G.turn.from === 'reserve')}<div class="lbl ${h?'hot':''}">en la mano</div></div>
       </div></div>`;
   }).join('') : '<div class="solo">Modo solitario: no hay rivales ni «Burro».</div>';
 
@@ -629,7 +631,8 @@ function render(){
   else if(me.finished) s = '🏆 Ya no tienes fichas. Espera quieto: si cantas «Burro» serás penalizado.';
   else if(myTurn && held) s = `Tienes un <b>${held.n}</b> en la mano: colócalo en el centro, sobre un rival o en tu pila visible (termina el turno).`;
   else if(myTurn) s = 'Tu turno: levanta tu ficha visible o toma de la reserva.';
-  else if(G.turn && held) s = `<b>${esc(P(turnPid).name)}</b> tiene un <b>${held.n}</b> en la mano. ¿Lo juega bien? Si no, ¡canta Burro!`;
+  else if(G.turn && held && G.turn.from === 'reserve') s = `<b>${esc(P(turnPid).name)}</b> tomó una ficha de su reserva. ¿Debía hacerlo? Si no, ¡canta Burro!`;
+  else if(G.turn && held) s = `<b>${esc(P(turnPid).name)}</b> levantó su <b>${held.n}</b> visible. ¿Lo juega bien? Si no, ¡canta Burro!`;
   else if(G.turn) s = `Turno de <b>${esc(P(turnPid).name)}</b>. Si ves un error, ¡canta Burro!`;
   else s = 'Pasando el turno…';
   $('#status').innerHTML = s;
