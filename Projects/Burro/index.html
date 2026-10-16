@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Burro · Juego de fichas</title>
+<style>
+:root{
+  --felt:#16573f; --felt2:#0c3326; --ink:#f4f1e8; --muted:#b9cdc1; --panel:rgba(0,0,0,.24);
+  --tile:#fbf7ec; --accent:#f2b134; --danger:#e0533d; --ok:#6fe08c;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(ellipse at 50% 40%,var(--felt) 0%,var(--felt2) 100%);background-attachment:fixed;color:var(--ink);min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:rgba(0,0,0,.28)}
+h1{margin:0;font-size:1.35rem;letter-spacing:.06em}
+h1 b{color:var(--accent)}
+.hbtns{display:flex;gap:8px}
+button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:8px 14px;background:#f1ede2;color:#222;font-weight:600}
+button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.35)}
+.layout{display:grid;grid-template-columns:1fr 290px;gap:14px;padding:14px;max-width:1300px;margin:0 auto}
+@media(max-width:920px){.layout{grid-template-columns:1fr}}
+.board{display:flex;flex-direction:column;gap:14px;min-width:0}
+.section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 6px}
+
+/* rivales */
+#opps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.seat{background:var(--panel);border-radius:14px;padding:8px 10px;min-width:160px;border:2px solid transparent;transition:border-color .2s,opacity .2s}
+.seat.turn{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,177,52,.18)}
+.seat.finished{opacity:.55}
+.seat-name{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.badge{font-size:.72rem;font-weight:600;background:rgba(255,255,255,.12);padding:2px 7px;border-radius:999px;white-space:nowrap}
+.piles{display:flex;gap:10px;align-items:flex-end;margin-top:8px}
+.pile-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.lbl{font-size:.68rem;color:var(--muted)}
+.solo{color:var(--muted);font-style:italic;padding:10px}
+
+/* fichas */
+.tile{--c:#999;width:58px;height:78px;border-radius:10px;background:var(--tile);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c);position:relative;user-select:none;transition:transform .15s}
+.tile.small{width:44px;height:60px;font-size:1.3rem;border-radius:8px}
+.tile.stack{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c),3px 3px 0 -1px #d8d2c2,3px 6px 0 -1px rgba(0,0,0,.3)}
+.tile.stack2{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--c),3px 3px 0 -1px #d8d2c2,6px 6px 0 -1px #cfc8b6,6px 9px 0 -1px rgba(0,0,0,.3)}
+.tile.back{background:repeating-linear-gradient(45deg,#7d2f2f 0 6px,#913a3a 6px 12px);box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px #f2d7a0}
+.tile.back .cnt{background:rgba(0,0,0,.55);color:#fff;font-size:.85rem;padding:2px 7px;border-radius:999px}
+.tile.empty{background:transparent;box-shadow:none;border:2px dashed rgba(255,255,255,.3);color:rgba(255,255,255,.45);font-size:1rem}
+.lift .tile{transform:translateY(-8px) rotate(-4deg);box-shadow:0 12px 18px rgba(0,0,0,.45),inset 0 0 0 3px var(--c)}
+.target{border-radius:10px}
+.clickable{cursor:pointer}
+.clickable:hover .tile{transform:translateY(-3px)}
+.hint{outline:3px solid var(--ok);outline-offset:4px}
+
+/* mesa */
+.table{background:rgba(0,0,0,.16);border:2px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;min-height:130px}
+#center{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.cpile{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border-radius:10px}
+.cpile.done{opacity:.6}
+.cpile.done .tile{box-shadow:0 3px 0 rgba(0,0,0,.35),inset 0 0 0 3px var(--accent)}
+
+/* jugador */
+.me{background:var(--panel);border-radius:18px;padding:12px;border:2px solid transparent}
+.me.turn{border-color:var(--accent)}
+.me-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.me .piles{gap:18px;margin-top:10px}
+#status{margin-top:10px;font-size:.95rem;min-height:1.4em}
+#burro{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7a62,var(--danger) 60%,#a8321f);color:#fff;font-size:1.25rem;font-weight:900;letter-spacing:.03em;box-shadow:0 6px 0 #7a2416,0 10px 20px rgba(0,0,0,.4);transition:transform .08s}
+#burro:active{transform:translateY(4px);box-shadow:0 2px 0 #7a2416}
+#burro small{display:block;font-size:.65rem;font-weight:600;opacity:.85}
+
+/* registro */
+aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(100vh - 90px);overflow:auto;position:sticky;top:12px}
+@media(max-width:920px){aside{position:static;max-height:260px}}
+#log{list-style:none;margin:0;padding:0;font-size:.82rem;line-height:1.35}
+#log li{padding:4px 2px;border-bottom:1px solid rgba(255,255,255,.07)}
+#log li.burro{color:#ffb4a6;font-weight:600}
+#log li.win{color:var(--accent);font-weight:600}
+#log li.sys{color:var(--muted)}
+
+/* overlays */
+#flash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:40}
+#flash div{font-size:clamp(1.8rem,6vw,3.4rem);font-weight:900;background:rgba(0,0,0,.72);padding:18px 30px;border-radius:20px;text-align:center;opacity:0;transform:scale(.8);transition:all .25s}
+#flash.show div{opacity:1;transform:scale(1)}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);background:#222;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;transition:all .25s;z-index:41;max-width:90vw;text-align:center;font-size:.9rem}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.open{display:flex}
+.card{background:#fbf7ec;color:#222;border-radius:18px;padding:20px 22px;max-width:620px;width:100%;max-height:90vh;overflow:auto}
+.card h2{margin-top:0}
+.card label{display:block;font-weight:600;margin:12px 0 4px;font-size:.9rem}
+.card input[type=text],.card select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #bbb;font:inherit}
+.card .check{display:flex;gap:8px;align-items:center;font-weight:500}
+.card .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.card button.primary{background:var(--danger);color:#fff}
+.card .rules h3{margin:16px 0 4px;font-size:1rem}
+.card .rules p,.card .rules li{font-size:.9rem;line-height:1.45}
+.rank{list-style:none;padding:0;font-size:1.05rem}
+.rank li{padding:6px 0;border-bottom:1px solid #ddd}
+@media(max-width:520px){
+  .tile{width:48px;height:66px;font-size:1.5rem}
+  .tile.small{width:38px;height:52px;font-size:1.1rem}
+  #burro{width:96px;height:96px;font-size:1.05rem}
+  .seat{min-width:140px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🫏 <b>BURRO</b></h1>
+  <div class="hbtns">
+    <button class="ghost" data-act="rules">Reglas</button>
+    <button class="ghost" data-act="setup">Nueva partida</button>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="board">
+    <section>
+      <p class="section-title">Rivales</p>
+      <div id="opps"></div>
+    </section>
+    <section class="table">
+      <p class="section-title">Pilas centrales (del 1 al 15)</p>
+      <div id="center"></div>
+    </section>
+    <section class="me" id="meBox">
+      <div class="me-row">
+        <div id="me"></div>
+        <button id="burro" data-act="burro">¡BURRO!<small>tecla B</small></button>
+      </div>
+      <div id="status"></div>
+    </section>
+  </main>
+  <aside>
+    <p class="section-title">Registro de la partida</p>
+    <ul id="log"></ul>
+  </aside>
+</div>
+
+<div id="flash"><div></div></div>
+<div id="toast"></div>
+
+<!-- Configuración -->
+<div class="modal open" id="setupModal">
+  <form class="card" id="setupForm">
+    <h2>🫏 Nueva partida de Burro</h2>
+    <label for="fName">Tu nombre</label>
+    <input type="text" id="fName" maxlength="16" placeholder="Tú">
+    <label for="fBots">Rivales (computadora)</label>
+    <select id="fBots">
+      <option value="0">0 · solitario</option><option value="1">1</option><option value="2" selected>2</option>
+      <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+      <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+      <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+    </select>
+    <label for="fDiff">Dificultad de los rivales</label>
+    <select id="fDiff">
+      <option value="facil">Fácil · se equivocan seguido y se distraen</option>
+      <option value="normal" selected>Normal</option>
+      <option value="dificil">Difícil · casi no fallan y cantan «Burro» rápido</option>
+    </select>
+    <label for="fSpeed">Velocidad de los rivales</label>
+    <select id="fSpeed">
+      <option value="lento">Lenta</option><option value="normal" selected>Normal</option><option value="rapido">Rápida</option>
+    </select>
+    <label for="fMano">Jugador mano</label>
+    <select id="fMano">
+      <option value="azar">Al azar (dado)</option><option value="yo">Empiezo yo</option>
+    </select>
+    <label class="check"><input type="checkbox" id="fLearn"> Modo aprendizaje (resalta jugadas válidas y avisa tus infracciones)</label>
+    <div class="actions">
+      <button type="button" data-act="rules">Ver reglas</button>
+      <button type="submit" class="primary">Jugar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Reglas -->
+<div class="modal" id="rulesModal">
+  <div class="card rules">
+    <h2>Reglamento resumido</h2>
+    <h3>Objetivo</h3>
+    <p>Ser el primero en quedarse sin fichas. Cada jugador tiene 15 fichas (del 1 al 15): una <b>pila de reserva</b> boca abajo y una <b>pila visible</b> con la ficha prioritaria.</p>
+    <h3>La jugada</h3>
+    <ul>
+      <li>La jugada empieza al <b>levantar</b> una ficha. Una ficha levantada debe jugarse sí o sí.</li>
+      <li>La ficha visible tiene prioridad: si tiene jugada, hay que levantarla a ella. Solo si no tiene jugada se toma de la reserva.</li>
+      <li>Orden de prioridad para colocar: <b>1)</b> pila central → <b>2)</b> pila visible de un rival → <b>3)</b> tu propia pila visible.</li>
+      <li>Pila central: empieza con un 1 y sube de a uno hasta el 15. Cada 1 jugado abre una pila nueva.</li>
+      <li>Rival: la ficha debe ser inmediatamente superior o inferior a su visible (un 5 va sobre un 4 o un 6).</li>
+      <li>Se sigue jugando mientras haya descargas. La jugada termina al apoyar una ficha en tu propia pila visible.</li>
+      <li>Si se acaba la reserva, la pila visible se da vuelta y pasa a ser la nueva reserva.</li>
+    </ul>
+    <h3>¡Burro!</h3>
+    <ul>
+      <li>Si alguien omite una jugada obligatoria, cualquier rival puede cantar <b>«¡Burro!»</b> enseguida. El jugador que sigue tiene además unos 5 segundos después de que el otro terminó.</li>
+      <li>Penalización: cada jugador en juego le da una ficha de su reserva, boca abajo; la ficha mal jugada vuelve a su pila visible y pierde el turno.</li>
+      <li>Cantar «Burro» sin infracción te convierte a ti en Burro.</li>
+      <li>Quien gana la mano espera quieto: si canta «Burro», es penalizado y vuelve a jugar.</li>
+    </ul>
+    <h3>Cómo se juega aquí</h3>
+    <ul>
+      <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
+      <li>La ficha que un rival tiene «en la mano» se ve: vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
+      <li>La partida sigue hasta que queda un solo jugador con fichas: ese es el Burro.</li>
+    </ul>
+    <div class="actions"><button class="primary" data-act="close-rules">Entendido</button></div>
+  </div>
+</div>
+
+<!-- Resultados -->
+<div class="modal" id="endModal">
+  <div class="card">
+    <h2>Fin de la partida</h2>
+    <ol class="rank" id="rank"></ol>
+    <div class="actions"><button class="primary" data-act="setup">Jugar otra vez</button></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const $ = s => document.querySelector(s);
+const BOT_NAMES = ['Ana','Luis','Marta','Pablo','Sofía','Tomás','Lucía','Diego','Valeria','Mateo','Julia'];
+const DIFF = {
+  facil:   {mistake:.16, attention:.35, react:[1400,3400]},
+  normal:  {mistake:.07, attention:.6,  react:[900,2400]},
+  dificil: {mistake:.02, attention:.9,  react:[450,1500]}
+};
+const SPEED = {lento:1400, normal:900, rapido:500};
+const WINDOW_NEXT = 5000; // ms que tiene el siguiente jugador para revisar la jugada anterior
+
+let G = null;
+let tileSeq = 0;
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rand = (a,b) => a + Math.random()*(b-a);
+const top = a => a[a.length-1];
+const P = id => G.players[id];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function newSet(){ return shuffle(Array.from({length:15},(_,i)=>({n:i+1,id:++tileSeq}))); }
+
+/* ---------- partida ---------- */
+function newGame(cfg){
+  tileSeq = 0;
+  const names = shuffle(BOT_NAMES.slice());
+  const players = [{id:0, name: cfg.name || 'Tú', human:true}];
+  for(let i=0;i<cfg.bots;i++) players.push({id:i+1, name:names[i], human:false});
+  players.forEach(p => { p.reserve = newSet(); p.visible = [p.reserve.pop()]; p.finished = false; });
+  G = { cfg, players, center:[], pileSeq:0, turn:null, turnSeq:0, lastTurn:null,
+        infractions:[], infSeq:0, ranking:[], over:false, gameId:Math.random(),
+        diff:DIFF[cfg.diff], speed:SPEED[cfg.speed], log:[] };
+  $('#endModal').classList.remove('open');
+  log('Nueva partida. Cada jugador tiene 1 ficha visible y 14 en reserva.', 'sys');
+  let start = 0;
+  if(cfg.mano === 'azar'){
+    start = Math.floor(Math.random()*players.length);
+    log(`🎲 El dado elige como mano a ${P(start).name}.`, 'sys');
+  }
+  render();
+  const gid = G.gameId;
+  setTimeout(() => { if(G.gameId === gid) startTurn(start); }, 900);
+}
+
+function active(){ return G.players.filter(p => !p.finished); }
+function tilesOf(p){ return p.reserve.length + p.visible.length + (G.turn && G.turn.pid === p.id && G.turn.held ? 1 : 0); }
+function nextActive(pid){
+  const n = G.players.length;
+  for(let k=1;k<=n;k++){ const q = G.players[(pid+k)%n]; if(!q.finished) return q.id; }
+  return null;
+}
+function centerTargets(n){
+  if(n === 1) return ['new'];
+  return G.center.filter(c => top(c.tiles).n === n-1).map(c => c.id);
+}
+function oppTargets(pid, n){
+  return G.players.filter(o => o.id !== pid && !o.finished && o.visible.length && Math.abs(top(o.visible).n - n) === 1).map(o => o.id);
+}
+function hasMove(pid, n){ return centerTargets(n).length > 0 || oppTargets(pid, n).length > 0; }
+
+function startTurn(pid){
+  if(!G || G.over || pid === null) return;
+  if(P(pid).finished){ pid = nextActive(pid); if(pid === null) return; }
+  G.turnSeq++;
+  G.turn = {pid, id:G.turnSeq, held:null, from:null};
+  render();
+  if(!P(pid).human) botTurn(pid, G.turnSeq, G.gameId);
+}
+
+function endTurn(){
+  const t = G.turn; if(!t) return;
+  G.lastTurn = {pid:t.pid, id:t.id, endedAt:Date.now()};
+  G.turn = null;
+  if(checkGameOver()){ render(); return; }
+  render();
+  const gid = G.gameId;
+  setTimeout(() => {
+    if(G.gameId === gid && !G.turn && !G.over) startTurn(nextActive(t.pid));
+  }, Math.max(700, G.speed));
+}
+
+function checkFinish(p){
+  if(p.finished || p.reserve.length || p.visible.length) return false;
+  if(G.turn && G.turn.pid === p.id && G.turn.held) return false;
+  p.finished = true;
+  G.ranking.push(p.id);
+  if(G.ranking.length === 1){
+    log(`🏆 ${p.name} se quedó sin fichas y gana la mano.`, 'win');
+    flash(`🏆 ¡${esc(p.name)} gana la mano!`);
+  } else log(`🏁 ${p.name} se quedó sin fichas (puesto ${G.ranking.length}).`, 'win');
+  return true;
+}
+
+function checkGameOver(){
+  const act = active();
+  const over = G.players.length === 1 ? act.length === 0 : act.length <= 1;
+  if(!over) return false;
+  G.over = true;
+  const items = G.ranking.map((id,i) => `<li>${['🥇','🥈','🥉'][i] || (i+1)+'.'} ${esc(P(id).name)}${P(id).human?' (tú)':''}</li>`);
+  if(act.length === 1) items.push(`<li>🫏 <b>${esc(act[0].name)}</b>${act[0].human?' (tú)':''} es el Burro</li>`);
+  $('#rank').innerHTML = items.join('');
+  log('Fin de la partida.', 'sys');
+  setTimeout(() => $('#endModal').classList.add('open'), 900);
+  return true;
+}
+
+/* ---------- acciones ---------- */
+function liftVisible(pid){
+  const p = P(pid), t = G.turn;
+  t.held = p.visible.pop(); t.from = 'visible';
+  render();
+}
+
+function drawReserve(pid){
+  const p = P(pid), t = G.turn;
+  const vt = top(p.visible);
+  let inf = null;
+  if(vt && hasMove(pid, vt.n)) inf = addInfraction(pid, `tomó de la reserva teniendo el ${vt.n} visible con jugada obligatoria`, null);
+  if(!p.reserve.length){
+    if(!p.visible.length) return false;
+    p.reserve = p.visible.reverse(); p.visible = [];
+    log(`🔄 ${p.name} dio vuelta su pila visible: es su nueva reserva.`, 'sys');
+  }
+  t.held = p.reserve.pop(); t.from = 'reserve';
+  if(inf) inf.tileId = t.held.id;
+  log(`${p.name} toma de la reserva: ${t.held.n}.`);
+  render();
+  return true;
+}
+
+function place(pid, target){
+  const p = P(pid), t = G.turn, tile = t.held, n = tile.n;
+  const cT = centerTargets(n), oT = oppTargets(pid, n);
+  if(target.type === 'center' && !cT.includes(target.pile))
+    return {ok:false, msg: n === 1 ? 'Un 1 abre una pila nueva: usa «nueva pila».' : `El ${n} no va en esa pila central.`};
+  if(target.type === 'opp' && !oT.includes(target.pid))
+    return {ok:false, msg:`El ${n} no se puede descargar sobre ${P(target.pid).name}: debe ser uno más o uno menos.`};
+
+  if(target.type === 'opp' && cT.length)
+    addInfraction(pid, `descargó el ${n} sobre ${P(target.pid).name} pudiendo jugarlo en el centro`, tile.id);
+  if(target.type === 'own'){
+    if(cT.length) addInfraction(pid, `apoyó el ${n} en su pila pudiendo jugarlo en el centro`, null);
+    else if(oT.length) addInfraction(pid, `apoyó el ${n} en su pila pudiendo descargarlo sobre ${P(oT[0]).name}`, null);
+    else if(t.from === 'visible' && p.reserve.length + p.visible.length > 0)
+      addInfraction(pid, `levantó su ${n} visible sin jugada y no tomó de la reserva`, null);
+  }
+
+  t.held = null;
+  if(target.type === 'center'){
+    if(target.pile === 'new'){
+      G.center.push({id:++G.pileSeq, tiles:[tile]});
+      log(`${p.name} abre una pila central con el 1.`);
+    } else {
+      const c = G.center.find(c => c.id === target.pile);
+      c.tiles.push(tile);
+      log(`${p.name} juega el ${n} en el centro${n===15?' y completa la pila ✨':''}.`);
+    }
+  } else if(target.type === 'opp'){
+    P(target.pid).visible.push(tile);
+    log(`${p.name} descarga el ${n} sobre ${P(target.pid).name}.`);
+  } else {
+    p.visible.push(tile);
+    log(`${p.name} apoya el ${n} en su pila. Fin del turno.`);
+    render(); endTurn();
+    return {ok:true, ended:true};
+  }
+  if(checkFinish(p)){ render(); endTurn(); return {ok:true, ended:true}; }
+  render();
+  return {ok:true};
+}
+
+/* ---------- infracciones y «Burro» ---------- */
+function addInfraction(pid, text, tileId){
+  const inf = {id:++G.infSeq, pid, text, tileId, turnId:G.turn.id, called:false};
+  G.infractions.push(inf);
+  if(G.cfg.learn && P(pid).human) toast(`⚠️ Infracción: ${text}. Te pueden cantar «Burro».`);
+  const gid = G.gameId;
+  G.players.forEach(b => {
+    if(b.human || b.id === pid || b.finished) return;
+    if(Math.random() < G.diff.attention){
+      setTimeout(() => {
+        if(!G || G.gameId !== gid || G.over || b.finished) return;
+        if(callable(inf, b.id)) resolveBurro(b.id, inf);
+      }, rand(...G.diff.react));
+    }
+  });
+  return inf;
+}
+
+function callable(inf, cid){
+  if(inf.called || inf.pid === cid) return false;
+  if(G.turn && G.turn.id === inf.turnId) return true;              // la jugada sigue en curso
+  const L = G.lastTurn;                                             // excepción del siguiente jugador
+  return !!(L && L.id === inf.turnId && Date.now() - L.endedAt <= WINDOW_NEXT && nextActive(inf.pid) === cid);
+}
+
+function humanBurro(){
+  if(!G || G.over) return;
+  const me = P(0);
+  if(me.finished){ penalize(0, `${me.name} cantó «¡Burro!» habiendo ganado la mano: no puede acusar.`); return; }
+  const inf = [...G.infractions].reverse().find(i => callable(i, 0));
+  if(inf) resolveBurro(0, inf);
+  else penalize(0, `${me.name} cantó «¡Burro!» sin infracción válida: acusación falsa.`);
+}
+
+function resolveBurro(cid, inf){
+  const inf_p = P(inf.pid);
+  log(`🫏 ${P(cid).name} canta «¡Burro!»: ${inf_p.name} ${inf.text}.`, 'burro');
+  flash(`🫏 ¡BURRO!<br><small style="font-size:.5em">${esc(P(cid).name)} → ${esc(inf_p.name)}</small>`);
+  G.infractions.forEach(i => { if(i.pid === inf.pid) i.called = true; });
+  if(inf.tileId) revertTile(inf.pid, inf.tileId);
+  penalize(inf.pid, null);
+}
+
+function revertTile(pid, id){
+  const p = P(pid);
+  if(G.turn && G.turn.pid === pid && G.turn.held && G.turn.held.id === id) return; // se resuelve en penalize
+  for(const c of G.center){
+    if(top(c.tiles).id === id){
+      const t = c.tiles.pop();
+      if(!c.tiles.length) G.center = G.center.filter(x => x !== c);
+      p.visible.push(t); log(`↩️ El ${t.n} vuelve a la pila visible de ${p.name}.`, 'sys'); return;
+    }
+  }
+  for(const o of G.players){
+    if(o.id !== pid && o.visible.length && top(o.visible).id === id){
+      const t = o.visible.pop();
+      p.visible.push(t); log(`↩️ El ${t.n} vuelve a la pila visible de ${p.name}.`, 'sys'); return;
+    }
+  }
+}
+
+function penalize(pid, msg){
+  const p = P(pid);
+  if(msg){ log(`🫏 ${msg}`, 'burro'); flash(`🫏 ¡BURRO!<br><small style="font-size:.5em">${esc(p.name)}</small>`); }
+  if(G.turn && G.turn.pid === pid && G.turn.held){ p.visible.push(G.turn.held); G.turn.held = null; }
+  let got = 0;
+  G.players.forEach(g => {
+    if(g.id === pid || g.finished) return;
+    let t = null;
+    if(g.reserve.length) t = g.reserve.pop();
+    else if(g.visible.length > 1) t = g.visible.shift();
+    if(t){ p.reserve.unshift(t); got++; }
+  });
+  if(p.finished){
+    p.finished = false;
+    G.ranking = G.ranking.filter(x => x !== pid);
+    log(`${p.name} vuelve a la partida.`, 'sys');
+  }
+  if(!p.visible.length && p.reserve.length) p.visible.push(p.reserve.pop());
+  log(`${p.name} recibe ${got} ficha${got===1?'':'s'} de penalización y pierde el turno.`, 'burro');
+  if(!p.reserve.length && !p.visible.length && !p.finished){ p.finished = true; G.ranking.push(pid); }
+  render();
+  if(G.turn && G.turn.pid === pid) endTurn();
+}
+
+/* ---------- rivales automáticos ---------- */
+function pickOpp(ids){
+  const min = Math.min(...ids.map(id => tilesOf(P(id))));
+  const best = ids.filter(id => tilesOf(P(id)) === min);
+  return best[Math.floor(Math.random()*best.length)];
+}
+
+async function botTurn(pid, tid, gid){
+  const alive = () => G && G.gameId === gid && G.turn && G.turn.id === tid && !G.over;
+  const p = P(pid), D = G.diff;
+  await sleep(G.speed * .8);
+  let guard = 0;
+  while(alive() && guard++ < 300){
+    const t = G.turn;
+    if(!t.held){
+      const vt = top(p.visible);
+      const visOk = vt && hasMove(pid, vt.n);
+      if(visOk && Math.random() >= D.mistake) liftVisible(pid);
+      else if(!drawReserve(pid)){ endTurn(); return; }
+      await sleep(G.speed);
+      if(!alive()) return;
+    }
+    const n = t.held.n;
+    const cT = centerTargets(n), oT = oppTargets(pid, n);
+    let target;
+    if(cT.length){
+      if(oT.length && Math.random() < D.mistake) target = {type:'opp', pid:pickOpp(oT)};
+      else if(Math.random() < D.mistake/2) target = {type:'own'};
+      else target = {type:'center', pile:cT[Math.floor(Math.random()*cT.length)]};
+    } else if(oT.length){
+      target = Math.random() < D.mistake/2 ? {type:'own'} : {type:'opp', pid:pickOpp(oT)};
+    } else target = {type:'own'};
+    const r = place(pid, target);
+    if(r.ended) return;
+    await sleep(G.speed);
+  }
+}
+
+/* ---------- interfaz ---------- */
+function tileHTML(t, cls='', depth=1){
+  const h = (t.n-1)*24;
+  const st = depth > 2 ? 'stack2' : depth > 1 ? 'stack' : '';
+  return `<div class="tile ${cls} ${st}" style="--c:hsl(${h} 65% 45%)"><span style="color:hsl(${h} 60% 30%)">${t.n}</span></div>`;
+}
+function backHTML(count, cls=''){
+  return count ? `<div class="tile back ${cls}"><span class="cnt">${count}</span></div>` : `<div class="tile empty ${cls}">0</div>`;
+}
+function placeLabel(p){
+  const i = G.ranking.indexOf(p.id);
+  return i < 0 ? '' : (i === 0 ? '🏆 ganó la mano' : `🏁 puesto ${i+1}`);
+}
+
+function render(){
+  if(!G) return;
+  const turnPid = G.turn ? G.turn.pid : null;
+  const held = G.turn ? G.turn.held : null;
+  const me = P(0), myTurn = turnPid === 0 && !G.over;
+  let hC = [], hO = [], hOwn = false, hVis = false, hRes = false;
+  if(G.cfg.learn && myTurn){
+    if(held){
+      hC = centerTargets(held.n);
+      hO = hC.length ? [] : oppTargets(0, held.n);
+      hOwn = !hC.length && !hO.length;
+    } else {
+      const vt = top(me.visible);
+      if(vt && hasMove(0, vt.n)) hVis = true; else hRes = true;
+    }
+  }
+
+  const bots = G.players.filter(p => !p.human);
+  $('#opps').innerHTML = bots.length ? bots.map(p => {
+    const vt = top(p.visible), isT = turnPid === p.id, h = isT && G.turn.held;
+    return `<div class="seat ${isT?'turn':''} ${p.finished?'finished':''}">
+      <div class="seat-name"><span>${isT?'▶ ':''}🤖 ${esc(p.name)}</span><span class="badge">${p.finished ? placeLabel(p) : tilesOf(p)+' fichas'}</span></div>
+      <div class="piles">
+        <div class="pile-col">${backHTML(p.reserve.length,'small')}<div class="lbl">reserva</div></div>
+        <div class="pile-col"><div class="target ${held&&myTurn?'clickable':''} ${hO.includes(p.id)?'hint':''}" data-act="opp" data-pid="${p.id}">${vt ? tileHTML(vt,'small',p.visible.length) : '<div class="tile small empty"></div>'}</div><div class="lbl">visible</div></div>
+        ${h ? `<div class="pile-col"><div class="lift">${tileHTML(h,'small')}</div><div class="lbl">en la mano</div></div>` : ''}
+      </div></div>`;
+  }).join('') : '<div class="solo">Modo solitario: no hay rivales ni «Burro».</div>';
+
+  $('#center').innerHTML = G.center.map(c => {
+    const t = top(c.tiles), done = t.n === 15;
+    return `<div class="cpile ${done?'done':''} ${hC.includes(c.id)?'hint':''}" data-act="center" data-pile="${c.id}">${tileHTML(t)}<div class="lbl">${done?'completa':'pila '+c.id}</div></div>`;
+  }).join('') + `<div class="cpile ${hC.includes('new')?'hint':''}" data-act="center" data-pile="new"><div class="tile empty">+ 1</div><div class="lbl">nueva pila</div></div>`;
+
+  const vt = top(me.visible);
+  $('#meBox').classList.toggle('turn', myTurn);
+  $('#me').innerHTML = `
+    <div class="seat-name"><span>${myTurn?'▶ ':''}🙂 ${esc(me.name)}</span><span class="badge">${me.finished ? placeLabel(me) : tilesOf(me)+' fichas'}</span></div>
+    <div class="piles">
+      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${me.reserve.length ? backHTML(me.reserve.length) : '<div class="tile empty">↻</div>'}</div><div class="lbl">reserva</div></div>
+      <div class="pile-col"><div class="target ${myTurn?'clickable':''} ${hVis||hOwn?'hint':''}" data-act="my-visible">${vt ? tileHTML(vt,'',me.visible.length) : '<div class="tile empty"></div>'}</div><div class="lbl">visible</div></div>
+      <div class="pile-col"><div class="${myTurn&&held?'lift':''}">${myTurn&&held ? tileHTML(held) : '<div class="tile empty"></div>'}</div><div class="lbl">en la mano</div></div>
+    </div>`;
+
+  let s;
+  if(G.over) s = 'Partida terminada.';
+  else if(me.finished) s = '🏆 Ya no tienes fichas. Espera quieto: si cantas «Burro» serás penalizado.';
+  else if(myTurn && held) s = `Tienes un <b>${held.n}</b> en la mano: colócalo en el centro, sobre un rival o en tu pila visible (termina el turno).`;
+  else if(myTurn) s = 'Tu turno: levanta tu ficha visible o toma de la reserva.';
+  else if(G.turn) s = `Turno de <b>${esc(P(turnPid).name)}</b>. Si ves un error, ¡canta Burro!`;
+  else s = 'Pasando el turno…';
+  $('#status').innerHTML = s;
+
+  $('#log').innerHTML = G.log.slice(-80).reverse().map(l => `<li class="${l.cls}">${esc(l.msg)}</li>`).join('');
+}
+
+function log(msg, cls=''){ G.log.push({msg, cls}); }
+
+let flashT, toastT;
+function flash(html){
+  const f = $('#flash'); f.firstElementChild.innerHTML = html; f.classList.add('show');
+  clearTimeout(flashT); flashT = setTimeout(() => f.classList.remove('show'), 1500);
+}
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function humanClick(act, el){
+  if(!G || G.over || !G.turn || G.turn.pid !== 0) return;
+  const t = G.turn;
+  if(act === 'my-reserve'){
+    if(t.held) return toast('Ya tienes una ficha en la mano: debes jugarla.');
+    drawReserve(0);
+  } else if(act === 'my-visible'){
+    if(t.held){ place(0, {type:'own'}); }
+    else if(P(0).visible.length) liftVisible(0);
+  } else if(act === 'center'){
+    if(!t.held) return toast('Primero levanta una ficha.');
+    const pile = el.dataset.pile === 'new' ? 'new' : +el.dataset.pile;
+    const r = place(0, {type:'center', pile}); if(!r.ok) toast(r.msg);
+  } else if(act === 'opp'){
+    if(!t.held) return toast('Primero levanta una ficha.');
+    const r = place(0, {type:'opp', pid:+el.dataset.pid}); if(!r.ok) toast(r.msg);
+  }
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  const act = el.dataset.act;
+  if(act === 'rules') $('#rulesModal').classList.add('open');
+  else if(act === 'close-rules') $('#rulesModal').classList.remove('open');
+  else if(act === 'setup'){ $('#endModal').classList.remove('open'); $('#setupModal').classList.add('open'); }
+  else if(act === 'burro') humanBurro();
+  else humanClick(act, el);
+});
+document.addEventListener('keydown', e => {
+  if(e.target.matches('input,select,textarea')) return;
+  if(e.key === 'b' || e.key === 'B'){ e.preventDefault(); humanBurro(); }
+});
+$('#setupForm').addEventListener('submit', e => {
+  e.preventDefault();
+  $('#setupModal').classList.remove('open');
+  if(G) G.gameId = Math.random(); // cancela temporizadores de la partida anterior
+  newGame({
+    name: $('#fName').value.trim(),
+    bots: +$('#fBots').value,
+    diff: $('#fDiff').value,
+    speed: $('#fSpeed').value,
+    mano: $('#fMano').value,
+    learn: $('#fLearn').checked
+  });
+});
+</script>
+</body>
+</html>
