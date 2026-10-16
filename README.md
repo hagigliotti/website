@@ -75,6 +75,17 @@ Demo TV: https://hagigliotti.github.io/cancionero_mv/?tv=1
 
 El texto antes del primer `##` va al lado del primer dispositivo. Cada sección `## [imac] Título`, `## [proyector] Título` o `## [tv] Título` va al lado de ese dispositivo. Las listas se escriben con `- ` al comienzo de cada línea. Las traducciones van en `Info.en.txt`, `Info.fr.txt`, `Info.de.txt`, `Info.pt.txt` e `Info.it.txt`.
 
+## Proyectos con un juego para jugar en la página (Burro)
+
+Poné el juego como un archivo HTML dentro de la carpeta y nombralo en el `Info.txt`:
+
+```
+Título: Burro
+Juego: index.html
+```
+
+La página del proyecto muestra el juego funcionando, con un botón para abrirlo en pantalla completa. Los archivos `.md` de la carpeta (por ejemplo `Reglamento.md`) se muestran completos debajo del juego, con un botón para descargarlos.
+
 ## Partes independientes (las clases de Conquistadores)
 
 Cada subcarpeta con su propio `Info.txt` es una parte independiente, con su página y su color:

@@ -1,0 +1,19 @@
+Título: Burro
+Juego: index.html
+
+Juego de fichas del 1 al 15 que exige rapidez y atención: gana quien primero se queda sin fichas, y quien se equivoca y es descubierto es el «Burro». Jugalo acá mismo contra la computadora, con el reglamento oficial completo más abajo.
+
+[en]
+A tile game with tiles from 1 to 15 that rewards speed and attention: the first player to run out of tiles wins, and whoever gets caught making a mistake is the «Burro» (donkey). Play it right here against the computer; the official rules (in Spanish) are below.
+
+[fr]
+Un jeu de tuiles de 1 à 15 qui exige rapidité et attention : le premier à ne plus avoir de tuiles gagne, et celui qui se fait prendre en faute est le « Burro » (l'âne). Jouez ici contre l'ordinateur ; le règlement officiel (en espagnol) est plus bas.
+
+[de]
+Ein Plättchenspiel mit Steinen von 1 bis 15, bei dem es auf Schnelligkeit und Aufmerksamkeit ankommt: Wer zuerst keine Steine mehr hat, gewinnt, und wer beim Fehler erwischt wird, ist der „Burro“ (Esel). Spiel es hier gegen den Computer; die offiziellen Regeln (auf Spanisch) stehen unten.
+
+[pt]
+Um jogo de peças de 1 a 15 que exige rapidez e atenção: ganha quem fica sem peças primeiro, e quem é pego errando é o «Burro». Jogue aqui mesmo contra o computador; o regulamento oficial (em espanhol) está logo abaixo.
+
+[it]
+Un gioco di tessere da 1 a 15 che richiede rapidità e attenzione: vince chi resta per primo senza tessere, e chi viene scoperto a sbagliare è il «Burro» (l'asino). Giocalo qui contro il computer; il regolamento ufficiale (in spagnolo) è più sotto.

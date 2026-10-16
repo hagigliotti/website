@@ -546,8 +546,69 @@ function vistaReproductor(seccion, it) {
   ${pie()}`;
 }
 
+/* Juego: el juego funcionando dentro de la página y, debajo, sus reglas (los .md de la carpeta) */
+function vistaJuego(seccion, it) {
+  const conf = SECCIONES[seccion];
+  const lista = items(seccion);
+  const siguiente = lista[(lista.indexOf(it) + 1) % lista.length];
+  const src = /^https?:/i.test(it.juego) ? it.juego : url(it.juego);
+  const reglas = documentosDe(it).filter((d) => d.tipo === 'markdown');
+  const otros = documentosDe(it).filter((d) => d.tipo !== 'markdown');
+  const texto = L(it.texto);
+  return `
+  <div class="pagina envoltura">
+    <nav class="migas" aria-label="breadcrumb"><a href="#/">${esc(t('inicio'))}</a><span aria-hidden="true">/</span><a href="#/${conf.id}">${esc(t(conf.id))}</a></nav>
+    <header class="encabezado">
+      <h1 class="titular">${esc(tituloDe(it))}</h1>
+      <div>
+        ${texto ? `<div class="encabezado__texto">${textoRico(texto)}</div>` : ''}
+        <div class="botones">
+          <button class="boton" type="button" data-ir="jugar">${esc(t('jugar'))} ${icono('flecha')}</button>
+          ${reglas.length ? `<button class="boton boton--sec" type="button" data-ir="reglamento">${esc(t('reglamento'))}</button>` : ''}
+        </div>
+      </div>
+    </header>
+    <section class="juego" id="jugar">
+      <div class="juego__marco">
+        <iframe class="juego__pantalla" src="${esc(src)}" title="${esc(tituloDe(it))}" loading="lazy" allow="fullscreen"></iframe>
+      </div>
+      <div class="juego__barra">
+        <span>${esc(t('juego_ayuda'))}</span>
+        <a class="boton boton--sec" href="${esc(src)}" target="_blank" rel="noopener">${esc(t('pantalla_completa'))} ${icono('flecha')}</a>
+      </div>
+    </section>
+    ${reglas.map((d) => `
+    <section class="reglas" id="reglamento">
+      <div class="reglas__cabeza">
+        <h2 class="subtitulo">${esc(t('reglamento'))}</h2>
+        <a class="boton boton--sec" href="${url(d.ruta)}" download>${esc(t('descargar'))}</a>
+      </div>
+      <article class="reglas__texto" data-md="${esc(d.ruta)}"><p>${esc(t('abriendo'))}</p></article>
+    </section>`).join('')}
+    ${otros.length ? estante(it, otros, imagenesDe(it)) : ''}
+    ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
+  </div>
+  ${pie()}`;
+}
+
+async function cargarReglas() {
+  for (const el of $$('[data-md]')) {
+    try {
+      const r = await fetch(url(el.dataset.md), { cache: 'no-cache' });
+      if (!r.ok) throw new Error(r.status);
+      const md = await r.text();
+      el.innerHTML = window.marked ? window.marked.parse(md) : parrafos(md);
+      // Los enlaces del texto no deben cambiar la ruta del sitio.
+      $$('a[href^="#"]', el).forEach((a) => a.removeAttribute('href'));
+    } catch (_) {
+      el.innerHTML = `<p>${esc(t('error_abrir'))}</p>`;
+    }
+  }
+}
+
 function vistaDetalle(seccion, it) {
   if (it.reproductor) return vistaReproductor(seccion, it);
+  if (it.juego) return vistaJuego(seccion, it);
   if (it.dispositivos && it.dispositivos.length) return vistaVitrina(seccion, it);
   if (it.partes && it.partes.length) return vistaGrupo(seccion, it);
   const lista = items(seccion);
@@ -845,7 +906,8 @@ function activarVista(ctx) {
   const it = ctx.item;
   if (it) {
     const imgs = imagenesDe(it);
-    const docs = documentosDe(it);
+    const docs = it.juego ? documentosDe(it).filter((d) => d.tipo !== 'markdown') : documentosDe(it);
+    if (it.juego) cargarReglas();
     const enAlbum = ctx.seccion === 'Projects' ? imgs.filter((x) => x.ruta !== it.portada) : imgs;
     $$('[data-foto]').forEach((b) => b.addEventListener('click', () => {
       visor.abrir(it, enAlbum, enAlbum.findIndex((x) => x.ruta === b.dataset.foto));
@@ -858,6 +920,11 @@ function activarVista(ctx) {
     if (bImgs) bImgs.addEventListener('click', () => lector.abrir({ titulo: t('imagenes_proyecto'), sub: tituloDe(it), tipo: 'imagenes', urls: imgs.map((x) => url(x.ruta)) }));
     miniaturas();
   }
+
+  $$('[data-ir]').forEach((b) => b.addEventListener('click', () => {
+    const destino = document.getElementById(b.dataset.ir);
+    if (destino) destino.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+  }));
 
   const bCV = $('[data-leer-cv]');
   if (bCV) bCV.addEventListener('click', () => lector.abrir({ titulo: t('cv'), sub: nombreCompleto(), tipo: 'pdf', url: url(estado.manifest.cv.pdf), descarga: url(estado.manifest.cv.pdf) }));

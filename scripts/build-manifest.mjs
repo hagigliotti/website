@@ -42,6 +42,7 @@ const CLAVES = {
   videos: /^(videos|v[ií]deos de portada)$/i,
   emblema: /^(emblema|logo)$/i,
   reproductor: /^(reproductor|player|m[uú]sica)$/i,
+  juego: /^(juego|game|jeu|spiel|gioco|jogo)$/i,
 };
 const DISPOSITIVOS = ['celular', 'android', 'iphone', 'imac', 'proyector', 'tv'];
 
@@ -59,7 +60,7 @@ function bloquesPorIdioma(texto) {
 
 // Info.txt: primeras líneas opcionales "Título: …", "Fecha: …", "Enlace: …", "Portada: …"; el resto es la descripción.
 function parsearInfo(texto, idiomaArchivo) {
-  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '' };
+  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '' };
   const bloques = bloquesPorIdioma(texto);
   for (const [lang, contenido] of Object.entries(bloques)) {
     const destino = idiomaArchivo && lang === '_' ? idiomaArchivo : lang;
@@ -132,7 +133,7 @@ async function esParte(abs) {
 async function leerCarpeta(seccion, carpeta, profundidad = 0) {
   const rel = `${seccion}/${carpeta}`;
   const dirAbs = join(RAIZ, rel);
-  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', fotos: {}, archivos: [], partes: [], subido: '' };
+  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', fotos: {}, archivos: [], partes: [], subido: '' };
   const subPartes = [];
   if (profundidad === 0) {
     for (const e of (await readdir(dirAbs, { withFileTypes: true })).sort((a, b) => ordenar(a.name, b.name))) {
@@ -150,7 +151,7 @@ async function leerCarpeta(seccion, carpeta, profundidad = 0) {
       const info = parsearInfo(await readFile(a.abs, 'utf8'), idiomaArch && idiomaArch.toLowerCase());
       Object.assign(item.titulo, info.titulo);
       Object.assign(item.texto, info.texto);
-      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto', 'reproductor', 'emblema']) if (info[k]) item[k] = info[k];
+      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto', 'reproductor', 'emblema', 'juego']) if (info[k]) item[k] = info[k];
       if (info.videos.length) item.videos = info.videos;
       if (info.directo) item.directo = true;
       Object.assign(item.demo, info.demo);
@@ -181,6 +182,8 @@ async function leerCarpeta(seccion, carpeta, profundidad = 0) {
     const p = imagenes.find((a) => esPortada(a.nombre)) || imagenes[0];
     item.portada = p ? p.ruta : '';
   }
+  // Juego: página HTML dentro de la carpeta que se juega en el sitio (por ejemplo Burro).
+  if (item.juego && !/^https?:/i.test(item.juego)) item.juego = `${rel}/${item.juego.replace(/^\.?\//, '')}`;
   // La portada no se repite dentro del álbum si hay otras fotos.
   if (item.dispositivos.length && !item.demo._) item.demo._ = item.enlace;
   item.subido = fechaGit(rel) || (await stat(dirAbs)).mtime.toISOString();

@@ -12,6 +12,7 @@ export const IDIOMAS = {
 
 const T = {
   es: {
+    jugar: 'Jugar', reglamento: 'Reglamento', pantalla_completa: 'Pantalla completa', juego_ayuda: 'Tocá tu pila visible o tu reserva para levantar una ficha. Si un rival se equivoca, ¡cantá Burro!',
     abrir_app: 'Abrir la app', ver_youtube: 'Ver en YouTube', ultimos_videos: 'Últimos videos', clases: 'clases', ver_clase: 'Ver la clase', lista_videos: 'Lista de videos', pronto: 'Los videos de esta clase están en el canal HAG Producciones.', tocar_usar: 'Tocá para usar', en_vivo: 'app real, en vivo', disp_android: 'Android', video: 'video', videos: 'videos', certificaciones: 'Licencias y certificaciones', disp_celular: 'Celular', elegir_celular: 'Elegir celular', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Proyector', disp_tv: 'TV',
     proyectos: 'Proyectos', viajes: 'Viajes', trabajos: 'Trabajos', experiencia: 'Experiencia', estudios: 'Estudios', cv: 'Currículum',
     inicio: 'Inicio', contacto: 'Contacto', menu_abrir: 'Abrir menú', menu_cerrar: 'Cerrar menú', idioma: 'Idioma',
@@ -40,6 +41,7 @@ const T = {
     linkedin_cv: 'Ver en LinkedIn', arrastrar: 'Deslizá para ver más',
   },
   en: {
+    jugar: 'Play', reglamento: 'Rules', pantalla_completa: 'Full screen', juego_ayuda: 'Tap your visible pile or your reserve to pick up a tile. If a rival makes a mistake, call Burro!',
     abrir_app: 'Open the app', ver_youtube: 'Watch on YouTube', ultimos_videos: 'Latest videos', clases: 'classes', ver_clase: 'View class', lista_videos: 'Video playlist', pronto: 'The videos for this class are on the HAG Producciones channel.', tocar_usar: 'Tap to use', en_vivo: 'real app, live', disp_android: 'Android', video: 'video', videos: 'videos', certificaciones: 'Licenses and certifications', disp_celular: 'Phone', elegir_celular: 'Choose phone', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projector', disp_tv: 'TV',
     proyectos: 'Projects', viajes: 'Trips', trabajos: 'Work', experiencia: 'Experience', estudios: 'Education', cv: 'Résumé',
     inicio: 'Home', contacto: 'Contact', menu_abrir: 'Open menu', menu_cerrar: 'Close menu', idioma: 'Language',
@@ -68,6 +70,7 @@ const T = {
     linkedin_cv: 'View on LinkedIn', arrastrar: 'Swipe to see more',
   },
   fr: {
+    jugar: 'Jouer', reglamento: 'Règlement', pantalla_completa: 'Plein écran', juego_ayuda: 'Touchez votre pile visible ou votre réserve pour prendre une tuile. Si un adversaire se trompe, criez Burro !',
     abrir_app: 'Ouvrir l’application', ver_youtube: 'Voir sur YouTube', ultimos_videos: 'Dernières vidéos', clases: 'classes', ver_clase: 'Voir la classe', lista_videos: 'Liste de vidéos', pronto: 'Les vidéos de cette classe sont sur la chaîne HAG Producciones.', tocar_usar: 'Touchez pour utiliser', en_vivo: 'vraie application, en direct', disp_android: 'Android', video: 'vidéo', videos: 'vidéos', certificaciones: 'Licences et certifications', disp_celular: 'Téléphone', elegir_celular: 'Choisir le téléphone', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projecteur', disp_tv: 'TV',
     proyectos: 'Projets', viajes: 'Voyages', trabajos: 'Travaux', experiencia: 'Expérience', estudios: 'Formation', cv: 'CV',
     inicio: 'Accueil', contacto: 'Contact', menu_abrir: 'Ouvrir le menu', menu_cerrar: 'Fermer le menu', idioma: 'Langue',
@@ -96,6 +99,7 @@ const T = {
     linkedin_cv: 'Voir sur LinkedIn', arrastrar: 'Faites glisser pour voir plus',
   },
   de: {
+    jugar: 'Spielen', reglamento: 'Spielregeln', pantalla_completa: 'Vollbild', juego_ayuda: 'Tippe auf deinen offenen Stapel oder deine Reserve, um einen Stein zu nehmen. Macht ein Gegner einen Fehler, ruf „Burro!“',
     abrir_app: 'App öffnen', ver_youtube: 'Auf YouTube ansehen', ultimos_videos: 'Neueste Videos', clases: 'Klassen', ver_clase: 'Klasse ansehen', lista_videos: 'Videoliste', pronto: 'Die Videos dieser Klasse findest du auf dem Kanal HAG Producciones.', tocar_usar: 'Zum Benutzen tippen', en_vivo: 'echte App, live', disp_android: 'Android', video: 'Video', videos: 'Videos', certificaciones: 'Lizenzen und Zertifikate', disp_celular: 'Handy', elegir_celular: 'Handy wählen', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Beamer', disp_tv: 'TV',
     proyectos: 'Projekte', viajes: 'Reisen', trabajos: 'Arbeiten', experiencia: 'Erfahrung', estudios: 'Ausbildung', cv: 'Lebenslauf',
     inicio: 'Start', contacto: 'Kontakt', menu_abrir: 'Menü öffnen', menu_cerrar: 'Menü schließen', idioma: 'Sprache',
@@ -124,6 +128,7 @@ const T = {
     linkedin_cv: 'Auf LinkedIn ansehen', arrastrar: 'Wischen für mehr',
   },
   pt: {
+    jugar: 'Jogar', reglamento: 'Regulamento', pantalla_completa: 'Tela cheia', juego_ayuda: 'Toque na sua pilha visível ou na reserva para pegar uma peça. Se um rival errar, grite Burro!',
     abrir_app: 'Abrir o app', ver_youtube: 'Ver no YouTube', ultimos_videos: 'Últimos vídeos', clases: 'classes', ver_clase: 'Ver a classe', lista_videos: 'Lista de vídeos', pronto: 'Os vídeos desta classe estão no canal HAG Producciones.', tocar_usar: 'Toque para usar', en_vivo: 'app real, ao vivo', disp_android: 'Android', video: 'vídeo', videos: 'vídeos', certificaciones: 'Licenças e certificados', disp_celular: 'Celular', elegir_celular: 'Escolher celular', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Projetor', disp_tv: 'TV',
     proyectos: 'Projetos', viajes: 'Viagens', trabajos: 'Trabalhos', experiencia: 'Experiência', estudios: 'Formação', cv: 'Currículo',
     inicio: 'Início', contacto: 'Contato', menu_abrir: 'Abrir menu', menu_cerrar: 'Fechar menu', idioma: 'Idioma',
@@ -152,6 +157,7 @@ const T = {
     linkedin_cv: 'Ver no LinkedIn', arrastrar: 'Deslize para ver mais',
   },
   it: {
+    jugar: 'Gioca', reglamento: 'Regolamento', pantalla_completa: 'Schermo intero', juego_ayuda: 'Tocca la tua pila visibile o la riserva per prendere una tessera. Se un avversario sbaglia, grida Burro!',
     abrir_app: 'Apri l’app', ver_youtube: 'Guarda su YouTube', ultimos_videos: 'Ultimi video', clases: 'classi', ver_clase: 'Vedi la classe', lista_videos: 'Playlist dei video', pronto: 'I video di questa classe sono sul canale HAG Producciones.', tocar_usar: 'Tocca per usare', en_vivo: 'app reale, dal vivo', disp_android: 'Android', video: 'video', videos: 'video', certificaciones: 'Licenze e certificazioni', disp_celular: 'Telefono', elegir_celular: 'Scegli il telefono', disp_iphone: 'iPhone', disp_imac: 'PC', disp_proyector: 'Proiettore', disp_tv: 'TV',
     proyectos: 'Progetti', viajes: 'Viaggi', trabajos: 'Lavori', experiencia: 'Esperienza', estudios: 'Formazione', cv: 'Curriculum',
     inicio: 'Home', contacto: 'Contatti', menu_abrir: 'Apri menu', menu_cerrar: 'Chiudi menu', idioma: 'Lingua',

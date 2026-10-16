@@ -6,8 +6,8 @@
 <title>Burro · Juego de fichas</title>
 <style>
 :root{
-  --felt:#16573f; --felt2:#0c3326; --ink:#f4f1e8; --muted:#b9cdc1; --panel:rgba(0,0,0,.24);
-  --tile:#fbf7ec; --accent:#f2b134; --danger:#e0533d; --ok:#6fe08c;
+  --felt:#1d1e21; --felt2:#121315; --ink:#f2f0ec; --muted:#8e9096; --panel:rgba(255,255,255,.05);
+  --tile:#fbf7ec; --accent:#ff7a00; --danger:#e0533d; --ok:#6fe08c; --mesa:#174a37; --mesa2:#0e2f23;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -26,7 +26,7 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 /* rivales */
 #opps{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .seat{background:var(--panel);border-radius:14px;padding:8px 10px;min-width:160px;border:2px solid transparent;transition:border-color .2s,opacity .2s}
-.seat.turn{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,177,52,.18)}
+.seat.turn{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,0,.18)}
 .seat.finished{opacity:.55}
 .seat-name{font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .badge{font-size:.72rem;font-weight:600;background:rgba(255,255,255,.12);padding:2px 7px;border-radius:999px;white-space:nowrap}
@@ -50,7 +50,7 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .hint{outline:3px solid var(--ok);outline-offset:4px}
 
 /* mesa */
-.table{background:rgba(0,0,0,.16);border:2px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;min-height:130px}
+.table{background:radial-gradient(ellipse at 50% 40%,var(--mesa) 0%,var(--mesa2) 100%);border:2px solid rgba(255,255,255,.08);border-radius:18px;padding:12px;min-height:130px}
 #center{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
 .cpile{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;border-radius:10px}
 .cpile.done{opacity:.6}
@@ -89,7 +89,7 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
 .card input[type=text],.card select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #bbb;font:inherit}
 .card .check{display:flex;gap:8px;align-items:center;font-weight:500}
 .card .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
-.card button.primary{background:var(--danger);color:#fff}
+.card button.primary{background:var(--accent);color:#000}
 .card .rules h3{margin:16px 0 4px;font-size:1rem}
 .card .rules p,.card .rules li{font-size:.9rem;line-height:1.45}
 .rank{list-style:none;padding:0;font-size:1.05rem}
@@ -98,7 +98,11 @@ aside{background:var(--panel);border-radius:14px;padding:10px;max-height:calc(10
   .tile{width:48px;height:66px;font-size:1.5rem}
   .tile.small{width:38px;height:52px;font-size:1.1rem}
   #burro{width:96px;height:96px;font-size:1.05rem}
-  .seat{min-width:140px}
+  .seat{min-width:0;flex:1 1 135px;max-width:180px;padding:7px 8px}
+  .seat-name{flex-wrap:wrap;gap:2px 6px}
+  .piles{gap:6px}
+  header{padding:8px 12px}
+  .layout{padding:10px;gap:10px}
 }
 </style>
 </head>
@@ -232,7 +236,7 @@ let tileSeq = 0;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const rand = (a,b) => a + Math.random()*(b-a);
-const top = a => a[a.length-1];
+const ultima = a => a[a.length-1];
 const P = id => G.players[id];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
@@ -269,10 +273,10 @@ function nextActive(pid){
 }
 function centerTargets(n){
   if(n === 1) return ['new'];
-  return G.center.filter(c => top(c.tiles).n === n-1).map(c => c.id);
+  return G.center.filter(c => ultima(c.tiles).n === n-1).map(c => c.id);
 }
 function oppTargets(pid, n){
-  return G.players.filter(o => o.id !== pid && !o.finished && o.visible.length && Math.abs(top(o.visible).n - n) === 1).map(o => o.id);
+  return G.players.filter(o => o.id !== pid && !o.finished && o.visible.length && Math.abs(ultima(o.visible).n - n) === 1).map(o => o.id);
 }
 function hasMove(pid, n){ return centerTargets(n).length > 0 || oppTargets(pid, n).length > 0; }
 
@@ -331,7 +335,7 @@ function liftVisible(pid){
 
 function drawReserve(pid){
   const p = P(pid), t = G.turn;
-  const vt = top(p.visible);
+  const vt = ultima(p.visible);
   let inf = null;
   if(vt && hasMove(pid, vt.n)) inf = addInfraction(pid, `tomó de la reserva teniendo el ${vt.n} visible con jugada obligatoria`, null);
   if(!p.reserve.length){
@@ -434,14 +438,14 @@ function revertTile(pid, id){
   const p = P(pid);
   if(G.turn && G.turn.pid === pid && G.turn.held && G.turn.held.id === id) return; // se resuelve en penalize
   for(const c of G.center){
-    if(top(c.tiles).id === id){
+    if(ultima(c.tiles).id === id){
       const t = c.tiles.pop();
       if(!c.tiles.length) G.center = G.center.filter(x => x !== c);
       p.visible.push(t); log(`↩️ El ${t.n} vuelve a la pila visible de ${p.name}.`, 'sys'); return;
     }
   }
   for(const o of G.players){
-    if(o.id !== pid && o.visible.length && top(o.visible).id === id){
+    if(o.id !== pid && o.visible.length && ultima(o.visible).id === id){
       const t = o.visible.pop();
       p.visible.push(t); log(`↩️ El ${t.n} vuelve a la pila visible de ${p.name}.`, 'sys'); return;
     }
@@ -487,7 +491,7 @@ async function botTurn(pid, tid, gid){
   while(alive() && guard++ < 300){
     const t = G.turn;
     if(!t.held){
-      const vt = top(p.visible);
+      const vt = ultima(p.visible);
       const visOk = vt && hasMove(pid, vt.n);
       if(visOk && Math.random() >= D.mistake) liftVisible(pid);
       else if(!drawReserve(pid)){ endTurn(); return; }
@@ -536,14 +540,14 @@ function render(){
       hO = hC.length ? [] : oppTargets(0, held.n);
       hOwn = !hC.length && !hO.length;
     } else {
-      const vt = top(me.visible);
+      const vt = ultima(me.visible);
       if(vt && hasMove(0, vt.n)) hVis = true; else hRes = true;
     }
   }
 
   const bots = G.players.filter(p => !p.human);
   $('#opps').innerHTML = bots.length ? bots.map(p => {
-    const vt = top(p.visible), isT = turnPid === p.id, h = isT && G.turn.held;
+    const vt = ultima(p.visible), isT = turnPid === p.id, h = isT && G.turn.held;
     return `<div class="seat ${isT?'turn':''} ${p.finished?'finished':''}">
       <div class="seat-name"><span>${isT?'▶ ':''}🤖 ${esc(p.name)}</span><span class="badge">${p.finished ? placeLabel(p) : tilesOf(p)+' fichas'}</span></div>
       <div class="piles">
@@ -554,11 +558,11 @@ function render(){
   }).join('') : '<div class="solo">Modo solitario: no hay rivales ni «Burro».</div>';
 
   $('#center').innerHTML = G.center.map(c => {
-    const t = top(c.tiles), done = t.n === 15;
+    const t = ultima(c.tiles), done = t.n === 15;
     return `<div class="cpile ${done?'done':''} ${hC.includes(c.id)?'hint':''}" data-act="center" data-pile="${c.id}">${tileHTML(t)}<div class="lbl">${done?'completa':'pila '+c.id}</div></div>`;
   }).join('') + `<div class="cpile ${hC.includes('new')?'hint':''}" data-act="center" data-pile="new"><div class="tile empty">+ 1</div><div class="lbl">nueva pila</div></div>`;
 
-  const vt = top(me.visible);
+  const vt = ultima(me.visible);
   $('#meBox').classList.toggle('turn', myTurn);
   $('#me').innerHTML = `
     <div class="seat-name"><span>${myTurn?'▶ ':''}🙂 ${esc(me.name)}</span><span class="badge">${me.finished ? placeLabel(me) : tilesOf(me)+' fichas'}</span></div>
