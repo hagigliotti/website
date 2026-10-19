@@ -145,6 +145,96 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 #status{margin:10px auto 0;max-width:900px;text-align:center;font-size:.95rem;min-height:1.4em;text-shadow:0 1px 1px rgba(0,0,0,.6)}
 @media(max-width:520px){header{padding:8px 12px}}
 
+
+/* ===== mesas: madera o paño de casino, cada una con su diseño ===== */
+.mesa .deco,.mesa .logo{position:absolute;pointer-events:none}
+.mesa .deco{inset:0;border-radius:50%;overflow:hidden}
+.mesa .logo{left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;white-space:nowrap;margin-top:-18%}
+.mesa .logo span{font-family:var(--serif);font-weight:900;letter-spacing:.3em;font-size:46px;line-height:1}
+.mesa .logo small{font-family:var(--serif);font-size:13px;letter-spacing:.35em;text-transform:uppercase}
+.stage.P .mesa .logo span{font-size:30px}
+.stage.P .mesa .logo{margin-top:-62%}
+/* madera: logo grabado */
+.mesa.madera .logo span{color:rgba(40,20,6,.28);text-shadow:0 1px 0 rgba(255,220,170,.18)}
+.mesa.madera .logo small{color:rgba(40,20,6,.25)}
+/* paños: base común (textura de fieltro, luz de lámpara y baranda acolchada) */
+.mesa.pano{
+  --fieltro:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .32 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background:radial-gradient(ellipse at 50% 40%,rgba(255,240,210,.16),rgba(0,0,0,0) 58%),radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 58%,rgba(0,0,0,.5) 100%),var(--fieltro),var(--pano);
+  box-shadow:0 0 0 3px var(--hilo),0 0 0 5px rgba(0,0,0,.6),0 0 0 26px #1d130c,0 0 0 27px rgba(255,220,180,.10),0 0 0 31px #6b4320,0 0 0 37px #3a2210,0 30px 70px 20px rgba(0,0,0,.75),inset 0 0 50px rgba(0,0,0,.55)}
+.mesa.pano::after{display:none}
+.mesa.pano .deco::before,.mesa.pano .deco::after{content:"";position:absolute;border-radius:50%}
+/* verde: clásico de casino, doble línea dorada y estrellas */
+.mesa.verde{--pano:#0e5534;--hilo:#c9a25a}
+.mesa.verde .deco::before{inset:17%;border:2px solid rgba(214,180,100,.75);box-shadow:0 0 0 6px rgba(0,0,0,0),0 0 0 8px rgba(214,180,100,.45)}
+.mesa.verde .deco::after{inset:28%;border:1px dashed rgba(214,180,100,.35)}
+.mesa.verde .logo span{color:rgba(225,190,110,.55);text-shadow:0 2px 2px rgba(0,0,0,.35)}
+.mesa.verde .logo small{color:rgba(225,190,110,.5)}
+/* bordó: brocado (damasco) y anillo ornamental dorado */
+.mesa.bordo{--pano:#5e1020;--hilo:#d4ad62}
+.mesa.bordo .deco{background:
+  radial-gradient(circle at 50% 50%,rgba(0,0,0,0) 0 9px,rgba(0,0,0,.10) 10px 11px,rgba(0,0,0,0) 12px) 0 0/52px 52px,
+  radial-gradient(circle at 50% 50%,rgba(255,200,170,.07) 0 4px,rgba(0,0,0,0) 5px) 26px 26px/52px 52px,
+  radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 30%,rgba(0,0,0,.25) 75%)}
+.mesa.bordo .deco::before{inset:16%;border:3px double rgba(222,184,110,.7);box-shadow:inset 0 0 0 10px rgba(94,16,32,.65)}
+.mesa.bordo .deco::after{inset:19%;border:1px dotted rgba(222,184,110,.5)}
+.mesa.bordo .logo span{font-style:italic;letter-spacing:.12em;text-transform:none;color:rgba(240,215,170,.55)}
+.mesa.bordo .logo small{color:rgba(240,215,170,.45)}
+/* azul: rayos art déco y línea plateada */
+.mesa.azul{--pano:#123e78;--hilo:#c9d3e0}
+.mesa.azul .deco{background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.055) 0 4deg,rgba(255,255,255,0) 4deg 12deg);
+  -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 38%,rgba(0,0,0,.25) 70%,transparent 80%);mask:radial-gradient(ellipse at 50% 50%,#000 0 38%,rgba(0,0,0,.25) 70%,transparent 80%)}
+.mesa.azul .deco::before{inset:18%;border:2px solid rgba(220,230,245,.55);box-shadow:inset 0 0 0 5px rgba(18,62,120,.9),inset 0 0 0 6px rgba(220,230,245,.35)}
+.mesa.azul .logo span{font-family:"Futura","Century Gothic","Avenir",system-ui,sans-serif;font-weight:700;letter-spacing:.45em;color:rgba(225,235,250,.5)}
+.mesa.azul .logo small{color:rgba(225,235,250,.45)}
+/* negro: rombos finos dorados, elegante */
+.mesa.negro{--pano:#141414;--hilo:#b8924a}
+.mesa.negro .deco{background:
+  repeating-linear-gradient(45deg,rgba(201,162,90,.09) 0 1px,rgba(0,0,0,0) 1px 34px),
+  repeating-linear-gradient(-45deg,rgba(201,162,90,.09) 0 1px,rgba(0,0,0,0) 1px 34px);
+  -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%);mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%)}
+.mesa.negro .deco::before{inset:17%;border:1px solid rgba(201,162,90,.7);box-shadow:0 0 0 5px rgba(20,20,20,.95),0 0 0 6px rgba(201,162,90,.4)}
+.mesa.negro .logo span{color:rgba(214,178,105,.6);letter-spacing:.5em;font-weight:400}
+.mesa.negro .logo small{color:rgba(214,178,105,.5)}
+.mesa.pano ~ .centro .section-title{color:rgba(255,245,225,.6)}
+/* selector de mesa */
+.mesas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mesas button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;background:#fffaf0;border:2px solid #d8c3a0;border-radius:12px;font-size:.78rem;font-weight:600;color:#2f1c0c}
+.mesas button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,0,.25)}
+.mesas i{width:46px;height:30px;border-radius:50%;box-shadow:0 0 0 3px #3a2210,0 2px 4px rgba(0,0,0,.4)}
+.mesas [data-mesa=madera] i{background:linear-gradient(180deg,#7a4822,#4f2d13)}
+.mesas [data-mesa=verde] i{background:radial-gradient(#127045,#0b4429);box-shadow:0 0 0 2px #c9a25a,0 0 0 4px #1d130c}
+.mesas [data-mesa=bordo] i{background:radial-gradient(#7a1a2c,#4a0c18);box-shadow:0 0 0 2px #d4ad62,0 0 0 4px #1d130c}
+.mesas [data-mesa=azul] i{background:radial-gradient(#1a5199,#0d2f5c);box-shadow:0 0 0 2px #c9d3e0,0 0 0 4px #1d130c}
+.mesas [data-mesa=negro] i{background:radial-gradient(#262626,#0d0d0d);box-shadow:0 0 0 2px #b8924a,0 0 0 4px #1d130c}
+@media(max-width:480px){.mesas{grid-template-columns:repeat(3,1fr)}}
+.hsel{background:transparent;color:var(--ink);border:1px solid rgba(255,230,190,.35);border-radius:10px;padding:7px 8px;font:inherit;font-weight:600}
+.hsel option{color:#222}
+@media(max-width:560px){
+  header{flex-wrap:wrap;row-gap:6px}
+  h1{font-size:1.1rem}
+  .hbtns{gap:6px;flex-wrap:wrap}
+  .hbtns button,.hsel{padding:6px 9px;font-size:.85rem}
+}
+
+/* ===== dados para elegir al jugador mano ===== */
+.dados-card{max-width:760px}
+.dados-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:14px 0 4px}
+.dfila{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 1px #d8c3a0;transition:opacity .2s,box-shadow .2s}
+.dfila.fuera{opacity:.4}
+.dfila.gana{box-shadow:inset 0 0 0 2px var(--accent),0 0 0 3px rgba(255,122,0,.25);background:#fff4e2}
+.dfila.empate{box-shadow:inset 0 0 0 2px #b8860b}
+.dfila b{flex:1;font-family:var(--serif);font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dfila .suma{min-width:26px;text-align:right;font-family:var(--serif);font-weight:700;font-size:1.15rem;color:#8a3d00}
+.dado{width:34px;height:34px;border-radius:7px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:5px;
+  background:radial-gradient(circle at 35% 30%,#fff,#f1ebdd 70%,#ddd3bf);box-shadow:inset 0 -2px 3px rgba(0,0,0,.18),0 2px 3px rgba(0,0,0,.35)}
+.dado i{width:6px;height:6px;border-radius:50%;place-self:center;background:transparent}
+.dado i.on{background:#1f1a16;box-shadow:inset 0 1px 1px rgba(0,0,0,.6)}
+.dado.uno i.on{background:#b3121f;width:8px;height:8px}
+.dado.rueda{animation:rueda .16s linear infinite}
+@keyframes rueda{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(14deg) translateY(-3px)}100%{transform:rotate(0) translateY(0)}}
+#dadosMsg{margin:4px 0 0;font-size:.95rem}
+
 /* registro: hoja de papel */
 aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
@@ -186,6 +276,9 @@ aside .section-title{color:#7a5a36;text-shadow:none}
 <header>
   <h1><b>BURRO</b></h1>
   <div class="hbtns">
+    <select class="hsel" id="hMesa" aria-label="Mesa">
+      <option value="madera">Mesa de madera</option><option value="verde">Paño verde</option><option value="bordo">Paño bordó</option><option value="azul">Paño azul</option><option value="negro">Paño negro</option>
+    </select>
     <button class="ghost" data-act="rules">Reglas</button>
     <button class="ghost" data-act="setup">Nueva partida</button>
   </div>
@@ -195,7 +288,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
   <main class="board">
     <div class="sala" id="sala">
       <div class="stage" id="stage">
-        <div class="mesa" id="mesa"></div>
+        <div class="mesa madera" id="mesa"><div class="deco"></div><div class="logo"><span>BURRO</span><small>fichas del 1 al 15</small></div></div>
         <div class="centro" id="centro">
           <p class="section-title">Pilas centrales · del 1 al 15</p>
           <div id="center"></div>
@@ -239,10 +332,20 @@ aside .section-title{color:#7a5a36;text-shadow:none}
     <select id="fSpeed">
       <option value="lento">Lenta</option><option value="normal" selected>Normal</option><option value="rapido">Rápida</option>
     </select>
-    <label for="fMano">Jugador mano</label>
+    <label for="fMano">¿Quién empieza? (jugador mano)</label>
     <select id="fMano">
-      <option value="azar">Al azar (dado)</option><option value="yo">Empiezo yo</option>
+      <option value="dados" selected>Dados: cada uno tira dos dados y empieza el número más alto</option>
+      <option value="azar">Al azar</option>
+      <option value="yo">Yo</option>
     </select>
+    <label>Mesa</label>
+    <div class="mesas" id="fMesa">
+      <button type="button" data-mesa="madera"><i></i>Madera</button>
+      <button type="button" data-mesa="verde"><i></i>Verde</button>
+      <button type="button" data-mesa="bordo"><i></i>Bordó</button>
+      <button type="button" data-mesa="azul"><i></i>Azul</button>
+      <button type="button" data-mesa="negro"><i></i>Negro</button>
+    </div>
     <label class="check" style="color:#2f1c0c"><input type="checkbox" id="fLearn"> Modo aprendizaje (resalta jugadas válidas y avisa tus infracciones)</label>
     <div class="actions">
       <button type="button" data-act="rules">Ver reglas</button>
@@ -260,6 +363,8 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible pasa a ser la nueva reserva y la ficha de abajo queda descubierta como nueva ficha visible (regla 12). Si solo te queda una ficha y no tiene jugada, toca «pasar».</li>
+      <li>Para elegir quién empieza: «Yo», «Al azar» o «Dados». Con dados, cada jugador tira dos y empieza el número más alto; si hay empate, desempatan solo los igualados.</li>
+      <li>Puedes elegir la mesa (madera o paño verde, bordó, azul o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
       <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado. Quien no tiene reserva entrega la última ficha de su pila visible, dada vuelta; si era su única ficha, se queda sin fichas y gana la mano (o termina su ronda si alguien ya ganó).</li>
       <li>Tienes unos 4 segundos desde que un rival se equivoca para cantarle «¡Burro!», aunque ya haya terminado su turno. El siguiente jugador tiene además 5 segundos desde que el otro apoya su ficha.</li>
@@ -270,6 +375,16 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Las reglas 16 y 17 (entregar fichas de más, ayudar o distraer) son de la mesa real y no se aplican contra la computadora.</li>
     </ul>
     <div class="actions"><button class="primary" data-act="close-rules">Entendido</button></div>
+  </div>
+</div>
+
+<!-- Dados: quién empieza -->
+<div class="modal" id="dadosModal">
+  <div class="card dados-card">
+    <h2>🎲 ¿Quién empieza?</h2>
+    <p id="dadosMsg">Cada jugador tira dos dados. Empieza el que saque el número más alto; si hay empate, vuelven a tirar solo los empatados.</p>
+    <div class="dados-lista" id="dadosLista"></div>
+    <div class="actions"><button class="primary" id="dadosBtn" type="button">Tirar los dados</button></div>
   </div>
 </div>
 
@@ -313,6 +428,76 @@ const dice = (p, el, tu) => yo(p) ? tu : `${p.name} ${el}`;
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function newSet(){ return shuffle(Array.from({length:15},(_,i)=>({n:i+1,id:++tileSeq}))); }
 
+/* ---------- mesa elegida (se recuerda en este navegador) ---------- */
+const MESAS = {madera:'Mesa de madera', verde:'Paño verde', bordo:'Paño bordó', azul:'Paño azul', negro:'Paño negro'};
+const LOGO = {madera:'fichas del 1 al 15', verde:'★ fichas del 1 al 15 ★', bordo:'gran salón', azul:'— club de fichas —', negro:'· reservado ·'};
+let mesaActual = 'madera';
+try { const m = localStorage.getItem('burro.mesa'); if(MESAS[m]) mesaActual = m; } catch(_) {}
+function ponerMesa(m){
+  if(!MESAS[m]) return;
+  mesaActual = m;
+  try { localStorage.setItem('burro.mesa', m); } catch(_) {}
+  const el = $('#mesa');
+  el.className = 'mesa ' + m + (m === 'madera' ? '' : ' pano');
+  el.querySelector('.logo small').textContent = LOGO[m];
+  $('#hMesa').value = m;
+  document.querySelectorAll('#fMesa [data-mesa]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mesa === m));
+}
+
+/* ---------- dados: quién empieza ---------- */
+const PIPS = {1:[4], 2:[0,8], 3:[0,4,8], 4:[0,2,6,8], 5:[0,2,4,6,8], 6:[0,2,3,5,6,8]};
+const dadoHTML = (v, rueda=false) => `<div class="dado ${v===1?'uno':''} ${rueda?'rueda':''}">${Array.from({length:9},(_,i)=>`<i class="${PIPS[v].includes(i)?'on':''}"></i>`).join('')}</div>`;
+const d6 = () => 1 + Math.floor(Math.random()*6);
+function elegirManoConDados(alTerminar){
+  const gid = G.gameId, tiros = {};
+  let enJuego = G.players.map(p => p.id), ronda = 1, ganador = null, tirando = false;
+  const pintar = (rodando=false) => {
+    $('#dadosLista').innerHTML = G.players.map(p => {
+      const t = tiros[p.id], dentro = enJuego.includes(p.id);
+      const a = t ? t[0] : 1, b = t ? t[1] : 1;
+      const cls = ganador === p.id ? 'gana' : (!dentro ? 'fuera' : (enJuego.length > 1 && ronda > 1 ? 'empate' : ''));
+      return `<div class="dfila ${cls}"><b>${esc(p.name)}</b>${dadoHTML(a, rodando && dentro)}${dadoHTML(b, rodando && dentro)}<span class="suma">${t ? a + b : '·'}</span></div>`;
+    }).join('');
+  };
+  const btn = $('#dadosBtn');
+  btn.textContent = 'Tirar los dados'; btn.disabled = false;
+  $('#dadosMsg').textContent = 'Cada jugador tira dos dados. Empieza el que saque el número más alto; si hay empate, vuelven a tirar solo los empatados.';
+  pintar();
+  $('#dadosModal').classList.add('open');
+  btn.onclick = () => {
+    if(G.gameId !== gid || tirando) return;
+    if(ganador !== null){ $('#dadosModal').classList.remove('open'); btn.onclick = null; alTerminar(ganador); return; }
+    tirando = true; btn.disabled = true;
+    const fin = Date.now() + 1000;
+    const girar = () => {
+      enJuego.forEach(id => { tiros[id] = [d6(), d6()]; });
+      pintar(true);
+      if(Date.now() < fin) return setTimeout(girar, 90);
+      // resultado final
+      enJuego.forEach(id => { tiros[id] = [d6(), d6()]; });
+      const sumas = enJuego.map(id => tiros[id][0] + tiros[id][1]);
+      const max = Math.max(...sumas);
+      log(`🎲 ${ronda > 1 ? 'Desempate: ' : ''}` + enJuego.map(id => `${P(id).name} ${tiros[id][0]}+${tiros[id][1]}=${tiros[id][0]+tiros[id][1]}`).join(' · '), 'sys');
+      const empatados = enJuego.filter(id => tiros[id][0] + tiros[id][1] === max);
+      tirando = false; btn.disabled = false;
+      if(empatados.length > 1){
+        enJuego = empatados; ronda++;
+        pintar();
+        $('#dadosMsg').innerHTML = `Empate con <b>${max}</b> entre ${empatados.map(id => esc(P(id).name)).join(', ')}. Vuelven a tirar solo ellos.`;
+        btn.textContent = 'Desempatar';
+      } else {
+        ganador = empatados[0];
+        pintar();
+        $('#dadosMsg').innerHTML = `¡Empieza <b>${esc(P(ganador).name)}</b> con ${max}! Después sigue el de su izquierda, en sentido horario.`;
+        btn.textContent = 'Comenzar la partida';
+        log(`🎲 ${P(ganador).name} sacó el número más alto y es mano.`, 'sys');
+        render();
+      }
+    };
+    girar();
+  };
+}
+
 /* ---------- partida ---------- */
 function newGame(cfg){
   tileSeq = 0;
@@ -328,10 +513,14 @@ function newGame(cfg){
   let start = 0;
   if(cfg.mano === 'azar'){
     start = Math.floor(Math.random()*players.length);
-    log(`🎲 El dado elige como mano a ${P(start).name}.`, 'sys');
+    log(`🎲 Al azar: empieza ${P(start).name}.`, 'sys');
   }
   render();
   const gid = G.gameId;
+  if(cfg.mano === 'dados' && players.length > 1){
+    elegirManoConDados(ganador => { if(G.gameId === gid) setTimeout(() => { if(G.gameId === gid) startTurn(ganador); }, 500); });
+    return;
+  }
   setTimeout(() => { if(G.gameId === gid) startTurn(start); }, 900);
 }
 
@@ -925,8 +1114,14 @@ document.addEventListener('click', e => {
   else if(act === 'burro') humanBurro();
   else humanClick(act, el);
 });
+document.addEventListener('click', e => {
+  const b = e.target.closest('#fMesa [data-mesa]'); if(b) ponerMesa(b.dataset.mesa);
+});
+$('#hMesa').addEventListener('change', e => ponerMesa(e.target.value));
+ponerMesa(mesaActual);
 document.addEventListener('keydown', e => {
   if(e.target.matches('input,select,textarea')) return;
+  if($('#dadosModal').classList.contains('open')) return;
   if(e.key === 'b' || e.key === 'B'){ e.preventDefault(); humanBurro(); }
 });
 $('#setupForm').addEventListener('submit', e => {
