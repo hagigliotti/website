@@ -257,6 +257,8 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado. Quien no tiene reserva entrega la última ficha de su pila visible, dada vuelta; si era su única ficha, se queda sin fichas y gana la mano (o termina su ronda si alguien ya ganó).</li>
+      <li>Tienes unos 4 segundos desde que un rival se equivoca para cantarle «¡Burro!», aunque ya haya terminado su turno. El siguiente jugador tiene además 5 segundos desde que el otro apoya su ficha.</li>
+      <li>Si cantas una falta real pero tarde, no cuenta y no te penaliza. Si no hubo ninguna falta, es acusación falsa y el Burro eres tú.</li>
       <li>Si dos jugadores cantan «¡Burro!» casi al mismo tiempo por la misma falta, valen los dos gritos: nadie más es penalizado.</li>
       <li>Cada jugador tiene su lugar en la mesa y los turnos siguen el sentido horario: después de ti juega el de tu izquierda.</li>
       <li>La partida sigue hasta que queda un solo jugador con fichas: ese es el Burro.</li>
@@ -289,7 +291,8 @@ const DIFF = {
 };
 const SPEED = {lento:1400, normal:900, rapido:500};
 const WINDOW_NEXT = 5000; // ms que tiene el siguiente jugador para revisar la jugada anterior
-const SIMULTANEO = 1500;  // ms: quien canta «Burro» casi a la vez que otro por la misma falta, también acierta
+const SIMULTANEO = 2500;  // ms: quien canta «Burro» casi a la vez que otro por la misma falta, también acierta
+const REACCION = 4500;    // ms desde que ocurre la falta en que CUALQUIER rival puede cantarla, aunque el infractor ya haya terminado su turno
 
 let G = null;
 let tileSeq = 0;
@@ -455,7 +458,7 @@ function place(pid, target){
 
 /* ---------- infracciones y «Burro» ---------- */
 function addInfraction(pid, text, tileId){
-  const inf = {id:++G.infSeq, pid, text, tileId, turnId:G.turn.id, called:false};
+  const inf = {id:++G.infSeq, pid, text, tileId, turnId:G.turn.id, called:false, at:Date.now()};
   G.infractions.push(inf);
   if(G.cfg.learn && P(pid).human) toast(`⚠️ Infracción: ${text}. Te pueden cantar «Burro».`);
   const gid = G.gameId;
@@ -475,6 +478,7 @@ function addInfraction(pid, text, tileId){
 function callable(inf, cid){
   if(inf.called || inf.pid === cid) return false;
   if(G.turn && G.turn.id === inf.turnId) return true;              // la jugada sigue en curso
+  if(Date.now() - inf.at <= REACCION) return true;                 // recién ocurrida: cualquiera puede cantarla
   const L = G.lastTurn;                                             // excepción del siguiente jugador
   return !!(L && L.id === inf.turnId && Date.now() - L.endedAt <= WINDOW_NEXT && nextActive(inf.pid) === cid);
 }
@@ -484,9 +488,20 @@ function humanBurro(){
   const me = P(0);
   if(me.finished){ penalize(0, `${me.name} cantó «¡Burro!» habiendo ganado la mano: no puede acusar.`); return; }
   const inf = [...G.infractions].reverse().find(i => callable(i, 0));
-  if(inf) resolveBurro(0, inf);
-  else if(sumarseAlGrito(0)) return;
-  else penalize(0, `${me.name} cantó «¡Burro!» sin infracción válida: acusación falsa.`);
+  if(inf) return resolveBurro(0, inf);
+  if(sumarseAlGrito(0)) return;
+  // Hubo una falta, pero ya pasó el momento de reclamarla (regla 19): no vale, pero tampoco es acusación falsa.
+  const vieja = [...G.infractions].reverse().find(i => !i.called && i.pid !== 0 && Date.now() - i.at <= 20000);
+  if(vieja){
+    toast(`Llegaste tarde: la falta de ${P(vieja.pid).name} había que cantarla enseguida. No cuenta, pero no te penaliza.`);
+    log(`⏱ Tú cantaste «¡Burro!» tarde: la falta de ${P(vieja.pid).name} ya no se puede reclamar.`, 'sys');
+    vieja.called = true;
+    render();
+    return;
+  }
+  const g = G.ultimoGrito;
+  const extra = g && Date.now() - g.at < 8000 ? ` (la falta de ${P(g.pid).name} ya se había cantado y penalizado)` : '';
+  penalize(0, `${me.name} cantó «¡Burro!» sin infracción válida: acusación falsa${extra}.`);
 }
 
 // Si otro ya cantó «Burro» por esa falta hace un instante, el grito también vale: es la misma falta
