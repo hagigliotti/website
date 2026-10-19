@@ -43,6 +43,7 @@ const CLAVES = {
   emblema: /^(emblema|logo)$/i,
   reproductor: /^(reproductor|player|m[uú]sica)$/i,
   juego: /^(juego|game|jeu|spiel|gioco|jogo)$/i,
+  ayuda: /^(ayuda|help|aide|hilfe|aiuto|ajuda)$/i,
 };
 const DISPOSITIVOS = ['celular', 'android', 'iphone', 'imac', 'proyector', 'tv'];
 
@@ -60,7 +61,7 @@ function bloquesPorIdioma(texto) {
 
 // Info.txt: primeras líneas opcionales "Título: …", "Fecha: …", "Enlace: …", "Portada: …"; el resto es la descripción.
 function parsearInfo(texto, idiomaArchivo) {
-  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '' };
+  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {} };
   const bloques = bloquesPorIdioma(texto);
   for (const [lang, contenido] of Object.entries(bloques)) {
     const destino = idiomaArchivo && lang === '_' ? idiomaArchivo : lang;
@@ -72,7 +73,7 @@ function parsearInfo(texto, idiomaArchivo) {
       const m = l.match(/^([^:]{2,20}):\s*(.+)$/);
       const clave = m && Object.keys(CLAVES).find((k) => CLAVES[k].test(m[1].trim()));
       if (!clave || /^https?$/i.test(m[1])) break;
-      if (clave === 'titulo') info.titulo[destino] = m[2].trim();
+      if (clave === 'titulo' || clave === 'ayuda') info[clave][destino] = m[2].trim();
       else if (clave === 'demo') {
         const disp = (m[1].trim().split(/\s+/)[1] || '_').toLowerCase().replace('projector', 'proyector');
         info.demo[disp] = m[2].trim();
@@ -133,7 +134,7 @@ async function esParte(abs) {
 async function leerCarpeta(seccion, carpeta, profundidad = 0) {
   const rel = `${seccion}/${carpeta}`;
   const dirAbs = join(RAIZ, rel);
-  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', fotos: {}, archivos: [], partes: [], subido: '' };
+  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {}, fotos: {}, archivos: [], partes: [], subido: '' };
   const subPartes = [];
   if (profundidad === 0) {
     for (const e of (await readdir(dirAbs, { withFileTypes: true })).sort((a, b) => ordenar(a.name, b.name))) {
@@ -151,6 +152,7 @@ async function leerCarpeta(seccion, carpeta, profundidad = 0) {
       const info = parsearInfo(await readFile(a.abs, 'utf8'), idiomaArch && idiomaArch.toLowerCase());
       Object.assign(item.titulo, info.titulo);
       Object.assign(item.texto, info.texto);
+      Object.assign(item.ayuda, info.ayuda);
       for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto', 'reproductor', 'emblema', 'juego']) if (info[k]) item[k] = info[k];
       if (info.videos.length) item.videos = info.videos;
       if (info.directo) item.directo = true;

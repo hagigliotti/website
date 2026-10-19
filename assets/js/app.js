@@ -573,7 +573,7 @@ function vistaJuego(seccion, it) {
         <iframe class="juego__pantalla" src="${esc(src)}" title="${esc(tituloDe(it))}" loading="lazy" allow="fullscreen"></iframe>
       </div>
       <div class="juego__barra">
-        <span>${esc(t('juego_ayuda'))}</span>
+        <span>${esc(L(it.ayuda) || t('juego_ayuda'))}</span>
         <a class="boton boton--sec" href="${esc(src)}" target="_blank" rel="noopener">${esc(t('pantalla_completa'))} ${icono('flecha')}</a>
       </div>
     </section>

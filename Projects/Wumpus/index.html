@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="es">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HGH08LDQGS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HGH08LDQGS');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La cueva del Wumpus · Juego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: cueva a la izquierda, mochila y controles a la derecha; en teléfono se apila. Look único: cueva de noche a la luz de una antorcha. */
+:root{
+  color-scheme: dark;
+  --rock:#1a1511;
+  --rock-2:#241d17;
+  --rock-3:#2f261e;
+  --line:#3d3228;
+  --text:#efe4d2;
+  --muted:#a8977f;
+  --torch:#e8a33d;
+  --wind:#86b9cf;
+  --smell:#b5b04e;
+  --glow:#f4cf5a;
+  --danger:#e06650;
+  --safe:#7fbf8a;
+  --f-display:"Pirata One", "Georgia", serif;
+  --f-body:"Alegreya Sans", "Trebuchet MS", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--rock);color:var(--text)}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{font-family:var(--f-body);font-size:16px;line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 40px;}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(2rem,6vw,3rem);line-height:1;margin:0;color:var(--torch);letter-spacing:.01em}
+.sub{color:var(--muted);margin:4px 0 0;font-size:.95rem}
+.levels{display:flex;flex-wrap:wrap;gap:6px}
+.levels button,.btn{font:inherit;font-size:.92rem;font-weight:500;color:var(--text);background:var(--rock-2);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+.levels button[aria-pressed="true"]{background:var(--torch);color:#22180c;border-color:var(--torch)}
+.btn:hover,.levels button:hover{border-color:var(--torch)}
+.btn:disabled{opacity:.4;cursor:not-allowed;border-color:var(--line)}
+.btn.on{background:var(--torch);color:#22180c;border-color:var(--torch)}
+button:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+.game{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){.game{grid-template-columns:minmax(0,1fr)}}
+
+.boardbox{position:relative;width:100%;max-width:560px}
+.board{position:relative;display:grid;grid-template-columns:repeat(var(--n),1fr);gap:2px;padding:10px;width:100%;border-radius:14px;
+  background-color:#0b0907;
+  background-image:radial-gradient(circle at 12% 18%,#2a2119 0 6%,transparent 7%),radial-gradient(circle at 88% 30%,#241c15 0 5%,transparent 6%),radial-gradient(circle at 70% 92%,#2a2119 0 7%,transparent 8%),radial-gradient(circle at 20% 85%,#211a14 0 4%,transparent 5%),linear-gradient(160deg,#1d1712,#0b0907 60%);
+  box-shadow:inset 0 0 0 2px #2c231b,inset 0 0 40px #000,0 10px 30px rgba(0,0,0,.5)}
+.light{position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:4;mix-blend-mode:multiply}
+.cell{position:relative;aspect-ratio:1;max-width:100%;border:0;border-radius:3px;background-color:#090706;padding:0;cursor:default;font:inherit;color:var(--text);overflow:hidden}
+.cell.notable{cursor:pointer}
+.cell.seen{background-color:#3a2e23;box-shadow:inset 0 0 12px rgba(0,0,0,.55)}
+.cell.mem{background-color:#2a211a;box-shadow:inset 0 0 14px rgba(0,0,0,.7)}
+.cell.hint{background-color:#1a140f;box-shadow:inset 0 0 0 1px rgba(232,163,61,.22),inset 0 0 14px rgba(0,0,0,.8)}
+.cell.here{background-color:#4a3726;box-shadow:inset 0 0 0 2px var(--torch),inset 0 0 18px rgba(255,170,60,.35)}
+.cell.entry .door{position:absolute;inset:0;pointer-events:none}
+.fx,.obj{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.obj{z-index:2}
+.cell.hint .fx{opacity:.55}
+.cell.mem .fx{opacity:.45}
+.chips{position:absolute;top:3px;left:3px;display:flex;gap:2px;z-index:3}
+.chip{width:clamp(9px,2.2vw,13px);height:clamp(9px,2.2vw,13px);border-radius:50%;box-shadow:0 0 0 1.5px rgba(0,0,0,.6)}
+.chip.v{background:var(--wind)} .chip.o{background:var(--smell)} .chip.r{background:var(--glow)}
+.hunter{position:absolute;inset:0;z-index:5}
+.hunter.dead{filter:grayscale(1) brightness(.6)}
+@media (prefers-reduced-motion:no-preference){
+  .fx-wind g{animation:wind 2.2s linear infinite}
+  .fx-wind g path:nth-child(2){animation-delay:-.7s}
+  @keyframes wind{0%{transform:translateX(-14px);opacity:0}30%{opacity:1}100%{transform:translateX(14px);opacity:0}}
+  .fx-smell g path{animation:smell 2.8s ease-in-out infinite}
+  .fx-smell g path:nth-child(2){animation-delay:-1s}.fx-smell g path:nth-child(3){animation-delay:-1.9s}
+  @keyframes smell{0%{transform:translateY(10px);opacity:0}40%{opacity:.95}100%{transform:translateY(-12px);opacity:0}}
+  .fx-glow{animation:pulse 2.4s ease-in-out infinite}
+  .rays{transform-box:view-box;transform-origin:50% 50%;animation:spin 16s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .mote{animation:mote 3.2s ease-in-out infinite}
+  @keyframes mote{0%{transform:translateY(6px);opacity:0}30%{opacity:1}100%{transform:translateY(-34px);opacity:0}}
+  @keyframes pulse{50%{opacity:.7}}
+  .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flick .3s ease-in-out infinite alternate}
+  @keyframes flick{to{transform:scale(1.1,.88) skewX(-5deg)}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 1.6s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.4);opacity:.3}50%{transform:scale(1);opacity:1}}
+  .wum-eyes{animation:blink 4s infinite}
+  @keyframes blink{0%,94%,100%{opacity:1}96%{opacity:0}}
+  .cell.mem .fx *{animation:none}
+}
+.legendcell{position:relative;display:inline-block;width:38px;height:38px;border-radius:4px;background:#3a2e23;overflow:hidden;flex:none}
+.note{position:absolute;right:3px;bottom:2px;font-weight:700;font-size:clamp(.6rem,2vw,.85rem);z-index:2}
+.note.p{color:var(--wind)} .note.w{color:var(--danger)} .note.t{color:var(--glow)} .note.s{color:var(--safe)}
+.blindcover{position:absolute;inset:0;border-radius:10px;background:#050403;display:grid;place-items:center;text-align:center;padding:20px;color:var(--muted);z-index:5}
+.blindcover strong{display:block;font-family:var(--f-display);font-weight:400;font-size:1.8rem;color:var(--danger)}
+.over{position:absolute;inset:auto 8px 8px 8px;z-index:6;background:rgba(15,12,9,.94);border:1px solid var(--torch);border-radius:8px;padding:12px 14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.over p{margin:0;font-weight:500}
+.over .big{font-family:var(--f-display);font-size:1.5rem;color:var(--torch);display:block}
+
+.panel{display:flex;flex-direction:column;gap:16px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.stat{background:var(--rock-2);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+.stat span{display:block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stat b{font-size:1.1rem;font-variant-numeric:tabular-nums}
+.controls{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.pad{display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:4px}
+.pad button{font-size:1.3rem}
+.pad .u{grid-column:2;grid-row:1}.pad .l{grid-column:1;grid-row:2}.pad .r{grid-column:3;grid-row:2}.pad .d{grid-column:2;grid-row:3}
+.pad .c{grid-column:2;grid-row:2;display:grid;place-items:center;font-size:.7rem;color:var(--muted);text-align:center;line-height:1.1}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.aim{font-size:.88rem;color:var(--torch);min-height:1.3em;margin:0}
+h2{font-family:var(--f-display);font-weight:400;font-size:1.3rem;margin:0 0 6px;color:var(--text)}
+.notes{display:flex;flex-wrap:wrap;gap:6px}
+.notes .btn{font-size:.85rem;padding:5px 9px}
+.timers{display:flex;flex-direction:column;gap:5px}
+.tbar{display:grid;grid-template-columns:90px 1fr;gap:8px;align-items:center;font-size:.85rem;color:var(--muted)}
+.tbar i{display:block;height:8px;border-radius:4px;background:var(--rock-3);overflow:hidden}
+.tbar i b{display:block;height:100%;width:0;background:var(--danger)}
+.log{list-style:none;margin:0;padding:0;max-height:220px;overflow-y:auto;border-top:1px solid var(--line)}
+.log li{padding:6px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.log li:first-child{color:var(--text);font-weight:500}
+.log li:not(:first-child){color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+details{background:var(--rock-2);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+summary{cursor:pointer;font-weight:700}
+details ul{margin:8px 0 0;padding-left:18px;color:var(--muted)}
+details li{margin:3px 0}
+@media (prefers-reduced-motion:no-preference){.cell{transition:background .25s}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<radialGradient id="gGlow"><stop offset="0" stop-color="#ffe58a" stop-opacity=".6"/><stop offset=".6" stop-color="#ffd25a" stop-opacity=".2"/><stop offset="1" stop-color="#ffd25a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gPit" cx=".5" cy=".55"><stop offset="0" stop-color="#000"/><stop offset=".6" stop-color="#050302"/><stop offset="1" stop-color="#2b2016"/></radialGradient>
+<radialGradient id="gSmell"><stop offset="0" stop-color="#9da336" stop-opacity=".35"/><stop offset="1" stop-color="#9da336" stop-opacity="0"/></radialGradient>
+<linearGradient id="gFur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4a86"/><stop offset="1" stop-color="#3e2550"/></linearGradient>
+<linearGradient id="gDead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6d6660"/><stop offset="1" stop-color="#3d3833"/></linearGradient>
+<linearGradient id="gCape" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c7d58"/><stop offset="1" stop-color="#2c4f35"/></linearGradient>
+<radialGradient id="gRay" gradientUnits="userSpaceOnUse" cx="50" cy="50" r="50"><stop offset="0" stop-color="#fff2b0" stop-opacity=".9"/><stop offset=".45" stop-color="#ffd45e" stop-opacity=".35"/><stop offset="1" stop-color="#ffc840" stop-opacity="0"/></radialGradient>
+<radialGradient id="gHalo"><stop offset="0" stop-color="#fff6cf" stop-opacity=".75"/><stop offset=".35" stop-color="#ffd860" stop-opacity=".35"/><stop offset=".7" stop-color="#f0a830" stop-opacity=".12"/><stop offset="1" stop-color="#f0a830" stop-opacity="0"/></radialGradient>
+<radialGradient id="gCoin" cx=".35" cy=".35"><stop offset="0" stop-color="#fff6c4"/><stop offset=".45" stop-color="#f2c94c"/><stop offset="1" stop-color="#a8740f"/></radialGradient>
+<linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a6531"/><stop offset="1" stop-color="#5a3517"/></linearGradient>
+<linearGradient id="gLid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a170b"/><stop offset="1" stop-color="#4a2c15"/></linearGradient>
+<linearGradient id="gBand" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8862a"/><stop offset=".5" stop-color="#ffe08a"/><stop offset="1" stop-color="#b8862a"/></linearGradient>
+</defs></svg>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>La cueva del Wumpus</h1>
+      <p class="sub">Entrá, encontrá el oro y volvé a la entrada con vida.</p>
+    </div>
+    <div class="levels" id="levels" role="group" aria-label="Nivel"></div>
+  </header>
+
+  <div class="game">
+    <div class="boardbox" id="boardbox">
+      <div class="board" id="board" role="grid" aria-label="Cueva"></div>
+    </div>
+
+    <div class="panel">
+      <div class="stats">
+        <div class="stat"><span>Flechas</span><b id="sArrows">3</b></div>
+        <div class="stat"><span>Oro</span><b id="sGold">No</b></div>
+        <div class="stat"><span>Pasos</span><b id="sMoves">0</b></div>
+        <div class="stat"><span>Antorcha</span><b id="sTorch">Sí</b></div>
+      </div>
+
+      <div class="controls">
+        <div class="pad">
+          <button class="btn u" data-dir="u" aria-label="Arriba">↑</button>
+          <button class="btn l" data-dir="l" aria-label="Izquierda">←</button>
+          <div class="c" id="padLabel">mover</div>
+          <button class="btn r" data-dir="r" aria-label="Derecha">→</button>
+          <button class="btn d" data-dir="d" aria-label="Abajo">↓</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <div class="actions">
+            <button class="btn" id="bArrow">Disparar flecha</button>
+            <button class="btn" id="bSword">Usar espada</button>
+            <button class="btn" id="bGrab">Agarrar oro</button>
+            <button class="btn" id="bExit">Salir de la cueva</button>
+          </div>
+          <p class="aim" id="aim"></p>
+        </div>
+      </div>
+
+      <div id="notesBox">
+        <h2>Notas</h2>
+        <div class="notes" id="notes">
+          <button class="btn" data-note="p">Posible pozo</button>
+          <button class="btn" data-note="w">Posible Wumpus</button>
+          <button class="btn" data-note="t">Posible oro</button>
+          <button class="btn" data-note="s">Segura</button>
+          <button class="btn" data-note="x">Borrar</button>
+        </div>
+      </div>
+
+      <div id="timersBox" hidden>
+        <h2>Peligro por quedarte quieto</h2>
+        <div class="timers">
+          <div class="tbar"><span>Sueño (olor)</span><i><b id="tO"></b></i></div>
+          <div class="tbar"><span>Viento</span><i><b id="tV"></b></i></div>
+          <div class="tbar"><span>Ceguera</span><i><b id="tR"></b></i></div>
+        </div>
+      </div>
+
+      <div>
+        <h2>Lo que sentís</h2>
+        <ul class="log" id="log" aria-live="polite"></ul>
+      </div>
+
+      <div class="legend">
+        <span id="lgV"></span>
+        <span id="lgO"></span>
+        <span id="lgR"></span>
+      </div>
+
+      <details id="rules">
+        <summary>Reglas de este nivel</summary>
+        <ul id="rulesList"></ul>
+      </details>
+      <button class="btn" id="bNew">Nueva cueva</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LEVELS = {
+  tutorial:{name:'Muy fácil', opts:[{n:4,pits:[1,1],wum:[1,1]},{n:5,pits:[1,1],wum:[1,1]}], vision:'all', maxTypes:1, wmove:null, prob:0, timers:false, notes:true, sword:1},
+  facil:{name:'Fácil', opts:[{n:5,pits:[2,2],wum:[1,1]},{n:6,pits:[2,3],wum:[1,1]}], vision:'cross', maxTypes:1, wmove:null, prob:0, timers:false, notes:true, sword:1},
+  medio:{name:'Intermedio', opts:[{n:6,pits:[3,4],wum:[1,1]}], vision:'self', maxTypes:2, wmove:'fall', prob:.35, timers:false, notes:false, sword:1},
+  dificil:{name:'Difícil', opts:[{n:5,pits:[4,5],wum:[2,2]},{n:7,pits:[5,6],wum:[2,2]}], vision:'self', maxTypes:3, wmove:'avoid', prob:.5, timers:false, notes:false, sword:.5},
+  muy:{name:'Muy difícil', opts:[{n:7,pits:[7,8],wum:[2,3]},{n:8,pits:[8,9],wum:[3,3]}], vision:'self', maxTypes:3, wmove:'avoid', prob:.6, timers:true, notes:false, sword:.5}
+};
+const LIMITS = {o:10, v:8, r:6}; // segundos
+const DIRS = {u:[0,-1], d:[0,1], l:[-1,0], r:[1,0]};
+const DIRNAME = {u:'arriba', d:'abajo', l:'a la izquierda', r:'a la derecha'};
+
+const SVG = {
+  wind:'<svg class="fx fx-wind" viewBox="0 0 100 100"><g fill="none" stroke="#a9d6ea" stroke-width="4" stroke-linecap="round"><path d="M8 28 q18 -10 36 0 t36 -2"/><path d="M4 50 q20 -10 42 0 q16 7 28 -1 q8 -7 0 -12 q-6 -3 -10 3"/><path d="M12 74 q18 -9 36 0 t34 -3"/></g></svg>',
+  smell:'<svg class="fx fx-smell" viewBox="0 0 100 100"><circle cx="50" cy="60" r="48" fill="url(#gSmell)"/><g fill="none" stroke="#c3cc4e" stroke-width="4.5" stroke-linecap="round"><path d="M28 94 c-10 -12 10 -20 0 -34 c-8 -12 8 -20 2 -32"/><path d="M52 96 c-10 -12 10 -20 0 -34 c-8 -12 8 -22 2 -34"/><path d="M76 94 c-10 -12 10 -20 0 -34 c-8 -12 8 -20 2 -30"/></g></svg>',
+  glow:'<svg class="fx fx-glow" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="url(#gHalo)"/><g class="rays" fill="url(#gRay)">'+[0,30,60,90,120,150,180,210,240,270,300,330].map((a,i)=>'<path transform="rotate('+a+' 50 50)" d="M48.5 50 L50 '+(i%2?14:4)+' L51.5 50z"/>').join('')+'</g><g fill="#fff3b8"><circle class="mote" cx="30" cy="70" r="1.8"/><circle class="mote" style="animation-delay:-1.1s" cx="68" cy="76" r="1.4"/><circle class="mote" style="animation-delay:-2.2s" cx="56" cy="64" r="1.2"/><circle class="mote" style="animation-delay:-.5s" cx="40" cy="80" r="1.2"/><circle class="mote" style="animation-delay:-1.7s" cx="74" cy="60" r="1.6"/></g><path class="spark" d="M50 36 Q51.5 48.5 64 50 Q51.5 51.5 50 64 Q48.5 51.5 36 50 Q48.5 48.5 50 36z" fill="#fffbe6"/></svg>',
+  pit:'<svg class="obj" viewBox="0 0 100 100"><ellipse cx="50" cy="56" rx="42" ry="32" fill="#57463a"/><ellipse cx="50" cy="56" rx="36" ry="26" fill="url(#gPit)"/><path d="M18 48 q32 -14 64 0" fill="none" stroke="#7a6452" stroke-width="2"/><g fill="#76624f" stroke="#3a2e24" stroke-width="1.5"><ellipse cx="14" cy="52" rx="6" ry="5"/><ellipse cx="86" cy="58" rx="7" ry="5"/><ellipse cx="28" cy="82" rx="5" ry="4"/><ellipse cx="70" cy="84" rx="6" ry="4"/><ellipse cx="52" cy="26" rx="5" ry="4"/></g></svg>',
+  gold:'<svg class="obj" viewBox="0 0 100 100"><circle cx="50" cy="52" r="48" fill="url(#gHalo)"/><ellipse cx="50" cy="89" rx="34" ry="6" fill="#000" opacity=".45"/>'
+    +'<path d="M20 58 L25 30 Q50 20 75 30 L80 58z" fill="url(#gLid)" stroke="#2a170b" stroke-width="2" stroke-linejoin="round"/><path d="M25 30 Q50 20 75 30" fill="none" stroke="url(#gBand)" stroke-width="3"/>'
+    +'<g stroke="#8a5d10" stroke-width="1.2"><ellipse cx="34" cy="54" rx="9" ry="4" fill="url(#gCoin)"/><ellipse cx="66" cy="54" rx="9" ry="4" fill="url(#gCoin)"/><ellipse cx="50" cy="50" rx="10" ry="4.5" fill="url(#gCoin)"/><ellipse cx="42" cy="46" rx="8" ry="3.5" fill="url(#gCoin)"/><ellipse cx="58" cy="45" rx="8" ry="3.5" fill="url(#gCoin)"/><ellipse cx="50" cy="40" rx="7" ry="3" fill="url(#gCoin)"/></g>'
+    +'<path d="M36 44 l5 -5 5 5 -5 6z" fill="#e0344a" stroke="#7a1020" stroke-width="1"/><path d="M38 43 l3 -3" stroke="#ffc2cc" stroke-width="1.2"/><path d="M60 40 l4 -4 4 4 -4 5z" fill="#3ba3e0" stroke="#124a70" stroke-width="1"/>'
+    +'<rect x="20" y="56" width="60" height="30" rx="3" fill="url(#gWood)" stroke="#3a2210" stroke-width="2"/><path d="M20 66 h60 M20 76 h60" stroke="#4a2c15" stroke-width="1" opacity=".6"/>'
+    +'<rect x="27" y="56" width="5" height="30" fill="url(#gBand)"/><rect x="68" y="56" width="5" height="30" fill="url(#gBand)"/><rect x="20" y="56" width="60" height="4" fill="url(#gBand)"/>'
+    +'<rect x="44" y="62" width="12" height="13" rx="2" fill="url(#gBand)" stroke="#7a5108" stroke-width="1.2"/><circle cx="50" cy="67" r="2" fill="#3a2210"/><path d="M50 68 v4" stroke="#3a2210" stroke-width="1.6"/>'
+    +'<g stroke="#8a5d10" stroke-width="1"><ellipse cx="84" cy="84" rx="5" ry="2.4" fill="url(#gCoin)"/><ellipse cx="15" cy="86" rx="5" ry="2.4" fill="url(#gCoin)"/><ellipse cx="88" cy="80" rx="4" ry="2" fill="url(#gCoin)"/></g>'
+    +'<path class="spark" d="M74 18 Q75 25 82 26 Q75 27 74 34 Q73 27 66 26 Q73 25 74 18z" fill="#fffbe6"/><path class="spark" style="animation-delay:-.8s" d="M26 24 Q27 29 32 30 Q27 31 26 36 Q25 31 20 30 Q25 29 26 24z" fill="#fffbe6"/><path class="spark" style="animation-delay:-.4s" d="M52 30 Q52.6 33 56 34 Q52.6 35 52 38 Q51.4 35 48 34 Q51.4 33 52 30z" fill="#fffbe6"/></svg>',
+  door:'<svg class="door" viewBox="0 0 100 100"><path d="M0 100 V58 q0 -26 26 -26 q26 0 26 26 V100" fill="none" stroke="#a8977f" stroke-width="3" stroke-dasharray="5 4" opacity=".7"/><path d="M8 100 V60 q0 -18 18 -18 q18 0 18 18 V100z" fill="#e8a33d" opacity=".12"/></svg>'
+};
+function wumpusSVG(dead){
+  const fur = dead ? 'url(#gDead)' : 'url(#gFur)';
+  const eyes = dead
+    ? '<g stroke="#1b1512" stroke-width="3.5" stroke-linecap="round"><path d="M33 37 l10 10 M43 37 l-10 10 M57 37 l10 10 M67 37 l-10 10"/></g>'
+    : '<g class="wum-eyes"><ellipse cx="38" cy="42" rx="8" ry="7" fill="#fff3c0"/><ellipse cx="62" cy="42" rx="8" ry="7" fill="#fff3c0"/><circle cx="39" cy="43" r="4" fill="#d0242a"/><circle cx="61" cy="43" r="4" fill="#d0242a"/><circle cx="38" cy="42" r="1.5" fill="#000"/><circle cx="60" cy="42" r="1.5" fill="#000"/></g>';
+  const brows = dead ? '' : '<path d="M28 32 l15 6 M72 32 l-15 6" stroke="#1d0f27" stroke-width="3.5" stroke-linecap="round"/>';
+  const mouth = dead
+    ? '<path d="M36 64 q14 -6 28 0" fill="none" stroke="#1b1512" stroke-width="3" stroke-linecap="round"/>'
+    : '<path d="M30 56 q20 22 40 0 q-20 7 -40 0z" fill="#2a0d12" stroke="#1d0f27" stroke-width="1.5"/><path d="M33 57 l3 6 3 -5 3 7 3 -6 3 7 3 -7 3 7 3 -6 3 7 3 -6 3 6 3 -5" fill="#f3ecd8" stroke="#f3ecd8" stroke-width="1" stroke-linejoin="round"/>';
+  return '<svg class="obj" viewBox="0 0 100 100"><ellipse cx="50" cy="90" rx="30" ry="6" fill="#000" opacity=".45"/>'
+    + '<path d="M26 36 q-14 -6 -14 -22 q10 8 22 12z M74 36 q14 -6 14 -22 q-10 8 -22 12z" fill="'+(dead?'#8a827a':'#e2d6b8')+'" stroke="#3a2e24" stroke-width="1.5"/>'
+    + '<path d="M50 16 c-20 0 -35 16 -35 37 c0 11 3 21 9 29 l5 -6 l4 8 l6 -7 l5 8 l6 -8 l6 8 l6 -8 l5 7 l4 -8 l6 6 c5 -8 8 -18 8 -29 c0 -21 -15 -37 -35 -37z" fill="'+fur+'" stroke="#1d0f27" stroke-width="2.5" stroke-linejoin="round"/>'
+    + '<path d="M30 26 l4 6 M42 20 l2 6 M58 20 l-2 6 M70 26 l-4 6 M22 52 l6 1 M78 52 l-6 1" stroke="'+(dead?'#2b2724':'#2c1a38')+'" stroke-width="2" stroke-linecap="round"/>'
+    + brows + eyes + mouth + '</svg>';
+}
+function hunterSVG(opts){
+  const torch = opts.blind ? '' : '<g class="flame"><path d="M80 27 c-9 -6 -5 -17 2 -24 c0 9 9 11 4 22 c-2 3 -4 3 -6 2z" fill="#f2862b"/><path d="M81 25 c-4 -3 -2 -9 1 -13 c1 6 5 7 1 13z" fill="#ffe58a"/></g>';
+  const sack = opts.gold ? '<g><path d="M26 70 q-4 14 8 16 q12 -2 8 -16 q-8 -4 -16 0z" fill="#8a5a2b" stroke="#4a2f14" stroke-width="1.5"/><circle cx="34" cy="68" r="4" fill="#f4cf5a"/><circle cx="30" cy="70" r="3" fill="#e9b937"/></g>' : '';
+  return '<svg class="obj" viewBox="0 0 100 100"><ellipse cx="50" cy="93" rx="22" ry="5" fill="#000" opacity=".45"/>'
+    + '<path d="M31 24 q-16 30 4 62" fill="none" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round"/><path d="M31 24 L35 86" stroke="#e8dcc0" stroke-width="1.2"/>'
+    + '<g stroke="#5a3a1c" stroke-width="2"><path d="M60 30 l4 -12 M64 31 l6 -10"/></g><path d="M58 32 l10 0 l-2 16 l-8 0z" fill="#6b4423"/>'
+    + '<path d="M33 50 q17 -9 34 0 l7 38 h-48z" fill="url(#gCape)" stroke="#1c3322" stroke-width="2" stroke-linejoin="round"/>'
+    + '<rect x="31" y="66" width="38" height="5" rx="1" fill="#6b4423"/><rect x="47" y="65.5" width="6" height="6" fill="#d9b25a"/>'
+    + '<path d="M63 64 l14 22" stroke="#d3dbe2" stroke-width="3.5" stroke-linecap="round"/><path d="M59 63 l8 -3" stroke="#6b4423" stroke-width="3.5" stroke-linecap="round"/>'
+    + '<path d="M36 38 q14 -30 28 0 q-2 10 -14 12 q-12 -2 -14 -12z" fill="#2f5038" stroke="#1c3322" stroke-width="2"/>'
+    + '<ellipse cx="50" cy="39" rx="9" ry="9.5" fill="#e8c39e"/><circle cx="46.5" cy="38.5" r="1.6" fill="#2a1c12"/><circle cx="53.5" cy="38.5" r="1.6" fill="#2a1c12"/><path d="M46 44 q4 2 8 0" fill="none" stroke="#8a5a3c" stroke-width="1.3" stroke-linecap="round"/>'
+    + '<path d="M66 55 l11 -9" stroke="#e8c39e" stroke-width="5" stroke-linecap="round"/><path d="M77 47 l4 -19" stroke="#6b4423" stroke-width="4.5" stroke-linecap="round"/>'
+    + sack + torch + '</svg>';
+}
+function floorTexture(x,y){
+  let h = ((x+1)*73856093 ^ (y+1)*19349663) >>> 0;
+  const r = () => { h = (Math.imul(h,1103515245) + 12345) >>> 0; return (h >>> 8) / 16777216; };
+  const out = [];
+  for(let i=0;i<5;i++){
+    const px=Math.round(r()*86+7), py=Math.round(r()*86+7), sz=Math.round(r()*6+2);
+    const c = i%2 ? 'rgba(255,230,190,.07)' : 'rgba(0,0,0,.28)';
+    out.push('radial-gradient(circle at '+px+'% '+py+'%, '+c+' 0 '+sz+'%, transparent '+(sz+1)+'%)');
+  }
+  return out.join(',');
+}
+
+let levelId = 'facil';
+let G = null;
+
+const $ = id => document.getElementById(id);
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const key = (x,y) => x+','+y;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const inB = (x,y) => x>=0 && y>=0 && x<G.n && y<G.n;
+function neigh(x,y,n){return Object.values(DIRS).map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>a>=0&&b>=0&&a<n&&b<n)}
+
+function generate(cfg){
+  for(let t=0;t<8000;t++){
+    const o = cfg.opts[Math.floor(Math.random()*cfg.opts.length)];
+    const n = o.n, np = rnd(...o.pits), nw = rnd(...o.wum);
+    const ent = {x:0, y:n-1};
+    const free = [];
+    for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+      if(Math.abs(x-ent.x)+Math.abs(y-ent.y) > 1) free.push([x,y]);
+    }
+    if(free.length < np+nw+1) continue;
+    shuffle(free);
+    const [gx,gy] = free.pop();
+    const pits = new Set();
+    for(let i=0;i<np;i++){const [x,y]=free.pop(); pits.add(key(x,y));}
+    const wum = [];
+    for(let i=0;i<nw;i++){const [x,y]=free.pop(); wum.push({x,y,alive:true});}
+    const wumSet = new Set(wum.map(w=>key(w.x,w.y)));
+    // combinaciones de percepciones
+    let ok = true;
+    for(let y=0;y<n && ok;y++)for(let x=0;x<n;x++){
+      const k = key(x,y);
+      if(pits.has(k) || wumSet.has(k)) continue;
+      let v=0,s=0,r=0;
+      for(const [a,b] of neigh(x,y,n)){
+        const kk = key(a,b);
+        if(pits.has(kk)) v=1;
+        if(wumSet.has(kk)) s=1;
+        if(a===gx && b===gy) r=1;
+      }
+      if(v+s+r > cfg.maxTypes){ok=false;break}
+    }
+    if(!ok) continue;
+    // camino garantizado entrada → oro
+    const seen = new Set([key(ent.x,ent.y)]);
+    const q = [[ent.x,ent.y]];
+    let found = false;
+    while(q.length){
+      const [x,y] = q.shift();
+      if(x===gx && y===gy){found=true;break}
+      for(const [a,b] of neigh(x,y,n)){
+        const kk = key(a,b);
+        if(seen.has(kk) || pits.has(kk) || wumSet.has(kk)) continue;
+        seen.add(kk); q.push([a,b]);
+      }
+    }
+    if(!found) continue;
+    return {n, ent, pits, wum, gold:{x:gx,y:gy,taken:false}};
+  }
+  return null;
+}
+
+function percepts(x,y){
+  let v=false,o=false,r=false;
+  for(const [a,b] of neigh(x,y,G.n)){
+    if(G.pits.has(key(a,b))) v=true;
+    if(G.wum.some(w=>w.alive && w.x===a && w.y===b)) o=true;
+    if(!G.gold.taken && G.gold.x===a && G.gold.y===b) r=true;
+  }
+  return {v,o,r};
+}
+const wumAt = (x,y) => G.wum.find(w=>w.alive && w.x===x && w.y===y);
+
+function newGame(){
+  const cfg = LEVELS[levelId];
+  const g = generate(cfg);
+  G = Object.assign(g, {
+    cfg, hx:g.ent.x, hy:g.ent.y, hasGold:false, arrows:3, moves:0,
+    alive:true, over:null, blind:false, aim:null, noteMode:null,
+    visited:new Set(), mem:{}, notes:{}, timer:{o:0,v:0,r:0}, log:[]
+  });
+  G.visited.add(key(G.hx,G.hy));
+  say('Estás en la entrada de la cueva. Está oscuro y húmedo.');
+  sense();
+  setupLevelUI();
+  render();
+}
+
+function say(msg){ G.log.unshift(msg); if(G.log.length>40) G.log.pop(); }
+
+function sense(){
+  const p = percepts(G.hx,G.hy);
+  const goldHere = !G.gold.taken && G.gold.x===G.hx && G.gold.y===G.hy;
+  G.mem[key(G.hx,G.hy)] = {...p, gold:goldHere};
+  const parts = [];
+  if(p.v) parts.push('sentís viento');
+  if(p.o) parts.push('huele muy mal');
+  if(p.r) parts.push(G.blind ? 'sentís calor de un resplandor' : 'ves un resplandor');
+  if(goldHere) parts.push('¡el oro está acá!');
+  if(parts.length) say(cap(parts.join(', ')) + '.');
+  else if(G.moves>0) say('Nada raro por acá. Casilla tranquila.');
+}
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+
+function die(msg){ G.alive=false; G.over={win:false,msg}; say(msg); }
+
+function wumpusTurn(){
+  if(!G.cfg.wmove || G.over) return;
+  for(const w of G.wum){
+    if(!w.alive || Math.random() > G.cfg.prob) continue;
+    const opts = neigh(w.x,w.y,G.n).filter(([a,b])=>{
+      if(a===G.hx && b===G.hy) return false;           // nunca entra en la casilla del cazador
+      if(wumAt(a,b)) return false;
+      if(G.cfg.wmove==='avoid' && G.pits.has(key(a,b))) return false;
+      return true;
+    });
+    if(!opts.length) continue;
+    const [a,b] = opts[Math.floor(Math.random()*opts.length)];
+    w.x=a; w.y=b;
+    if(G.pits.has(key(a,b))){ w.alive=false; say('Escuchás un aullido que se aleja hacia abajo: un Wumpus cayó en un pozo.'); }
+  }
+}
+
+function move(dir){
+  if(G.over) return;
+  if(G.aim){ return fire(dir); }
+  const [dx,dy] = DIRS[dir];
+  const nx=G.hx+dx, ny=G.hy+dy;
+  if(!inB(nx,ny)){ say('Chocás contra la pared de roca.'); return render(); }
+  G.hx=nx; G.hy=ny; G.moves++;
+  G.timer = {o:0,v:0,r:G.blind?0:0};
+  G.visited.add(key(nx,ny));
+  if(G.pits.has(key(nx,ny))) { die('Caíste en un pozo.'); return render(); }
+  if(wumAt(nx,ny)) { die('Entraste en la casilla del Wumpus y te comió.'); return render(); }
+  wumpusTurn();
+  sense();
+  render();
+}
+
+function fire(dir){
+  const kind = G.aim; G.aim=null;
+  const [dx,dy] = DIRS[dir];
+  if(kind==='arrow'){
+    if(G.arrows<=0) return render();
+    G.arrows--;
+    let x=G.hx+dx, y=G.hy+dy, hit=null;
+    while(inB(x,y)){ const w=wumAt(x,y); if(w){hit=w;break} x+=dx; y+=dy; }
+    if(hit){ hit.alive=false; say('Disparaste '+DIRNAME[dir]+'. Se oye un grito horrible: mataste un Wumpus.'); }
+    else say('Disparaste '+DIRNAME[dir]+'. La flecha se pierde en la oscuridad.');
+  } else {
+    const x=G.hx+dx, y=G.hy+dy;
+    const w = inB(x,y) && wumAt(x,y);
+    if(!w) say('Lanzás un golpe de espada '+DIRNAME[dir]+'. Solo cortás el aire.');
+    else if(Math.random() < G.cfg.sword){ w.alive=false; say('¡Espadazo certero! El Wumpus cae muerto.'); }
+    else { die('Fallaste el espadazo y el Wumpus te devoró.'); return render(); }
+  }
+  wumpusTurn();
+  sense();
+  render();
+}
+
+function setAim(kind){
+  if(G.over) return;
+  if(kind==='arrow' && G.arrows<=0) return;
+  G.aim = G.aim===kind ? null : kind;
+  render();
+}
+
+function grab(){
+  if(G.over) return;
+  if(!G.gold.taken && G.gold.x===G.hx && G.gold.y===G.hy){
+    G.gold.taken=true; G.hasGold=true; G.timer.r=0;
+    say('Agarraste el oro. Ahora volvé a la entrada.');
+    wumpusTurn(); sense();
+  } else say('Acá no hay nada para agarrar.');
+  render();
+}
+
+function exitCave(){
+  if(G.over) return;
+  if(G.hx!==G.ent.x || G.hy!==G.ent.y){ say('Solo podés salir desde la entrada.'); return render(); }
+  if(G.hasGold){ G.over={win:true,msg:'Saliste con el oro en '+G.moves+' pasos. ¡Ganaste!'}; say(G.over.msg); }
+  else { G.over={win:false,msg:'Saliste sano y salvo, pero sin el oro. No ganaste esta vez.'}; say(G.over.msg); }
+  render();
+}
+
+// Trampas por tiempo (Muy difícil)
+let last = performance.now();
+setInterval(()=>{
+  const now = performance.now(), dt = Math.min((now-last)/1000, .5); last = now;
+  if(!G || G.over || !G.cfg.timers || document.hidden) return;
+  const p = percepts(G.hx,G.hy);
+  G.timer.o = p.o ? G.timer.o+dt : 0;
+  G.timer.v = p.v ? G.timer.v+dt : 0;
+  G.timer.r = (p.r && !G.blind) ? G.timer.r+dt : 0;
+  if(G.timer.o >= LIMITS.o){ die('El olor te durmió y el Wumpus te encontró.'); return render(); }
+  if(G.timer.v >= LIMITS.v){ die('El viento te arrastró al pozo.'); return render(); }
+  if(G.timer.r >= LIMITS.r){ G.blind=true; G.timer.r=0; say('El resplandor te dejó ciego. La antorcha se apagó: guiate por lo que sentís.'); render(); }
+  drawTimers();
+}, 100);
+
+function drawLight(){
+  const el = $('light'); if(!el) return;
+  if(G.over || G.cfg.vision==='all'){ el.style.background='none'; return; }
+  const b = $('board'), pad = 10, cs = (b.clientWidth - pad*2) / G.n;
+  const cx = pad + cs*(G.hx+.5), cy = pad + cs*(G.hy+.5);
+  const r1 = cs*(G.cfg.vision==='cross'?1.4:.9), r2 = cs*(G.cfg.vision==='cross'?2.6:1.9);
+  el.style.background = 'radial-gradient(circle at '+cx+'px '+cy+'px, #fff 0, #fff '+r1+'px, #6e5a48 '+r2+'px, #3a2f26 '+(r2+cs*2)+'px)';
+}
+window.addEventListener('resize', ()=>G && drawLight());
+function drawTimers(){
+  if(!G.cfg.timers) return;
+  $('tO').style.width = Math.min(100, G.timer.o/LIMITS.o*100)+'%';
+  $('tV').style.width = Math.min(100, G.timer.v/LIMITS.v*100)+'%';
+  $('tR').style.width = Math.min(100, G.timer.r/LIMITS.r*100)+'%';
+}
+
+function setupLevelUI(){
+  $('notesBox').hidden = !G.cfg.notes;
+  $('timersBox').hidden = !G.cfg.timers;
+  document.querySelectorAll('#levels button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lv===levelId));
+  const c = G.cfg, R = [];
+  R.push('Cueva de '+G.n+'×'+G.n+', con '+G.pits.size+(G.pits.size===1?' pozo':' pozos')+' y '+G.wum.length+(G.wum.length===1?' Wumpus':' Wumpus')+'.');
+  R.push(c.vision==='all' ? 'Ves toda la cueva.' : c.vision==='cross' ? 'Ves tu casilla y la antorcha te muestra las señales de las 4 casillas vecinas.' : 'Solo ves la casilla donde estás parado.');
+  R.push(c.maxTypes===1 ? 'Cada casilla tiene como máximo una señal.' : 'Una casilla puede tener '+(c.maxTypes===2?'hasta 2 señales':'varias señales')+' a la vez.');
+  R.push(!c.wmove ? 'El Wumpus no se mueve.' : c.wmove==='fall' ? 'El Wumpus se mueve y puede caer en un pozo.' : 'El Wumpus se mueve y esquiva los pozos.');
+  R.push('Nunca entra en tu casilla sin avisar: antes vas a sentir olor.');
+  R.push('3 flechas: viajan en línea recta hasta la pared. Espada: golpea la casilla de al lado'+(c.sword<1?' y falla la mitad de las veces (si falla, te come).':'.'));
+  if(c.timers) R.push('Quieto mucho tiempo: '+LIMITS.o+' s con olor te dormís, '+LIMITS.v+' s con viento te arrastra al pozo, '+LIMITS.r+' s con resplandor quedás ciego.');
+  if(c.notes) R.push('Podés marcar casillas con notas, como en el buscaminas.');
+  R.push('Teclado: flechas o WASD para moverte, F flecha, E espada, G agarrar, X salir.');
+  $('rulesList').innerHTML = R.map(r=>'<li>'+r+'</li>').join('');
+}
+
+function chipsHTML(p){
+  let fx = (p.r?SVG.glow:'') + (p.v?SVG.wind:'') + (p.o?SVG.smell:'');
+  const dots = (p.v?'<i class="chip v" title="viento"></i>':'')+(p.o?'<i class="chip o" title="olor"></i>':'')+(p.r?'<i class="chip r" title="resplandor"></i>':'');
+  return fx + (dots?'<div class="chips">'+dots+'</div>':'');
+}
+
+function render(){
+  const b = $('board');
+  b.style.setProperty('--n', G.n);
+  const full = !!G.over || G.cfg.vision==='all';
+  let html = '';
+  for(let y=0;y<G.n;y++)for(let x=0;x<G.n;x++){
+    const k = key(x,y), here = x===G.hx && y===G.hy;
+    const isEnt = x===G.ent.x && y===G.ent.y;
+    let cls = 'cell', inner = '';
+    const adj = Math.abs(x-G.hx)+Math.abs(y-G.hy)===1;
+    if(full){
+      cls += here ? ' here' : ' seen';
+      inner += chipsHTML(percepts(x,y));
+      if(G.pits.has(k)) inner += SVG.pit;
+      const w = G.wum.find(w=>w.x===x&&w.y===y);
+      if(w && !(G.pits.has(k) && !w.alive)) inner += wumpusSVG(!w.alive);
+      if(!G.gold.taken && G.gold.x===x && G.gold.y===y) inner += SVG.gold;
+    } else if(here){
+      cls += ' here';
+      inner += chipsHTML(percepts(x,y));
+      if(!G.gold.taken && G.gold.x===x && G.gold.y===y) inner += SVG.gold;
+      const w = G.wum.find(w=>!w.alive && w.x===x && w.y===y);
+      if(w) inner += wumpusSVG(true);
+    } else if(G.cfg.vision==='cross' && adj){
+      cls += ' hint';
+      inner += chipsHTML(percepts(x,y));
+    } else if(G.visited.has(k)){
+      cls += ' mem';
+      const m = G.mem[k];
+      if(m){ inner += chipsHTML(m); if(m.gold && !G.gold.taken) inner += SVG.gold; }
+    }
+    if(isEnt){ cls += ' entry'; inner = SVG.door + inner; }
+    if(here) inner += '<div class="hunter'+(G.alive?'':' dead')+'">'+hunterSVG({gold:G.hasGold, blind:G.blind})+'</div>';
+    const n = G.notes[k];
+    if(n && !here && !G.over) inner += '<span class="note '+n+'">'+({p:'P?',w:'W?',t:'O?',s:'✓'}[n])+'</span>';
+    if(G.cfg.notes && G.noteMode) cls += ' notable';
+    const tex = /seen|mem|here|hint/.test(cls) ? ' style="background-image:'+floorTexture(x,y)+'"' : '';
+    html += '<button class="'+cls+'"'+tex+' data-k="'+k+'" role="gridcell" aria-label="Fila '+(y+1)+', columna '+(x+1)+(here?', estás acá':'')+'" tabindex="-1">'+inner+'</button>';
+  }
+  b.innerHTML = html + '<div class="light" id="light"></div>';
+  drawLight();
+
+  const box = $('boardbox');
+  box.querySelectorAll('.blindcover,.over').forEach(e=>e.remove());
+  if(G.blind && !G.over){
+    box.insertAdjacentHTML('beforeend','<div class="blindcover"><div><strong>Ciego</strong>La antorcha se apagó. Usá lo que sentís (abajo) para volver a la entrada.</div></div>');
+  }
+  if(G.over){
+    box.insertAdjacentHTML('beforeend','<div class="over"><p><span class="big">'+(G.over.win?'¡Victoria!':(G.alive?'Fin de la partida':'Moriste'))+'</span>'+G.over.msg+'</p><button class="btn on" id="bAgain">Otra cueva</button></div>');
+    $('bAgain').onclick = newGame;
+  }
+
+  $('sArrows').textContent = G.arrows;
+  $('sGold').textContent = G.hasGold ? 'Sí' : 'No';
+  $('sMoves').textContent = G.moves;
+  $('sTorch').textContent = G.blind ? 'Apagada' : 'Encendida';
+  $('bArrow').classList.toggle('on', G.aim==='arrow');
+  $('bSword').classList.toggle('on', G.aim==='sword');
+  $('bArrow').disabled = !!G.over || G.arrows<=0;
+  $('bSword').disabled = !!G.over;
+  $('bGrab').disabled = !!G.over;
+  $('bExit').disabled = !!G.over;
+  $('bArrow').textContent = 'Disparar flecha ('+G.arrows+')';
+  $('padLabel').textContent = G.aim==='arrow' ? 'disparar' : G.aim==='sword' ? 'golpear' : 'mover';
+  $('aim').textContent = G.aim ? 'Elegí una dirección para '+(G.aim==='arrow'?'disparar':'el espadazo')+'. Esc para cancelar.' : '';
+  document.querySelectorAll('#notes button').forEach(bt=>bt.classList.toggle('on', bt.dataset.note===G.noteMode));
+  $('log').innerHTML = G.log.map(l=>'<li>'+l+'</li>').join('');
+  drawTimers();
+}
+
+// Eventos
+Object.entries(LEVELS).forEach(([id,cfg])=>{
+  const bt = document.createElement('button');
+  bt.textContent = cfg.name; bt.dataset.lv = id; bt.type='button';
+  bt.onclick = ()=>{ levelId=id; newGame(); };
+  $('levels').appendChild(bt);
+});
+document.querySelectorAll('.pad button').forEach(bt=>bt.onclick=()=>move(bt.dataset.dir));
+$('bArrow').onclick = ()=>setAim('arrow');
+$('bSword').onclick = ()=>setAim('sword');
+$('bGrab').onclick = grab;
+$('bExit').onclick = exitCave;
+$('bNew').onclick = newGame;
+$('notes').onclick = e=>{
+  const bt = e.target.closest('button'); if(!bt) return;
+  G.noteMode = G.noteMode===bt.dataset.note ? null : bt.dataset.note; render();
+};
+$('board').onclick = e=>{
+  const c = e.target.closest('.cell'); if(!c || !G.cfg.notes || !G.noteMode || G.over) return;
+  const k = c.dataset.k;
+  if(G.noteMode==='x' || G.notes[k]===G.noteMode) delete G.notes[k]; else G.notes[k]=G.noteMode;
+  render();
+};
+document.addEventListener('keydown', e=>{
+  if(!G) return;
+  const m = {ArrowUp:'u',ArrowDown:'d',ArrowLeft:'l',ArrowRight:'r',w:'u',s:'d',a:'l',d:'r',W:'u',S:'d',A:'l',D:'r'}[e.key];
+  if(m){ e.preventDefault(); return move(m); }
+  const k = e.key.toLowerCase();
+  if(k==='f') setAim('arrow');
+  else if(k==='e') setAim('sword');
+  else if(k==='g') grab();
+  else if(k==='x') exitCave();
+  else if(e.key==='Escape'){ G.aim=null; G.noteMode=null; render(); }
+});
+
+$('lgV').innerHTML = '<i class="legendcell">'+SVG.wind+'</i> viento: pozo al lado';
+$('lgO').innerHTML = '<i class="legendcell">'+SVG.smell+'</i> olor: Wumpus al lado';
+$('lgR').innerHTML = '<i class="legendcell">'+SVG.glow+'</i> resplandor: oro al lado';
+newGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+Título: La cueva del Wumpus
+Juego: index.html
+Ayuda: Movete con las flechas del teclado o los botones. Fijate en el viento, el olor y el resplandor para adivinar dónde está cada peligro.
+
+Entrá a una cueva oscura, encontrá el oro y volvé a la entrada sin caer en un pozo ni terminar en la boca del Wumpus. Solo ves lo que alumbra tu antorcha: el viento avisa que hay un pozo al lado, el olor que el Wumpus está cerca y el resplandor que el oro está a un paso. Tenés 3 flechas y una espada. Cinco niveles, de Muy fácil a Muy difícil, y cada partida es una cueva nueva.
+
+[en]
+Title: The Wumpus Cave
+Help: Move with the arrow keys or the buttons. Watch for wind, smell and glow to work out where each danger is.
+
+Enter a dark cave, find the gold and make it back to the entrance without falling into a pit or ending up in the Wumpus's jaws. You only see what your torch lights: wind warns of a pit next to you, a bad smell means the Wumpus is close, and a glow means the gold is one step away. You have 3 arrows and a sword. Five levels, from Very easy to Very hard, and every game is a new cave. The game is in Spanish.
+
+[fr]
+Title: La grotte du Wumpus
+Help: Déplacez-vous avec les flèches du clavier ou les boutons. Repérez le vent, l'odeur et la lueur pour deviner où se cache chaque danger.
+
+Entrez dans une grotte obscure, trouvez l'or et revenez à l'entrée sans tomber dans un puits ni finir dans la gueule du Wumpus. Vous ne voyez que ce qu'éclaire votre torche : le vent signale un puits à côté, l'odeur annonce le Wumpus et la lueur indique que l'or est tout près. Vous avez 3 flèches et une épée. Cinq niveaux, de Très facile à Très difficile, et chaque partie est une nouvelle grotte. Le jeu est en espagnol.
+
+[de]
+Title: Die Höhle des Wumpus
+Help: Bewege dich mit den Pfeiltasten oder den Knöpfen. Achte auf Wind, Geruch und Schimmer, um jede Gefahr zu erraten.
+
+Betritt eine dunkle Höhle, finde das Gold und kehre zum Eingang zurück, ohne in eine Grube zu fallen oder im Maul des Wumpus zu landen. Du siehst nur, was deine Fackel beleuchtet: Wind warnt vor einer Grube nebenan, Gestank verrät den Wumpus und ein Schimmer zeigt, dass das Gold ganz nah ist. Du hast 3 Pfeile und ein Schwert. Fünf Stufen, von Sehr leicht bis Sehr schwer, und jede Partie ist eine neue Höhle. Das Spiel ist auf Spanisch.
+
+[pt]
+Title: A caverna do Wumpus
+Help: Mova-se com as setas do teclado ou com os botões. Observe o vento, o cheiro e o brilho para descobrir onde está cada perigo.
+
+Entre numa caverna escura, encontre o ouro e volte à entrada sem cair num poço nem acabar na boca do Wumpus. Você só vê o que a sua tocha ilumina: o vento avisa que há um poço ao lado, o cheiro que o Wumpus está perto e o brilho que o ouro está a um passo. Você tem 3 flechas e uma espada. Cinco níveis, de Muito fácil a Muito difícil, e cada partida é uma caverna nova. O jogo está em espanhol.
+
+[it]
+Title: La caverna del Wumpus
+Help: Muoviti con le frecce della tastiera o con i pulsanti. Osserva il vento, l'odore e il bagliore per capire dove si nasconde ogni pericolo.
+
+Entra in una caverna buia, trova l'oro e torna all'ingresso senza cadere in un pozzo né finire tra le fauci del Wumpus. Vedi solo ciò che illumina la tua torcia: il vento avvisa di un pozzo accanto, l'odore che il Wumpus è vicino e il bagliore che l'oro è a un passo. Hai 3 frecce e una spada. Cinque livelli, da Molto facile a Molto difficile, e ogni partita è una caverna nuova. Il gioco è in spagnolo.
