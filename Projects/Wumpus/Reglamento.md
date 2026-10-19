@@ -68,14 +68,27 @@ La antorcha es lo que le permite ver la casilla donde está parado. Si se apaga,
 | Intermedio | 6×6 | 3 o 4 | 1 | Solo su casilla | Hasta 2 | Se mueve y puede caer en un pozo |
 | Difícil | 5×5 o 7×7 | 4 a 6 | 2 | Solo su casilla | Hasta 3 | Se mueve y esquiva los pozos |
 | Muy difícil | 7×7 u 8×8 | 7 a 9 | 2 o 3 | Solo su casilla | Hasta 3 | Se mueve y esquiva los pozos |
+| Oscuridad total | 7×7 u 8×8 | 6 a 9 | 2 o 3 | Nada | Hasta 3 | Se mueve y esquiva los pozos |
 
-## 7. Peligro por quedarse quieto (Muy difícil)
+### Oscuridad total
 
-En el nivel Muy difícil, quedarse mucho tiempo en una casilla con una señal es peligroso:
+Es el nivel más difícil. No hay antorcha: el cazador no ve la cueva, ni su propia casilla, ni a sí mismo. Juega solo por percepción, con los mensajes de lo que siente:
+
+- hacia dónde dio cada paso;
+- si siente viento, olor o resplandor;
+- si choca contra la pared;
+- si toca el oro con la mano;
+- si siente el aire fresco de la entrada.
+
+Empieza en la entrada, abajo a la izquierda. Al terminar la partida se muestra la cueva entera.
+
+## 7. Peligro por quedarse quieto (Muy difícil y Oscuridad total)
+
+En los niveles Muy difícil y Oscuridad total, quedarse mucho tiempo en una casilla con una señal es peligroso:
 
 - **10 segundos con olor:** el cazador se duerme y el Wumpus lo encuentra.
 - **8 segundos con viento:** el viento lo arrastra al pozo.
-- **6 segundos con resplandor:** queda ciego, la antorcha se apaga y tiene que salir guiándose solo por lo que siente.
+- **6 segundos con resplandor:** queda ciego, la antorcha se apaga y tiene que salir guiándose solo por lo que siente. (En Oscuridad total no aplica, porque ya no ve nada.)
 
 El tiempo vuelve a cero cada vez que el cazador se mueve.
 

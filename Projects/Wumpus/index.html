@@ -244,7 +244,8 @@ const LEVELS = {
   facil:{name:'Fácil', opts:[{n:5,pits:[2,2],wum:[1,1]},{n:6,pits:[2,3],wum:[1,1]}], vision:'cross', maxTypes:1, wmove:null, prob:0, timers:false, notes:true, sword:1},
   medio:{name:'Intermedio', opts:[{n:6,pits:[3,4],wum:[1,1]}], vision:'self', maxTypes:2, wmove:'fall', prob:.35, timers:false, notes:false, sword:1},
   dificil:{name:'Difícil', opts:[{n:5,pits:[4,5],wum:[2,2]},{n:7,pits:[5,6],wum:[2,2]}], vision:'self', maxTypes:3, wmove:'avoid', prob:.5, timers:false, notes:false, sword:.5},
-  muy:{name:'Muy difícil', opts:[{n:7,pits:[7,8],wum:[2,3]},{n:8,pits:[8,9],wum:[3,3]}], vision:'self', maxTypes:3, wmove:'avoid', prob:.6, timers:true, notes:false, sword:.5}
+  muy:{name:'Muy difícil', opts:[{n:7,pits:[7,8],wum:[2,3]},{n:8,pits:[8,9],wum:[3,3]}], vision:'self', maxTypes:3, wmove:'avoid', prob:.6, timers:true, notes:false, sword:.5},
+  oscuro:{name:'Oscuridad total', opts:[{n:7,pits:[6,7],wum:[2,2]},{n:8,pits:[8,9],wum:[2,3]}], vision:'none', maxTypes:3, wmove:'avoid', prob:.6, timers:true, notes:false, sword:.5, dark:true}
 };
 const LIMITS = {o:10, v:8, r:6}; // segundos
 const DIRS = {u:[0,-1], d:[0,1], l:[-1,0], r:[1,0]};
@@ -384,7 +385,7 @@ function newGame(){
   const g = generate(cfg);
   G = Object.assign(g, {
     cfg, hx:g.ent.x, hy:g.ent.y, hasGold:false, arrows:3, moves:0,
-    alive:true, over:null, blind:false, aim:null, noteMode:null,
+    alive:true, over:null, blind:!!cfg.dark, step:null, aim:null, noteMode:null,
     visited:new Set(), mem:{}, notes:{}, timer:{o:0,v:0,r:0}, log:[]
   });
   G.visited.add(key(G.hx,G.hy));
@@ -404,9 +405,12 @@ function sense(){
   if(p.v) parts.push('sentís viento');
   if(p.o) parts.push('huele muy mal');
   if(p.r) parts.push(G.blind ? 'sentís calor de un resplandor' : 'ves un resplandor');
-  if(goldHere) parts.push('¡el oro está acá!');
-  if(parts.length) say(cap(parts.join(', ')) + '.');
-  else if(G.moves>0) say('Nada raro por acá. Casilla tranquila.');
+  if(goldHere) parts.push(G.blind ? '¡tocás el oro con la mano!' : '¡el oro está acá!');
+  if(G.moves>0 && G.hx===G.ent.x && G.hy===G.ent.y) parts.push('sentís aire fresco: estás en la entrada');
+  const pre = (G.blind && G.step) ? 'Diste un paso '+({u:'hacia arriba',d:'hacia abajo',l:'hacia la izquierda',r:'hacia la derecha'})[G.step]+'. ' : '';
+  G.step = null;
+  if(parts.length) say(pre + cap(parts.join(', ')) + '.');
+  else if(G.moves>0) say(pre + 'Nada raro por acá. Casilla tranquila.');
 }
 const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
 
@@ -435,7 +439,7 @@ function move(dir){
   const [dx,dy] = DIRS[dir];
   const nx=G.hx+dx, ny=G.hy+dy;
   if(!inB(nx,ny)){ say('Chocás contra la pared de roca.'); return render(); }
-  G.hx=nx; G.hy=ny; G.moves++;
+  G.hx=nx; G.hy=ny; G.moves++; G.step=dir;
   G.timer = {o:0,v:0,r:G.blind?0:0};
   G.visited.add(key(nx,ny));
   if(G.pits.has(key(nx,ny))) { die('Caíste en un pozo.'); return render(); }
@@ -529,12 +533,13 @@ function setupLevelUI(){
   document.querySelectorAll('#levels button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lv===levelId));
   const c = G.cfg, R = [];
   R.push('Cueva de '+G.n+'×'+G.n+', con '+G.pits.size+(G.pits.size===1?' pozo':' pozos')+' y '+G.wum.length+(G.wum.length===1?' Wumpus':' Wumpus')+'.');
-  R.push(c.vision==='all' ? 'Ves toda la cueva.' : c.vision==='cross' ? 'Ves tu casilla y la antorcha te muestra las señales de las 4 casillas vecinas.' : 'Solo ves la casilla donde estás parado.');
+  R.push(c.vision==='none' ? 'No ves nada: ni la cueva ni al cazador. Te guían solo los mensajes de lo que sentís.' : c.vision==='all' ? 'Ves toda la cueva.' : c.vision==='cross' ? 'Ves tu casilla y la antorcha te muestra las señales de las 4 casillas vecinas.' : 'Solo ves la casilla donde estás parado.');
   R.push(c.maxTypes===1 ? 'Cada casilla tiene como máximo una señal.' : 'Una casilla puede tener '+(c.maxTypes===2?'hasta 2 señales':'varias señales')+' a la vez.');
   R.push(!c.wmove ? 'El Wumpus no se mueve.' : c.wmove==='fall' ? 'El Wumpus se mueve y puede caer en un pozo.' : 'El Wumpus se mueve y esquiva los pozos.');
   R.push('Nunca entra en tu casilla sin avisar: antes vas a sentir olor.');
   R.push('3 flechas: viajan en línea recta hasta la pared. Espada: golpea la casilla de al lado'+(c.sword<1?' y falla la mitad de las veces (si falla, te come).':'.'));
-  if(c.timers) R.push('Quieto mucho tiempo: '+LIMITS.o+' s con olor te dormís, '+LIMITS.v+' s con viento te arrastra al pozo, '+LIMITS.r+' s con resplandor quedás ciego.');
+  if(c.timers) R.push('Quieto mucho tiempo: '+LIMITS.o+' s con olor te dormís, '+LIMITS.v+' s con viento te arrastra al pozo'+(c.dark?'.':', '+LIMITS.r+' s con resplandor quedás ciego.'));
+  $('tR').closest('.tbar').hidden = !!c.dark;
   if(c.notes) R.push('Podés marcar casillas con notas, como en el buscaminas.');
   R.push('Teclado: flechas o WASD para moverte, F flecha, E espada, G agarrar, X salir.');
   $('rulesList').innerHTML = R.map(r=>'<li>'+r+'</li>').join('');
@@ -591,7 +596,7 @@ function render(){
   const box = $('boardbox');
   box.querySelectorAll('.blindcover,.over').forEach(e=>e.remove());
   if(G.blind && !G.over){
-    box.insertAdjacentHTML('beforeend','<div class="blindcover"><div><strong>Ciego</strong>La antorcha se apagó. Usá lo que sentís (abajo) para volver a la entrada.</div></div>');
+    box.insertAdjacentHTML('beforeend',(G.cfg.dark ? '<div class="blindcover"><div><strong>Oscuridad total</strong>No ves nada. Guiate solo por lo que sentís (abajo): el viento, el olor, el resplandor y los golpes contra la pared. Empezás en la entrada, abajo a la izquierda.</div></div>' : '<div class="blindcover"><div><strong>Ciego</strong>La antorcha se apagó. Usá lo que sentís (abajo) para volver a la entrada.</div></div>'));
   }
   if(G.over){
     box.insertAdjacentHTML('beforeend','<div class="over"><p><span class="big">'+(G.over.win?'¡Victoria!':(G.alive?'Fin de la partida':'Moriste'))+'</span>'+G.over.msg+'</p><button class="btn on" id="bAgain">Otra cueva</button></div>');
@@ -601,7 +606,7 @@ function render(){
   $('sArrows').textContent = G.arrows;
   $('sGold').textContent = G.hasGold ? 'Sí' : 'No';
   $('sMoves').textContent = G.moves;
-  $('sTorch').textContent = G.blind ? 'Apagada' : 'Encendida';
+  $('sTorch').textContent = G.cfg.dark ? 'No hay' : G.blind ? 'Apagada' : 'Encendida';
   $('bArrow').classList.toggle('on', G.aim==='arrow');
   $('bSword').classList.toggle('on', G.aim==='sword');
   $('bArrow').disabled = !!G.over || G.arrows<=0;
