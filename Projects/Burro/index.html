@@ -80,7 +80,10 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .clickable{cursor:pointer}
 .clickable:hover .tile{transform:translateY(-4px)}
 .hint{outline:3px solid var(--ok);outline-offset:6px}
-.vuela{position:fixed;z-index:60;pointer-events:none}
+.vuela{position:fixed;z-index:60;pointer-events:none;transform-origin:top left}
+.vuela .tile{margin:0}
+.recien{animation:recien 1.4s ease}
+@keyframes recien{0%,60%{box-shadow:0 0 0 4px rgba(255,170,60,.9),0 0 18px 6px rgba(255,140,0,.55)}100%{box-shadow:none}}
 
 /* ===== área central grabada en la mesa ===== */
 #center{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:center}
@@ -256,6 +259,8 @@ aside .section-title{color:#7a5a36;text-shadow:none}
     <ul>
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
+      <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible pasa a ser la nueva reserva y la ficha de abajo queda descubierta como nueva ficha visible (regla 12). Si solo te queda una ficha y no tiene jugada, toca «pasar».</li>
+      <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado. Quien no tiene reserva entrega la última ficha de su pila visible, dada vuelta; si era su única ficha, se queda sin fichas y gana la mano (o termina su ronda si alguien ya ganó).</li>
       <li>Tienes unos 4 segundos desde que un rival se equivoca para cantarle «¡Burro!», aunque ya haya terminado su turno. El siguiente jugador tiene además 5 segundos desde que el otro apoya su ficha.</li>
       <li>Si cantas una falta real pero tarde, no cuenta y no te penaliza. Si no hubo ninguna falta, es acusación falsa y el Burro eres tú.</li>
@@ -302,6 +307,9 @@ const rand = (a,b) => a + Math.random()*(b-a);
 const ultima = a => a[a.length-1];
 const P = id => G.players[id];
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Verbo según quién juega: «Ana toma» / «Tomas» (cuando eres tú con el nombre por defecto).
+const yo = p => p.human && p.name === 'Tú';
+const dice = (p, el, tu) => yo(p) ? tu : `${p.name} ${el}`;
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function newSet(){ return shuffle(Array.from({length:15},(_,i)=>({n:i+1,id:++tileSeq}))); }
 
@@ -394,7 +402,7 @@ function checkGameOver(){
 function liftVisible(pid){
   const p = P(pid), t = G.turn;
   t.held = p.visible.pop(); t.from = 'visible';
-  log(`${p.name} levanta su ${t.held.n} visible.`);
+  log(dice(p, `levanta su ${t.held.n} visible.`, `Levantas tu ${t.held.n} visible.`));
   render();
 }
 
@@ -402,21 +410,35 @@ function drawReserve(pid){
   const p = P(pid), t = G.turn;
   const vt = ultima(p.visible);
   let inf = null;
-  if(vt && hasMove(pid, vt.n)) inf = addInfraction(pid, `tomó de la reserva teniendo el ${vt.n} visible con jugada obligatoria`, null);
+  if(vt && hasMove(pid, vt.n)) inf = addInfraction(pid, p.reserve.length ? `tomó de la reserva teniendo el ${vt.n} visible con jugada obligatoria` : `dio vuelta su pila visible teniendo el ${vt.n} con jugada obligatoria`, null);
   if(!p.reserve.length){
-    if(!p.visible.length) return false;
-    p.reserve = p.visible.reverse(); p.visible = [];
-    log(`🔄 ${p.name} dio vuelta su pila visible: es su nueva reserva.`, 'sys');
+    // Regla 12: sin reserva, se da vuelta la pila visible (nueva reserva) y la ficha de arriba
+    // se descubre como nueva ficha visible. El jugador sigue: esa ficha tiene prioridad.
+    if(p.visible.length <= 1){
+      log(dice(p, 'no tiene reserva ni otra jugada posible: pasa el turno.', 'No tienes reserva ni otra jugada posible: pasas el turno.'), 'sys');
+      render(); endTurn();
+      return 'pasa';
+    }
+    p.reserve = p.visible.reverse(); p.visible = [p.reserve.pop()];
+    log(`🔄 ${dice(p, `agotó su reserva: da vuelta su pila visible y descubre un ${p.visible[0].n}.`, `Agotaste tu reserva: das vuelta tu pila visible y descubres un ${p.visible[0].n}.`)}`, 'sys');
+    render();
+    return 'vuelta';
   }
   t.held = p.reserve.pop(); t.from = 'reserve';
   if(inf) inf.tileId = t.held.id;
-  log(p.human ? `${p.name} toma de la reserva: ${t.held.n}.` : `${p.name} toma una ficha de la reserva.`);
+  log(p.human ? dice(p, `toma de la reserva: ${t.held.n}.`, `Tomas de la reserva: ${t.held.n}.`) : `${p.name} toma una ficha de la reserva.`);
   render();
   return true;
 }
 
 function place(pid, target){
   const p = P(pid), t = G.turn, tile = t.held, n = tile.n;
+  const manoEl = document.querySelector(`[data-hand="${pid}"]`);
+  const desde = manoEl && manoEl.getBoundingClientRect ? manoEl.getBoundingClientRect() : null;
+  const destinoSel = () => target.type === 'center'
+    ? `[data-pile="${target.pile === 'new' ? G.pileSeq : target.pile}"] .tile`
+    : target.type === 'opp' ? (target.pid === 0 ? '[data-act="my-visible"] .tile' : `[data-act="opp"][data-pid="${target.pid}"] .tile`)
+    : (pid === 0 ? '[data-act="my-visible"] .tile' : `[data-act="opp"][data-pid="${pid}"] .tile`);
   const cT = centerTargets(n), oT = oppTargets(pid, n);
   if(target.type === 'center' && !cT.includes(target.pile))
     return {ok:false, msg: n === 1 ? 'Un 1 abre una pila nueva: usa «nueva pila».' : `El ${n} no va en esa pila central.`};
@@ -436,24 +458,50 @@ function place(pid, target){
   if(target.type === 'center'){
     if(target.pile === 'new'){
       G.center.push({id:++G.pileSeq, tiles:[tile]});
-      log(`${p.name} abre una pila central con el 1.`);
+      log(dice(p, 'abre una pila central con el 1.', 'Abres una pila central con el 1.'));
     } else {
       const c = G.center.find(c => c.id === target.pile);
       c.tiles.push(tile);
-      log(`${p.name} juega el ${n} en el centro${n===15?' y completa la pila ✨':''}.`);
+      log(dice(p, `juega el ${n} en el centro`, `Juegas el ${n} en el centro`) + (n===15?' y completa la pila ✨':'') + '.');
     }
   } else if(target.type === 'opp'){
     P(target.pid).visible.push(tile);
-    log(`${p.name} descarga el ${n} sobre ${P(target.pid).name}.`);
+    log(dice(p, `descarga el ${n} sobre ${P(target.pid).name}.`, `Descargas el ${n} sobre ${P(target.pid).name}.`));
   } else {
     p.visible.push(tile);
-    log(`${p.name} apoya el ${n} en su pila. Fin del turno.`);
+    log(dice(p, `apoya el ${n} en su pila. Fin del turno.`, `Apoyas el ${n} en tu pila. Fin de tu turno.`));
     render(); endTurn();
+    volarFicha(desde, destinoSel(), tile);
     return {ok:true, ended:true};
   }
-  if(checkFinish(p)){ render(); endTurn(); return {ok:true, ended:true}; }
+  const termino = checkFinish(p);
   render();
-  return {ok:true};
+  if(termino) endTurn();
+  volarFicha(desde, destinoSel(), tile);
+  return termino ? {ok:true, ended:true} : {ok:true};
+}
+
+function volarFicha(desde, sel, tile){
+  if(!desde || !desde.width) return;
+  const to = document.querySelector(sel);
+  if(!to || !to.animate) return;
+  const rd = to.getBoundingClientRect();
+  const f = document.createElement('div');
+  f.className = 'vuela';
+  f.innerHTML = faceHTML(tile);
+  f.firstElementChild.style.setProperty('--t', desde.width + 'px');
+  f.style.left = desde.left + 'px'; f.style.top = desde.top + 'px';
+  document.body.appendChild(f);
+  to.style.visibility = 'hidden';
+  const k = rd.width / desde.width;
+  f.animate([
+    {transform:'translate(0,0) scale(1) rotate(-6deg)'},
+    {transform:`translate(${rd.left - desde.left}px,${rd.top - desde.top}px) scale(${k}) rotate(0deg)`}
+  ], {duration:420, easing:'cubic-bezier(.3,.7,.3,1)', fill:'forwards'}).finished.then(fin, fin);
+  function fin(){
+    f.remove(); to.style.visibility = '';
+    to.classList.add('recien'); setTimeout(() => to.classList.remove('recien'), 1400);
+  }
 }
 
 /* ---------- infracciones y «Burro» ---------- */
@@ -519,7 +567,8 @@ function sumarseAlGrito(cid){
 
 function resolveBurro(cid, inf){
   const inf_p = P(inf.pid);
-  log(`🫏 ${P(cid).name} canta «¡Burro!»: ${inf_p.name} ${inf.text}.`, 'burro');
+  const segunda = t => t.replace(/^(tom|descarg|apoy|levant)ó/, '$1aste').replace(/^dio/, 'diste').replace(/\bsu\b/g, 'tu');
+  log(yo(inf_p) ? `🫏 ${P(cid).name} te canta «¡Burro!»: ${segunda(inf.text)}.` : `🫏 ${dice(P(cid), 'canta', 'Cantas')} «¡Burro!»: ${inf_p.name} ${inf.text}.`, 'burro');
   flash(`🫏 ¡BURRO!<br><small style="font-size:.5em">${esc(P(cid).name)} → ${esc(inf_p.name)}</small>`);
   G.infractions.forEach(i => { if(i.pid === inf.pid) i.called = true; });
   G.ultimoGrito = {pid:inf.pid, at:Date.now(), callers:[cid]};
@@ -570,7 +619,7 @@ function penalize(pid, msg){
     log(`${p.name} vuelve a la partida.`, 'sys');
   }
   if(!p.visible.length && p.reserve.length) p.visible.push(p.reserve.pop());
-  log(`${p.name} recibe ${got} ficha${got===1?'':'s'} boca abajo en su reserva y pierde el turno.`, 'burro');
+  log(dice(p, `recibe ${got} ficha${got===1?'':'s'} boca abajo en su reserva y pierde el turno.`, `Recibes ${got} ficha${got===1?'':'s'} boca abajo en tu reserva y pierdes el turno.`), 'burro');
   if(!p.reserve.length && !p.visible.length && !p.finished){ p.finished = true; G.ranking.push(pid); }
   // Quien entregó su última ficha se queda sin fichas: gana la mano, o termina su ronda si alguien ya ganó.
   sinFichas.forEach(g => checkFinish(g));
@@ -613,7 +662,11 @@ async function botTurn(pid, tid, gid){
       const vt = ultima(p.visible);
       const visOk = vt && hasMove(pid, vt.n);
       if(visOk && Math.random() >= D.mistake) liftVisible(pid);
-      else if(!drawReserve(pid)){ endTurn(); return; }
+      else {
+        const r = drawReserve(pid);
+        if(r === 'pasa') return;
+        if(r === 'vuelta'){ await sleep(G.speed); continue; } // mira la ficha que quedó visible
+      }
       await sleep(Math.max(1100, G.speed * 1.6)); // la ficha queda a la vista en la mano
       if(!alive()) return;
     }
@@ -644,9 +697,9 @@ function towerHTML(count, topTile, size='', attrs=''){
   return `<div class="tower ${size}" style="--h:${h}px" ${attrs}>${face}${cnt}</div>`;
 }
 // oculta: la ficha que un rival saca de su reserva no se le ve el número hasta que la apoya.
-function handHTML(held, size='', oculta=false){
+function handHTML(held, size='', oculta=false, pid=''){
   const ficha = !held ? `<div class="tile empty ${size}"></div>` : oculta ? `<div class="tile back ${size}"></div>` : faceHTML(held, size);
-  return `<div class="hand ${held?'lift':''}">${ficha}</div>`;
+  return `<div class="hand ${held?'lift':''}" data-hand="${pid}">${ficha}</div>`;
 }
 function placeLabel(p){
   const i = G.ranking.indexOf(p.id);
@@ -738,16 +791,16 @@ function render(){
     let piles;
     if(p.human){
       piles = `
-      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${p.reserve.length ? towerHTML(p.reserve.length, null, '', 'data-res="0"') : '<div class="tile empty" data-res="0">↻</div>'}</div><div class="lbl">reserva</div></div>
+      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${p.reserve.length ? towerHTML(p.reserve.length, null, '', 'data-res="0"') : `<div class="tile empty" data-res="0">${p.visible.length > 1 ? '↻' : '—'}</div>`}</div><div class="lbl">${p.reserve.length ? 'reserva' : (p.visible.length > 1 ? 'dar vuelta' : 'pasar')}</div></div>
       <div class="pile-col"><div class="target ${myTurn?'clickable':''} ${hVis||hOwn?'hint':''}" data-act="my-visible">${towerHTML(p.visible.length, vt)}</div><div class="lbl">visible</div></div>
-      <div class="pile-col">${handHTML(myTurn ? held : null)}<div class="lbl ${myTurn&&held?'hot':''}">en la mano</div></div>`;
+      <div class="pile-col">${handHTML(myTurn ? held : null, '', false, 0)}<div class="lbl ${myTurn&&held?'hot':''}">en la mano</div></div>`;
     } else {
       const h = isT ? G.turn.held : null;
       piles = `
       <div class="pile-col">${towerHTML(p.reserve.length, null, 'small', `data-res="${p.id}"`)}<div class="lbl">reserva</div></div>
       <div class="pile-col"><div class="target ${held&&myTurn?'clickable':''} ${hO.includes(p.id)?'hint':''}" data-act="opp" data-pid="${p.id}">${towerHTML(p.visible.length, vt, 'small')}</div><div class="lbl">visible</div></div>
-      ${compacto ? (h ? `<div class="pile-col mano-flot">${handHTML(h,'small', G.turn.from === 'reserve')}</div>` : '')
-        : `<div class="pile-col">${handHTML(h,'small', isT && G.turn.from === 'reserve')}<div class="lbl ${h?'hot':''}">en la mano</div></div>`}`;
+      ${compacto ? (h ? `<div class="pile-col mano-flot">${handHTML(h,'small', G.turn.from === 'reserve', p.id)}</div>` : '')
+        : `<div class="pile-col">${handHTML(h,'small', isT && G.turn.from === 'reserve', p.id)}<div class="lbl ${h?'hot':''}">en la mano</div></div>`}`;
     }
     return `<div class="${cls}" style="left:${x}px;top:${y}px">${cab}<div class="piles">${piles}</div></div>`;
   }).join('');
@@ -762,7 +815,9 @@ function render(){
   if(G.over) s = 'Partida terminada.';
   else if(me.finished) s = '🏆 Ya no tienes fichas. Espera quieto: si cantas «Burro» serás penalizado.';
   else if(myTurn && held) s = `Tienes un <b>${held.n}</b> en la mano: colócalo en el centro, sobre un rival o en tu pila visible (termina el turno).`;
-  else if(myTurn) s = 'Tu turno: levanta tu ficha visible o toma de la reserva.';
+  else if(myTurn) s = me.reserve.length ? 'Tu turno: levanta tu ficha visible o toma de la reserva.'
+    : me.visible.length > 1 ? 'Tu turno: levanta tu ficha visible o, si no tiene jugada, toca la reserva para dar vuelta tu pila visible.'
+    : 'Tu turno: levanta tu ficha visible o, si no tiene jugada, toca «pasar».';
   else if(G.turn && held && G.turn.from === 'reserve') s = `<b>${esc(P(turnPid).name)}</b> tomó una ficha de su reserva. ¿Debía hacerlo? Si no, ¡canta Burro!`;
   else if(G.turn && held) s = `<b>${esc(P(turnPid).name)}</b> levantó su <b>${held.n}</b> visible. ¿Lo juega bien? Si no, ¡canta Burro!`;
   else if(G.turn) s = `Turno de <b>${esc(P(turnPid).name)}</b>. Si ves un error, ¡canta Burro!`;
