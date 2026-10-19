@@ -256,7 +256,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
     <ul>
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
-      <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado.</li>
+      <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado. Quien no tiene reserva entrega la última ficha de su pila visible, dada vuelta; si era su única ficha, se queda sin fichas y gana la mano (o termina su ronda si alguien ya ganó).</li>
       <li>Si dos jugadores cantan «¡Burro!» casi al mismo tiempo por la misma falta, valen los dos gritos: nadie más es penalizado.</li>
       <li>Cada jugador tiene su lugar en la mesa y los turnos siguen el sentido horario: después de ti juega el de tu izquierda.</li>
       <li>La partida sigue hasta que queda un solo jugador con fichas: ese es el Burro.</li>
@@ -536,12 +536,18 @@ function penalize(pid, msg){
   if(G.turn && G.turn.pid === pid && G.turn.held){ p.visible.push(G.turn.held); G.turn.held = null; }
   let got = 0;
   const dieron = [];
+  const sinFichas = [];
   G.players.forEach(g => {
     if(g.id === pid || g.finished) return;
     let t = null;
     if(g.reserve.length) t = g.reserve.pop();
-    else if(g.visible.length > 1) t = g.visible.shift();
+    else if(g.visible.length){
+      // Sin reserva: entrega la última ficha de su pila visible, dada vuelta para no mostrarla.
+      t = g.visible.pop();
+      log(`${g.name} no tiene reserva: da vuelta su ficha visible y la entrega sin mostrarla.`, 'sys');
+    }
     if(t){ p.reserve.unshift(t); got++; dieron.push(g.id); } // boca abajo, a la RESERVA del penalizado
+    if(!g.reserve.length && !g.visible.length) sinFichas.push(g);
   });
   if(p.finished){
     p.finished = false;
@@ -551,9 +557,13 @@ function penalize(pid, msg){
   if(!p.visible.length && p.reserve.length) p.visible.push(p.reserve.pop());
   log(`${p.name} recibe ${got} ficha${got===1?'':'s'} boca abajo en su reserva y pierde el turno.`, 'burro');
   if(!p.reserve.length && !p.visible.length && !p.finished){ p.finished = true; G.ranking.push(pid); }
+  // Quien entregó su última ficha se queda sin fichas: gana la mano, o termina su ronda si alguien ya ganó.
+  sinFichas.forEach(g => checkFinish(g));
   render();
   volarFichas(dieron, pid);
   if(G.turn && G.turn.pid === pid) endTurn();
+  else if(sinFichas.length && checkGameOver()) render();
+  else if(G.turn && P(G.turn.pid).finished){ G.turn.held = null; endTurn(); }
 }
 
 /* ---------- rivales automáticos ---------- */

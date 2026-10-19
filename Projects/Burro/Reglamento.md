@@ -175,6 +175,10 @@ Cuando la denuncia sea válida, se aplicará el siguiente procedimiento:
 
 Las fichas entregadas como penalización no podrán mostrarse durante la entrega.
 
+Si un jugador no tiene fichas en su pila de reserva, deberá entregar la última ficha de su pila visible: la dará vuelta para no mostrarla y la entregará boca abajo.
+
+Si esa era su única ficha, al entregarla se quedará sin fichas: será declarado ganador de la mano o, si alguien ya ganó, terminará su ronda.
+
 ## 15. Fichas jugadas incorrectamente
 
 Si un jugador coloca una ficha en una pila cuando debía jugarla en otra, cualquier contrincante que continúe en juego podrá cantar «¡Burro!» para señalar la infracción.
