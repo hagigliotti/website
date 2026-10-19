@@ -225,6 +225,8 @@ En ese caso, si un jugador pronuncia la palabra sin que exista una infracción v
 
 La estrategia de distracción es válida; la acusación falsa no lo es.
 
+Si dos o más jugadores cantan «¡Burro!» casi al mismo tiempo para señalar la misma infracción, todos los gritos son válidos: se trata de una sola falta y ninguno de ellos será penalizado por acusación falsa.
+
 ## 19. Plazos para señalar una infracción
 
 La infracción deberá señalarse inmediatamente después de producirse.

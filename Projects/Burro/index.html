@@ -21,23 +21,14 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);min-height:100vh;background:#140b05;
-  background-image:
-    radial-gradient(ellipse 75% 70% at 50% 48%,rgba(0,0,0,0) 60%,rgba(0,0,0,.75) 100%),
-    radial-gradient(ellipse at 50% 30%,rgba(255,200,140,.16),rgba(0,0,0,0) 60%),
-    repeating-linear-gradient(176deg,rgba(0,0,0,.10) 0 2px,rgba(0,0,0,0) 2px 9px),
-    repeating-linear-gradient(176deg,rgba(255,210,160,.05) 0 30px,rgba(0,0,0,.08) 30px 52px,rgba(0,0,0,0) 52px 95px),
-    linear-gradient(180deg,#5a3418,#4a2a12 50%,#3a200d);
-  background-attachment:fixed}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);min-height:100vh;background:#120b06;
+  background-image:radial-gradient(ellipse 80% 70% at 50% 45%,#2c1a0d 0%,#170e07 60%,#0b0603 100%);background-attachment:fixed}
 header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:linear-gradient(#1c120b,#120b06);box-shadow:0 2px 12px rgba(0,0,0,.6)}
 h1{margin:0;font-family:var(--serif);font-size:1.4rem;letter-spacing:.12em}
 h1 b{color:var(--accent)}
 .hbtns{display:flex;gap:8px}
 button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:8px 14px;background:#f1e6cf;color:#2a1a0c;font-weight:600}
 button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,230,190,.35)}
-.layout{display:grid;grid-template-columns:1fr 290px;gap:16px;padding:16px;max-width:1320px;margin:0 auto}
-@media(max-width:920px){.layout{grid-template-columns:1fr}}
-.board{display:flex;flex-direction:column;gap:16px;min-width:0}
 .section-title{font-family:var(--serif);font-size:.74rem;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin:0 0 8px;text-shadow:0 1px 1px rgba(0,0,0,.6)}
 
 /* ===== bandejas de madera de cada jugador ===== */
@@ -46,8 +37,6 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
   box-shadow:inset 0 0 0 3px #95623a,inset 0 0 0 5px #3d220e,inset 0 8px 16px rgba(0,0,0,.45),0 10px 22px rgba(0,0,0,.55);
   transition:box-shadow .2s,opacity .2s}
 .seat.turn,.me.turn{box-shadow:inset 0 0 0 3px var(--accent),inset 0 0 0 5px #3d220e,inset 0 8px 16px rgba(0,0,0,.45),0 0 0 3px rgba(255,122,0,.25),0 10px 22px rgba(0,0,0,.55)}
-#opps{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
-.seat{padding:12px 14px 14px;min-width:200px}
 .seat.finished{opacity:.55}
 .seat-name{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .plaque{font-family:var(--serif);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--plaque-ink);
@@ -59,21 +48,22 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .solo{color:var(--muted);font-style:italic;padding:10px}
 
 /* ===== fichas cuadradas de madera ===== */
-.tile{--t:58px;width:var(--t);height:var(--t);border-radius:9px;position:relative;z-index:1;user-select:none;transition:transform .18s;
+.tile{--t:var(--tb,58px);width:var(--t);height:var(--t);border-radius:9px;position:relative;z-index:1;user-select:none;transition:transform .18s;
   display:grid;place-items:center;
   background:repeating-linear-gradient(104deg,rgba(90,45,15,.13) 0 2px,rgba(0,0,0,0) 2px 7px),repeating-linear-gradient(98deg,rgba(255,230,190,.08) 0 12px,rgba(0,0,0,0) 12px 30px),linear-gradient(150deg,#d6a86c,#b47c44 60%,#93602e);
   box-shadow:inset 0 1px 0 rgba(255,236,205,.7),inset 0 -2px 2px rgba(60,30,10,.4),inset 2px 0 1px rgba(255,236,205,.25),0 3px 0 #6b411c,0 4px 0 #4e2d12,0 8px 10px rgba(0,0,0,.5)}
 .tile .num{width:70%;height:70%;display:grid;place-items:center;border-radius:7px;
   background:radial-gradient(circle at 40% 30%,#f8eed8,#e6d4ad 70%,#d7c093);
   box-shadow:inset 0 2px 3px rgba(80,45,15,.5),inset 0 -1px 0 rgba(255,250,235,.6),0 1px 0 rgba(255,236,205,.45);
-  font-family:var(--serif);font-weight:700;font-size:1.5rem;line-height:1;color:#3a210e;text-shadow:0 1px 0 rgba(255,255,255,.65),0 -1px 0 rgba(0,0,0,.18)}
-.tile.small{--t:44px;border-radius:7px}
-.tile.small .num{font-size:1.1rem;border-radius:5px}
+  font-family:var(--serif);font-weight:700;font-size:calc(var(--t)*.4);line-height:1;color:#3a210e;text-shadow:0 1px 0 rgba(255,255,255,.65),0 -1px 0 rgba(0,0,0,.18)}
+.tile.small{--t:var(--ts,44px);border-radius:7px}
+.tile.small .num{border-radius:5px}
 .tile.back::after{content:"";position:absolute;inset:18%;border-radius:6px;box-shadow:inset 0 1px 2px rgba(60,30,10,.45),0 1px 0 rgba(255,230,190,.3)}
 .tile.empty{background:rgba(0,0,0,.22);box-shadow:inset 0 3px 6px rgba(0,0,0,.55),0 1px 0 rgba(255,220,180,.15);color:rgba(255,235,205,.5);font-family:var(--serif);font-size:.85rem;font-weight:700}
 /* torre: se ve el costado de las fichas apiladas */
-.tower{--t:58px;position:relative;padding-bottom:var(--h,0px)}
-.tower.small{--t:44px}
+.tower{--t:var(--tb,58px);position:relative;padding-bottom:var(--h,0px)}
+.tower.small{--t:var(--ts,44px)}
+.cpile .tile,.cpile .tower{--t:var(--tc,56px)}
 .tower::before{content:"";position:absolute;left:0;right:0;top:calc(var(--t) - 10px);bottom:-4px;border-radius:0 0 9px 9px;
   background:repeating-linear-gradient(180deg,#a8723d 0 2px,#5a3415 2px 3px);box-shadow:inset 2px 0 2px rgba(255,220,170,.25),inset -3px 0 4px rgba(0,0,0,.35),0 8px 10px rgba(0,0,0,.5)}
 .tower.small::before{border-radius:0 0 7px 7px}
@@ -83,7 +73,7 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 @keyframes pulse{50%{transform:translateY(-4px);box-shadow:0 0 0 4px rgba(255,122,0,.7),0 2px 0 #6b411c}}
 
 /* ficha en la mano: levantada y bien visible */
-.hand{min-height:calc(var(--t,58px) + 6px);display:grid;place-items:end center}
+.hand{min-height:calc(var(--tb,58px) + 4px);display:grid;place-items:end center}
 .lift .tile{transform:translateY(-14px) rotate(-7deg) scale(1.08);box-shadow:inset 0 1px 0 rgba(255,236,205,.7),inset 0 -2px 2px rgba(60,30,10,.4),0 3px 0 #6b411c,0 0 0 3px var(--accent),0 24px 22px rgba(0,0,0,.6)}
 .lift + .lbl,.lbl.hot{color:var(--accent);font-weight:700}
 .target{border-radius:10px}
@@ -93,26 +83,67 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .vuela{position:fixed;z-index:60;pointer-events:none}
 
 /* ===== área central grabada en la mesa ===== */
-.table{position:relative;border-radius:200px/120px;padding:26px 30px 30px;min-height:190px;
-  background:radial-gradient(ellipse at 50% 50%,rgba(255,215,160,.08),rgba(0,0,0,.18) 70%);
-  box-shadow:inset 0 0 0 2px rgba(230,190,140,.35),inset 0 0 0 8px rgba(0,0,0,.18),inset 0 0 0 10px rgba(230,190,140,.25),inset 0 0 0 16px rgba(0,0,0,.12),inset 0 0 0 17px rgba(230,190,140,.18),inset 0 6px 20px rgba(0,0,0,.45)}
-.table .section-title{text-align:center}
 #center{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:center}
 .cpile{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border-radius:10px}
 .cpile.done{opacity:.65}
 .cpile.done .lbl{color:var(--accent)}
 
 /* jugador */
-.me{padding:14px 16px 16px}
-.me-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
-.me .piles{gap:24px;margin-top:14px}
 #status{margin-top:14px;font-size:.95rem;min-height:1.4em;text-shadow:0 1px 1px rgba(0,0,0,.6)}
-#burro{width:118px;height:118px;border-radius:50%;font-family:var(--serif);background:radial-gradient(circle at 35% 30%,#ff8a6a,var(--danger) 60%,#8a2a18);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 7px 0 #5e1b0f,0 12px 22px rgba(0,0,0,.55);transition:transform .08s}
 #burro:active{transform:translateY(5px);box-shadow:0 2px 0 #5e1b0f}
 #burro small{display:block;font-size:.65rem;font-weight:600;opacity:.85;font-family:system-ui,sans-serif}
 
+
+/* ===== mesa ovalada: cada jugador en su lugar, como en un casino ===== */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;padding:12px 14px;max-width:1500px;margin:0 auto}
+@media(max-width:980px){.layout{grid-template-columns:1fr;padding:8px}}
+.board{min-width:0}
+.sala{position:relative;width:100%}
+.stage{position:absolute;left:50%;top:0;transform-origin:top left}
+.stage.L{--tb:58px;--ts:42px;--tc:56px}
+.stage.P{--tb:50px;--ts:36px;--tc:42px}
+.mesa{position:absolute;border-radius:50%;
+  background:
+    radial-gradient(ellipse at 50% 42%,rgba(255,215,160,.20),rgba(0,0,0,0) 55%),
+    radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 62%,rgba(0,0,0,.35) 100%),
+    repeating-linear-gradient(177deg,rgba(0,0,0,.09) 0 2px,rgba(0,0,0,0) 2px 9px),
+    repeating-linear-gradient(177deg,rgba(255,210,160,.05) 0 34px,rgba(0,0,0,.07) 34px 60px,rgba(0,0,0,0) 60px 110px),
+    linear-gradient(180deg,#7a4822,#62391a 55%,#4f2d13);
+  box-shadow:0 0 0 14px #3a200d,0 0 0 16px #8c5a30,0 0 0 30px #2a170a,0 0 0 31px rgba(255,210,160,.18),0 30px 70px 20px rgba(0,0,0,.75),inset 0 0 40px rgba(0,0,0,.45)}
+/* anillo grabado del centro */
+.mesa::after{content:"";position:absolute;inset:22%;border-radius:50%;
+  box-shadow:inset 0 0 0 2px rgba(230,190,140,.30),inset 0 0 0 7px rgba(0,0,0,.14),inset 0 0 0 9px rgba(230,190,140,.20),0 0 0 1px rgba(0,0,0,.25)}
+.centro{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.centro .section-title{margin:0;text-align:center}
+#center{display:flex;flex-wrap:wrap;gap:12px 14px;align-items:flex-end;justify-content:center}
+.stage.P #center{gap:10px 8px}
+.seat{position:absolute;transform:translate(-50%,-50%);padding:8px 10px 10px;z-index:2}
+.seat .seat-name{gap:6px}
+.seat .plaque{font-size:.74rem;padding:2px 8px}
+.seat .badge{font-size:.66rem;padding:1px 7px}
+.seat .piles{gap:8px;margin-top:8px}
+.seat .pile-col{min-width:0;gap:4px}
+.seat .lbl{font-size:.58rem;white-space:nowrap}
+.seat.me{padding:10px 14px 12px}
+.seat.me .plaque{font-size:.86rem}
+.seat.me .piles{gap:16px;margin-top:10px}
+.seat.me .lbl{font-size:.66rem}
+.seat.turn{z-index:3}
+.seat.turn::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,170,80,.28),rgba(0,0,0,0) 65%);z-index:-1;pointer-events:none}
+#burro{position:absolute;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;font-family:var(--serif);background:radial-gradient(circle at 35% 30%,#ff8a6a,var(--danger) 60%,#8a2a18);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 7px 0 #5e1b0f,0 12px 22px rgba(0,0,0,.55);transition:box-shadow .08s,margin .08s;z-index:4}
+.stage.P #burro{width:92px;height:92px;font-size:1rem}
+#burro:active{margin-top:5px;box-shadow:0 2px 0 #5e1b0f}
+/* celular: bandejas de los rivales más compactas; la ficha en la mano flota sobre la bandeja */
+.stage.P .seat:not(.me){padding:6px 8px 8px}
+.stage.P .seat:not(.me) .lbl{display:none}
+.stage.P .seat:not(.me) .piles{margin-top:6px;gap:6px}
+.stage.P .seat:not(.me) .plaque{font-size:.68rem;padding:2px 6px;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage.P .mano-flot{position:absolute;right:-18px;top:-16px;z-index:3}
+#status{margin:10px auto 0;max-width:900px;text-align:center;font-size:.95rem;min-height:1.4em;text-shadow:0 1px 1px rgba(0,0,0,.6)}
+@media(max-width:520px){header{padding:8px 12px}}
+
 /* registro: hoja de papel */
-aside{border-radius:12px;padding:12px;max-height:calc(100vh - 90px);overflow:auto;position:sticky;top:12px;
+aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
 aside .section-title{color:#7a5a36;text-shadow:none}
 @media(max-width:920px){aside{position:static;max-height:240px}}
@@ -146,17 +177,6 @@ aside .section-title{color:#7a5a36;text-shadow:none}
 .rules .nota{background:rgba(255,122,0,.1);border-left:3px solid var(--accent);padding:8px 12px;border-radius:6px;font-family:system-ui,sans-serif;font-size:.88rem}
 .rank{list-style:none;padding:0;font-size:1.05rem}
 .rank li{padding:6px 0;border-bottom:1px solid rgba(90,60,30,.25)}
-@media(max-width:520px){
-  .tile,.tower{--t:48px}.tile .num{font-size:1.25rem}
-  .tile.small,.tower.small{--t:38px}.tile.small .num{font-size:.95rem}
-  #burro{width:94px;height:94px;font-size:1rem}
-  .seat{min-width:0;flex:1 1 150px;max-width:200px;padding:10px 10px 12px}
-  .seat-name{flex-wrap:wrap;gap:4px 6px}
-  .piles{gap:10px}
-  .table{border-radius:40px;padding:20px 14px 24px}
-  header{padding:8px 12px}
-  .layout{padding:10px;gap:12px}
-}
 </style>
 </head>
 <body>
@@ -170,21 +190,18 @@ aside .section-title{color:#7a5a36;text-shadow:none}
 
 <div class="layout">
   <main class="board">
-    <section>
-      <p class="section-title">Rivales</p>
-      <div id="opps"></div>
-    </section>
-    <section class="table">
-      <p class="section-title">Pilas centrales (del 1 al 15)</p>
-      <div id="center"></div>
-    </section>
-    <section class="me" id="meBox">
-      <div class="me-row">
-        <div id="me"></div>
+    <div class="sala" id="sala">
+      <div class="stage" id="stage">
+        <div class="mesa" id="mesa"></div>
+        <div class="centro" id="centro">
+          <p class="section-title">Pilas centrales · del 1 al 15</p>
+          <div id="center"></div>
+        </div>
+        <div id="seats"></div>
         <button id="burro" data-act="burro">¡BURRO!<small>tecla B</small></button>
       </div>
-      <div id="status"></div>
-    </section>
+    </div>
+    <div id="status"></div>
   </main>
   <aside>
     <p class="section-title">Registro de la partida</p>
@@ -240,6 +257,8 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado.</li>
+      <li>Si dos jugadores cantan «¡Burro!» casi al mismo tiempo por la misma falta, valen los dos gritos: nadie más es penalizado.</li>
+      <li>Cada jugador tiene su lugar en la mesa y los turnos siguen el sentido horario: después de ti juega el de tu izquierda.</li>
       <li>La partida sigue hasta que queda un solo jugador con fichas: ese es el Burro.</li>
       <li>Las reglas 16 y 17 (entregar fichas de más, ayudar o distraer) son de la mesa real y no se aplican contra la computadora.</li>
     </ul>
@@ -270,6 +289,7 @@ const DIFF = {
 };
 const SPEED = {lento:1400, normal:900, rapido:500};
 const WINDOW_NEXT = 5000; // ms que tiene el siguiente jugador para revisar la jugada anterior
+const SIMULTANEO = 1500;  // ms: quien canta «Burro» casi a la vez que otro por la misma falta, también acierta
 
 let G = null;
 let tileSeq = 0;
@@ -445,6 +465,7 @@ function addInfraction(pid, text, tileId){
       setTimeout(() => {
         if(!G || G.gameId !== gid || G.over || b.finished) return;
         if(callable(inf, b.id)) resolveBurro(b.id, inf);
+        else sumarseAlGrito(b.id);
       }, rand(...G.diff.react));
     }
   });
@@ -464,7 +485,21 @@ function humanBurro(){
   if(me.finished){ penalize(0, `${me.name} cantó «¡Burro!» habiendo ganado la mano: no puede acusar.`); return; }
   const inf = [...G.infractions].reverse().find(i => callable(i, 0));
   if(inf) resolveBurro(0, inf);
+  else if(sumarseAlGrito(0)) return;
   else penalize(0, `${me.name} cantó «¡Burro!» sin infracción válida: acusación falsa.`);
+}
+
+// Si otro ya cantó «Burro» por esa falta hace un instante, el grito también vale: es la misma falta
+// y no se penaliza a nadie más. Devuelve true si el grito quedó aceptado.
+function sumarseAlGrito(cid){
+  const c = G.ultimoGrito;
+  if(!c || c.pid === cid || Date.now() - c.at > SIMULTANEO) return false;
+  if(!c.callers.includes(cid)){
+    c.callers.push(cid);
+    log(cid === 0 ? '🫏 También cantaste «¡Burro!» casi al mismo tiempo: vale, es la misma falta.' : `🫏 ${P(cid).name} también cantó «¡Burro!» casi al mismo tiempo: vale, es la misma falta.`, 'burro');
+    if(cid === 0) toast('¡Bien visto! Otro jugador cantó primero, pero tu «Burro» también vale: es la misma falta.');
+  }
+  return true;
 }
 
 function resolveBurro(cid, inf){
@@ -472,6 +507,7 @@ function resolveBurro(cid, inf){
   log(`🫏 ${P(cid).name} canta «¡Burro!»: ${inf_p.name} ${inf.text}.`, 'burro');
   flash(`🫏 ¡BURRO!<br><small style="font-size:.5em">${esc(P(cid).name)} → ${esc(inf_p.name)}</small>`);
   G.infractions.forEach(i => { if(i.pid === inf.pid) i.called = true; });
+  G.ultimoGrito = {pid:inf.pid, at:Date.now(), callers:[cid]};
   if(inf.tileId) revertTile(inf.pid, inf.tileId);
   penalize(inf.pid, null);
 }
@@ -529,6 +565,7 @@ function botFalseCalls(prevPid){
     setTimeout(() => {
       if(!G || G.gameId !== gid || G.over || b.finished) return;
       if(G.infractions.some(i => callable(i, b.id))) return; // si hay infracción real, la cantaría con razón
+      if(G.ultimoGrito && Date.now() - G.ultimoGrito.at <= SIMULTANEO) return; // acaban de cantar una falta real
       penalize(b.id, `${b.name} cantó «¡Burro!» sin infracción: se confundió y es Burro.`);
     }, rand(300, 1200));
   });
@@ -576,7 +613,7 @@ function faceHTML(t, size=''){ return `<div class="tile ${size}"><span class="nu
 // Torre: la ficha de arriba (boca arriba o boca abajo) y el costado de las fichas apiladas debajo.
 function towerHTML(count, topTile, size='', attrs=''){
   if(!count) return `<div class="tile empty ${size}" ${attrs}></div>`;
-  const h = Math.min(count, 22) * (size ? 2 : 3);
+  const h = Math.min(count, 10) * (size ? 1.6 : 2.6); // la torre crece hasta un tope; el número exacto va en la etiqueta
   const face = topTile ? faceHTML(topTile, size) : `<div class="tile back ${size}"></div>`;
   const cnt = topTile ? '' : `<span class="cnt">${count}</span>`;
   return `<div class="tower ${size}" style="--h:${h}px" ${attrs}>${face}${cnt}</div>`;
@@ -591,8 +628,63 @@ function placeLabel(p){
   return i < 0 ? '' : (i === 0 ? '🏆 ganó la mano' : `🏁 puesto ${i+1}`);
 }
 
+/* ---------- geometría: mesa ovalada con los jugadores alrededor ---------- */
+// L = pantalla ancha (mesa apaisada), P = celular (mesa vertical). Medidas de diseño; luego se escala.
+const GEO = {
+  L: {W:1200, H:800, cx:600, cy:392, rx:498, ry:300, me:[600,712], burro:[1108,712], gap:32, borde:46},
+  P: {W:520, H:1000, cx:260, cy:462, rx:182, ry:376, me:[260,890], burro:[458,906], gap:40, borde:40}
+};
+let geoCache = {};
+// Reparte a los rivales a lo largo del borde (por longitud de arco, así quedan a la misma distancia),
+// en sentido horario desde tu lugar, dejando libre el espacio junto a ti.
+function asientos(n, modo){
+  const key = modo + n;
+  if(geoCache[key]) return geoCache[key];
+  const g = GEO[modo], bots = n - 1, N = 720, pts = [], cum = [0];
+  for(let k = 0; k <= N; k++){
+    const a = (90 + k*360/N) * Math.PI/180;
+    pts.push([g.cx + g.rx*Math.cos(a), g.cy + g.ry*Math.sin(a)]);
+    if(k) cum.push(cum[k-1] + Math.hypot(pts[k][0]-pts[k-1][0], pts[k][1]-pts[k-1][1]));
+  }
+  const L = cum[N], hueco = cum[Math.round(g.gap/360*N)];
+  const paso = bots > 1 ? Math.min(L/n, (L - 2*hueco)/(bots - 1)) : 0;
+  const res = Array.from({length:bots}, (_, i) => {
+    const d = L/2 + (i - (bots-1)/2) * paso;
+    return pts[Math.max(0, cum.findIndex(c => c >= d))];
+  });
+  return (geoCache[key] = res);
+}
+let modoMesa = 'L';
+function ajustarMesa(){
+  const sala = $('#sala'), st = $('#stage');
+  if(!sala || !st) return;
+  const w = sala.clientWidth;
+  modoMesa = w < 760 ? 'P' : 'L';
+  const g = GEO[modoMesa];
+  let k = w / g.W;
+  if(modoMesa === 'L') k = Math.min(k, Math.max(.5, (window.innerHeight - 110) / g.H));
+  k = Math.min(k, 1.15);
+  st.className = 'stage ' + modoMesa;
+  st.style.width = g.W + 'px'; st.style.height = g.H + 'px';
+  st.style.transform = `translateX(-50%) scale(${k})`;
+  st.style.transformOrigin = 'top center';
+  sala.style.height = Math.ceil(g.H * k) + 'px';
+  const m = $('#mesa');
+  m.style.left = (g.cx - g.rx - g.borde) + 'px'; m.style.top = (g.cy - g.ry - g.borde) + 'px';
+  m.style.width = 2*(g.rx + g.borde) + 'px'; m.style.height = 2*(g.ry + g.borde) + 'px';
+  // zona central: el rectángulo que entra dentro del óvalo, sin tocar las bandejas
+  const hw = (g.rx - 88) / Math.SQRT2, hh = (g.ry - 72) / Math.SQRT2;
+  const c = $('#centro');
+  c.style.left = (g.cx - hw) + 'px'; c.style.top = (g.cy - hh) + 'px';
+  c.style.width = 2*hw + 'px'; c.style.height = 2*hh + 'px';
+  const b = $('#burro');
+  b.style.left = g.burro[0] + 'px'; b.style.top = g.burro[1] + 'px';
+}
+window.addEventListener('resize', () => { ajustarMesa(); render(); });
+
 function render(){
   if(!G) return;
+  ajustarMesa();
   const turnPid = G.turn ? G.turn.pid : null;
   const held = G.turn ? G.turn.held : null;
   const me = P(0), myTurn = turnPid === 0 && !G.over;
@@ -608,32 +700,38 @@ function render(){
     }
   }
 
-  const bots = G.players.filter(p => !p.human);
-  $('#opps').innerHTML = bots.length ? bots.map(p => {
-    const vt = ultima(p.visible), isT = turnPid === p.id, h = isT ? G.turn.held : null;
-    return `<div class="seat ${isT?'turn':''} ${p.finished?'finished':''}">
-      <div class="seat-name"><span class="plaque">${isT?'▶ ':''}${esc(p.name)}</span><span class="badge">${p.finished ? placeLabel(p) : tilesOf(p)+' fichas'}</span></div>
-      <div class="piles">
-        <div class="pile-col">${towerHTML(p.reserve.length, null, 'small', `data-res="${p.id}"`)}<div class="lbl">reserva</div></div>
-        <div class="pile-col"><div class="target ${held&&myTurn?'clickable':''} ${hO.includes(p.id)?'hint':''}" data-act="opp" data-pid="${p.id}">${towerHTML(p.visible.length, vt, 'small')}</div><div class="lbl">visible</div></div>
-        <div class="pile-col">${handHTML(h,'small', isT && G.turn.from === 'reserve')}<div class="lbl ${h?'hot':''}">en la mano</div></div>
-      </div></div>`;
-  }).join('') : '<div class="solo">Modo solitario: no hay rivales ni «Burro».</div>';
+  const g = GEO[modoMesa];
+  const lugares = asientos(G.players.length, modoMesa);
+  const html = G.players.map(p => {
+    const [x, y] = p.id === 0 ? g.me : lugares[p.id - 1];
+    const isT = turnPid === p.id;
+    const cls = `seat ${p.human?'me':''} ${isT?'turn':''} ${p.finished?'finished':''}`;
+    const compacto = modoMesa === 'P' && !p.human;
+    const cuenta = p.finished ? (compacto ? (G.ranking.indexOf(p.id) === 0 ? '🏆' : '🏁') : placeLabel(p)) : (compacto ? tilesOf(p) : tilesOf(p)+' fichas');
+    const cab = `<div class="seat-name"><span class="plaque">${isT?'▶ ':''}${esc(p.name)}</span><span class="badge" title="fichas">${cuenta}</span></div>`;
+    const vt = ultima(p.visible);
+    let piles;
+    if(p.human){
+      piles = `
+      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${p.reserve.length ? towerHTML(p.reserve.length, null, '', 'data-res="0"') : '<div class="tile empty" data-res="0">↻</div>'}</div><div class="lbl">reserva</div></div>
+      <div class="pile-col"><div class="target ${myTurn?'clickable':''} ${hVis||hOwn?'hint':''}" data-act="my-visible">${towerHTML(p.visible.length, vt)}</div><div class="lbl">visible</div></div>
+      <div class="pile-col">${handHTML(myTurn ? held : null)}<div class="lbl ${myTurn&&held?'hot':''}">en la mano</div></div>`;
+    } else {
+      const h = isT ? G.turn.held : null;
+      piles = `
+      <div class="pile-col">${towerHTML(p.reserve.length, null, 'small', `data-res="${p.id}"`)}<div class="lbl">reserva</div></div>
+      <div class="pile-col"><div class="target ${held&&myTurn?'clickable':''} ${hO.includes(p.id)?'hint':''}" data-act="opp" data-pid="${p.id}">${towerHTML(p.visible.length, vt, 'small')}</div><div class="lbl">visible</div></div>
+      ${compacto ? (h ? `<div class="pile-col mano-flot">${handHTML(h,'small', G.turn.from === 'reserve')}</div>` : '')
+        : `<div class="pile-col">${handHTML(h,'small', isT && G.turn.from === 'reserve')}<div class="lbl ${h?'hot':''}">en la mano</div></div>`}`;
+    }
+    return `<div class="${cls}" style="left:${x}px;top:${y}px">${cab}<div class="piles">${piles}</div></div>`;
+  }).join('');
+  $('#seats').innerHTML = html;
 
   $('#center').innerHTML = G.center.map(c => {
     const t = ultima(c.tiles), done = t.n === 15;
     return `<div class="cpile ${done?'done':''} ${hC.includes(c.id)?'hint':''}" data-act="center" data-pile="${c.id}">${towerHTML(c.tiles.length, t)}<div class="lbl">${done?'completa':'pila '+c.id}</div></div>`;
   }).join('') + `<div class="cpile ${hC.includes('new')?'hint':''}" data-act="center" data-pile="new"><div class="tile empty">+ 1</div><div class="lbl">nueva pila</div></div>`;
-
-  const vt = ultima(me.visible);
-  $('#meBox').classList.toggle('turn', myTurn);
-  $('#me').innerHTML = `
-    <div class="seat-name"><span class="plaque">${myTurn?'▶ ':''}${esc(me.name)}</span><span class="badge">${me.finished ? placeLabel(me) : tilesOf(me)+' fichas'}</span></div>
-    <div class="piles">
-      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${me.reserve.length ? towerHTML(me.reserve.length, null, '', 'data-res="0"') : '<div class="tile empty" data-res="0">↻</div>'}</div><div class="lbl">reserva</div></div>
-      <div class="pile-col"><div class="target ${myTurn?'clickable':''} ${hVis||hOwn?'hint':''}" data-act="my-visible">${towerHTML(me.visible.length, vt)}</div><div class="lbl">visible</div></div>
-      <div class="pile-col">${handHTML(myTurn ? held : null)}<div class="lbl ${myTurn&&held?'hot':''}">en la mano</div></div>
-    </div>`;
 
   let s;
   if(G.over) s = 'Partida terminada.';
@@ -644,6 +742,7 @@ function render(){
   else if(G.turn && held) s = `<b>${esc(P(turnPid).name)}</b> levantó su <b>${held.n}</b> visible. ¿Lo juega bien? Si no, ¡canta Burro!`;
   else if(G.turn) s = `Turno de <b>${esc(P(turnPid).name)}</b>. Si ves un error, ¡canta Burro!`;
   else s = 'Pasando el turno…';
+  if(G.players.length === 1 && !G.over) s += ' <i>(modo solitario: no hay rivales ni «Burro»)</i>';
   $('#status').innerHTML = s;
 
   $('#log').innerHTML = G.log.slice(-80).reverse().map(l => `<li class="${l.cls}">${esc(l.msg)}</li>`).join('');
