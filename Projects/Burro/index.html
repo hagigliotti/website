@@ -189,9 +189,15 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
   repeating-linear-gradient(-45deg,rgba(201,162,90,.09) 0 1px,rgba(0,0,0,0) 1px 34px);
   -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%);mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%)}
 .mesa.negro .deco::before{inset:17%;border:1px solid rgba(201,162,90,.7);box-shadow:0 0 0 5px rgba(20,20,20,.95),0 0 0 6px rgba(201,162,90,.4)}
+.mesa.purpura{--pano:#46195e;--hilo:#d8b56a}
+/* púrpura: anillos concéntricos de gala y orla de perlas doradas */
+.mesa.purpura .deco{background:repeating-radial-gradient(ellipse at 50% 50%,rgba(255,255,255,0) 0 22px,rgba(230,200,255,.055) 22px 24px,rgba(255,255,255,0) 24px 46px);
+  -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 60%,transparent 85%);mask:radial-gradient(ellipse at 50% 50%,#000 0 60%,transparent 85%)}
+.mesa.purpura .deco::before{inset:16%;border:4px dotted rgba(222,186,110,.75)}
+.mesa.purpura .deco::after{inset:18.5%;border:1px solid rgba(222,186,110,.45)}
 .mesa.pano ~ .centro .section-title{color:rgba(255,245,225,.6)}
 /* selector de mesa */
-.mesas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mesas{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .mesas button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;background:#fffaf0;border:2px solid #d8c3a0;border-radius:12px;font-size:.78rem;font-weight:600;color:#2f1c0c}
 .mesas button[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,0,.25)}
 .mesas i{width:46px;height:30px;border-radius:50%;box-shadow:0 0 0 3px #3a2210,0 2px 4px rgba(0,0,0,.4)}
@@ -199,6 +205,7 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .mesas [data-mesa=verde] i{background:radial-gradient(#127045,#0b4429);box-shadow:0 0 0 2px #c9a25a,0 0 0 4px #1d130c}
 .mesas [data-mesa=bordo] i{background:radial-gradient(#7a1a2c,#4a0c18);box-shadow:0 0 0 2px #d4ad62,0 0 0 4px #1d130c}
 .mesas [data-mesa=azul] i{background:radial-gradient(#1a5199,#0d2f5c);box-shadow:0 0 0 2px #c9d3e0,0 0 0 4px #1d130c}
+.mesas [data-mesa=purpura] i{background:radial-gradient(#5e2580,#33104a);box-shadow:0 0 0 2px #d8b56a,0 0 0 4px #1d130c}
 .mesas [data-mesa=negro] i{background:radial-gradient(#262626,#0d0d0d);box-shadow:0 0 0 2px #b8924a,0 0 0 4px #1d130c}
 @media(max-width:480px){.mesas{grid-template-columns:repeat(3,1fr)}}
 .hsel{background:transparent;color:var(--ink);border:1px solid rgba(255,230,190,.35);border-radius:10px;padding:7px 8px;font:inherit;font-weight:600}
@@ -236,6 +243,9 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .mesa.bordo ~ .centro .logo small{color:#ecd3a0;opacity:.9}
 .mesa.azul ~ .centro .logo span{color:#eef3fb;text-shadow:0 2px 0 #0a2448,0 0 16px rgba(0,0,0,.4);font-family:"Futura","Century Gothic","Avenir",system-ui,sans-serif;font-weight:800;letter-spacing:.3em;}
 .mesa.azul ~ .centro .logo small{color:#d6e1f2;opacity:.9}
+.mesa.purpura ~ .centro .logo span{color:#ecd08f;text-shadow:0 2px 0 #1e0629,0 0 16px rgba(0,0,0,.45);font-variant:small-caps;letter-spacing:.18em;padding-left:.18em}
+.mesa.purpura ~ .centro .logo small{color:#e3c88c;opacity:.9}
+.mesa.purpura ~ .centro .logo .marca{color:#ecd08f;text-shadow:0 1px 0 #1e0629}
 .mesa.negro ~ .centro .logo span{color:#dcb66b;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.6);letter-spacing:.32em;font-weight:700;}
 .mesa.negro ~ .centro .logo small{color:#d0aa60;opacity:.9}
 .stage.P .mesa ~ .centro .logo span{font-size:34px;letter-spacing:.08em;padding-left:.08em}
@@ -288,7 +298,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
   <h1><b>BURRO</b></h1>
   <div class="hbtns">
     <select class="hsel" id="hMesa" aria-label="Mesa">
-      <option value="madera">Mesa de madera</option><option value="verde">Paño verde</option><option value="bordo">Paño bordó</option><option value="azul">Paño azul</option><option value="negro">Paño negro</option>
+      <option value="madera">Mesa de madera</option><option value="verde">Paño verde</option><option value="bordo">Paño bordó</option><option value="azul">Paño azul</option><option value="purpura">Paño púrpura</option><option value="negro">Paño negro</option>
     </select>
     <button class="ghost" data-act="rules">Reglas</button>
     <button class="ghost" data-act="setup">Nueva partida</button>
@@ -356,6 +366,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <button type="button" data-mesa="verde"><i></i>Verde</button>
       <button type="button" data-mesa="bordo"><i></i>Bordó</button>
       <button type="button" data-mesa="azul"><i></i>Azul</button>
+      <button type="button" data-mesa="purpura"><i></i>Púrpura</button>
       <button type="button" data-mesa="negro"><i></i>Negro</button>
     </div>
     <label class="check" style="color:#2f1c0c"><input type="checkbox" id="fLearn"> Modo aprendizaje (resalta jugadas válidas y avisa tus infracciones)</label>
@@ -376,7 +387,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible completa se da vuelta y pasa a ser la nueva reserva, en el mismo orden en que pusiste las fichas. Luego sigues tomando de ella (regla 12).</li>
       <li>Para elegir quién empieza: «Yo», «Al azar» o «Dados». Con dados, cada jugador tira dos y empieza el número más alto; si hay empate, desempatan solo los igualados.</li>
-      <li>Puedes elegir la mesa (madera o paño verde, bordó, azul o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
+      <li>Puedes elegir la mesa (madera o paño verde, bordó, azul, púrpura o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
       <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
       <li>Las fichas de penalización llegan boca abajo a la <b>reserva</b> del penalizado. Quien no tiene reserva entrega la última ficha de su pila visible, dada vuelta; si era su única ficha, se queda sin fichas y gana la mano (o termina su ronda si alguien ya ganó).</li>
       <li>Tienes unos 4 segundos desde que un rival se equivoca para cantarle «¡Burro!», aunque ya haya terminado su turno. El siguiente jugador tiene además 5 segundos desde que el otro apoya su ficha.</li>
@@ -441,8 +452,8 @@ function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.rand
 function newSet(){ return shuffle(Array.from({length:15},(_,i)=>({n:i+1,id:++tileSeq}))); }
 
 /* ---------- mesa elegida (se recuerda en este navegador) ---------- */
-const MESAS = {madera:'Mesa de madera', verde:'Paño verde', bordo:'Paño bordó', azul:'Paño azul', negro:'Paño negro'};
-const LOGO = {madera:'fichas del 1 al 15', verde:'★ fichas del 1 al 15 ★', bordo:'gran salón', azul:'— club de fichas —', negro:'· reservado ·'};
+const MESAS = {madera:'Mesa de madera', verde:'Paño verde', bordo:'Paño bordó', azul:'Paño azul', purpura:'Paño púrpura', negro:'Paño negro'};
+const LOGO = {madera:'fichas del 1 al 15', verde:'★ fichas del 1 al 15 ★', bordo:'gran salón', azul:'— club de fichas —', purpura:'noche de gala', negro:'· reservado ·'};
 let mesaActual = 'madera';
 try { const m = localStorage.getItem('burro.mesa'); if(MESAS[m]) mesaActual = m; } catch(_) {}
 function ponerMesa(m){
@@ -1128,6 +1139,7 @@ document.addEventListener('click', e => {
 });
 $('#hMesa').addEventListener('change', e => ponerMesa(e.target.value));
 ponerMesa(mesaActual);
+ajustarMesa(); // la mesa ya acomodada detrás del menú inicial
 document.addEventListener('keydown', e => {
   if(e.target.matches('input,select,textarea')) return;
   if($('#dadosModal').classList.contains('open')) return;
