@@ -269,6 +269,18 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .mesa.bordo ~ .centro .logo .marca{color:#f1d9a6;text-shadow:0 1px 0 #3b0812}
 .mesa.azul ~ .centro .logo .marca{color:#e4ecf8;text-shadow:0 1px 0 #0a2448}
 .mesa.negro ~ .centro .logo .marca{color:#dcb66b;text-shadow:0 1px 0 #000}
+/* ===== animación de preparación: pilas, mezcla y reparto ===== */
+.stage[data-reparto] .seat .piles,.stage[data-reparto] #center,.stage[data-reparto] .centro .section-title,.stage[data-reparto] #burro{visibility:hidden}
+.stage[data-reparto] .centro .logo{opacity:.25;transition:opacity .4s}
+#reparto{position:absolute;inset:0;z-index:6;pointer-events:none}
+#reparto .ft{position:absolute;left:0;top:0;--t:38px;will-change:transform}
+.stage.P #reparto .ft{--t:30px}
+#reparto .ft .tile{--t:inherit;box-shadow:inset 0 1px 0 rgba(255,236,205,.7),inset 0 -2px 2px rgba(60,30,10,.4),0 2px 0 #6b411c,0 4px 6px rgba(0,0,0,.35)}
+.reparto-msg{position:absolute;left:50%;transform:translateX(-50%);margin:0;padding:8px 18px;border-radius:999px;white-space:nowrap;
+  font-family:var(--serif);font-size:17px;font-weight:700;color:#fbecc9;background:rgba(15,8,3,.72);box-shadow:inset 0 0 0 1px rgba(230,190,140,.35);transition:opacity .3s}
+.stage.P .reparto-msg{font-size:13px;padding:6px 12px}
+.reparto-saltar{position:absolute;pointer-events:auto;transform:translate(-50%,-50%);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;
+  background:rgba(15,8,3,.7);color:#fbecc9;box-shadow:inset 0 0 0 1px rgba(230,190,140,.35)}
 /* registro: hoja de papel */
 aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
@@ -330,6 +342,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
         </div>
         <div id="seats"></div>
         <button id="burro" data-act="burro" aria-label="Cantar ¡Burro! (tecla B)"><b>¡BURRO!</b><small>tecla B</small></button>
+        <div id="reparto" hidden><p class="reparto-msg" id="repartoMsg"></p><button type="button" class="reparto-saltar" id="repartoSaltar">Saltar ▸</button></div>
       </div>
     </div>
     <div id="status"></div>
@@ -399,6 +412,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible completa se da vuelta y pasa a ser la nueva reserva, en el mismo orden en que pusiste las fichas. Luego sigues tomando de ella (regla 12).</li>
+      <li>Al empezar se ven las 12 pilas de 15 fichas: se apartan las que sobran, cada pila que se usa se mezcla boca abajo (así cada una sigue teniendo todas las fichas del 1 al 15) y se reparte una a cada jugador. Con «Saltar» pasas directo a los dados.</li>
       <li>Para elegir quién empieza: «Yo», «Al azar» o «Dados». Con dados, cada jugador tira dos y empieza el número más alto; si hay empate, desempatan solo los igualados.</li>
       <li>Puedes elegir la mesa (madera o paño verde, bordó, azul, púrpura o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
       <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
@@ -534,6 +548,122 @@ function elegirManoConDados(alTerminar){
   };
 }
 
+/* ---------- preparación: 12 pilas, se mezclan las que se usan y se reparten ---------- */
+function repartir(){
+  return new Promise(resolve => {
+    const st = $('#stage'), capa = $('#reparto');
+    if(!st || !capa || !capa.animate){ resolve(); return; }
+    const gid = G.gameId, n = G.players.length, modo = modoMesa, g = GEO[modo];
+    const T = modo === 'P' ? 30 : 38;                       // tamaño de ficha en la animación
+    const dy = modo === 'P' ? 1.6 : 2;                      // grosor de cada ficha en la pila
+    // posiciones de las 12 pilas en el centro de la mesa
+    const cols = modo === 'P' ? 3 : 6, sepX = modo === 'P' ? 96 : 120, sepY = modo === 'P' ? 110 : 150;
+    const filas = Math.ceil(12 / cols);
+    const slot = i => [g.cx + ((i % cols) - (cols - 1) / 2) * sepX - T/2, g.cy + (Math.floor(i / cols) - (filas - 1) / 2) * sepY - T/2 + 10];
+    // destino de cada pila: la reserva de cada jugador
+    const lugares = asientos(n, modo);
+    const destino = id => { const [x, y] = id === 0 ? g.me : lugares[id - 1]; return [x - (id === 0 ? 95 : 62) * (modo === 'P' && id ? .8 : 1), y - 6]; };
+    let saltar = false;
+    const dur = ms => saltar ? 1 : ms;
+    const espera = ms => new Promise(r => setTimeout(r, saltar ? 0 : ms));
+    const vivo = () => G && G.gameId === gid;
+
+    st.setAttribute('data-reparto', '');
+    capa.hidden = false;
+    capa.querySelectorAll('.ft').forEach(e => e.remove());
+    const msg = $('#repartoMsg');
+    msg.style.top = (g.cy - (modo === 'P' ? 250 : 215)) + 'px';
+    const bS = $('#repartoSaltar');
+    bS.style.left = g.cx + 'px'; bS.style.top = (g.cy + (modo === 'P' ? 255 : 220)) + 'px';
+    bS.onclick = () => { saltar = true; capa.getAnimations({subtree:true}).forEach(a => a.finish()); };
+    const decir = t => { msg.textContent = t; };
+
+    // 12 pilas ordenadas del 1 al 15 (el 15 arriba, a la vista)
+    const pilas = [];
+    for(let k = 0; k < 12; k++){
+      const [x, y] = slot(k), fichas = [];
+      for(let i = 0; i < 15; i++){
+        const f = document.createElement('div');
+        f.className = 'ft';
+        f.style.zIndex = k * 20 + i;
+        f.innerHTML = i === 14 ? `<div class="tile"><span class="num">15</span></div>` : '<div class="tile back"></div>';
+        f._p = [x, y - i * dy, 0];
+        f.style.transform = `translate(${x}px,${y - i*dy}px)`;
+        capa.appendChild(f); fichas.push(f);
+      }
+      pilas.push(fichas);
+    }
+    const mover = (f, x, y, r, ms, delay=0, easing='cubic-bezier(.3,.7,.3,1)') => {
+      const [x0, y0, r0] = f._p; f._p = [x, y, r];
+      return f.animate([{transform:`translate(${x0}px,${y0}px) rotate(${r0}deg)`},{transform:`translate(${x}px,${y}px) rotate(${r}deg)`}],
+        {duration:dur(ms), delay:saltar ? 0 : delay, easing, fill:'forwards'}).finished.catch(() => {});
+    };
+
+    (async () => {
+      decir('12 pilas de 15 fichas, cada una del 1 al 15');
+      capa.animate([{opacity:0},{opacity:1}], {duration:dur(400), fill:'forwards'});
+      await espera(1300); if(!vivo()) return;
+
+      // las pilas que no se usan se guardan
+      if(n < 12){
+        decir(`${n === 1 ? 'Se usa 1 pila' : `Se usan ${n} pilas`}, una por jugador`);
+        await Promise.all(pilas.slice(n).flatMap((fs, j) => fs.map(f => {
+          f.animate([{opacity:1},{opacity:0}], {duration:dur(500), delay:saltar?0:350 + j*40, fill:'forwards'});
+          return mover(f, f._p[0], f._p[1] - 60, 0, 850, j*40);
+        })));
+        pilas.slice(n).flat().forEach(f => f.remove());
+        if(!vivo()) return;
+        // las que se usan se acomodan en el centro
+        const cols2 = Math.min(n, modo === 'P' ? 3 : 6), filas2 = Math.ceil(n / cols2);
+        await Promise.all(pilas.slice(0, n).map((fs, k) => {
+          const x = g.cx + ((k % cols2) - (cols2 - 1) / 2) * sepX - T/2, y = g.cy + (Math.floor(k / cols2) - (filas2 - 1) / 2) * sepY - T/2 + 10;
+          return Promise.all(fs.map((f, i) => mover(f, x, y - i * dy, 0, 600)));
+        }));
+      }
+      if(!vivo()) return;
+
+      // se mezclan: cada pila se desparrama boca abajo y se revuelve
+      decir('Se mezclan las fichas boca abajo');
+      const usadas = pilas.slice(0, n);
+      usadas.flat().forEach(f => { f.innerHTML = '<div class="tile back"></div>'; });
+      const radio = modo === 'P' ? 46 : 64;
+      const base = usadas.map(fs => [fs[0]._p[0], fs[0]._p[1]]);
+      for(let vuelta = 0; vuelta < 3; vuelta++){
+        await Promise.all(usadas.flatMap((fs, k) => fs.map((f, i) => {
+          const a = Math.random() * Math.PI * 2, d = radio * (.3 + Math.random() * .7);
+          f.style.zIndex = Math.floor(Math.random() * 400);
+          return mover(f, base[k][0] + Math.cos(a) * d, base[k][1] + Math.sin(a) * d * .8, Math.random() * 160 - 80, 520, Math.random() * 120, 'ease-in-out');
+        })));
+        if(!vivo()) return;
+      }
+
+      // se vuelven a armar las pilas de 15, boca abajo
+      decir('Se arman las pilas de 15 fichas, boca abajo');
+      await Promise.all(usadas.flatMap((fs, k) => fs.map((f, i) => { f.style.zIndex = k * 20 + i; return mover(f, base[k][0], base[k][1] - i * dy, 0, 550, i * 35); })));
+      await espera(350); if(!vivo()) return;
+
+      // se reparte una pila a cada jugador
+      decir('Se reparte una pila a cada jugador');
+      await Promise.all(usadas.map((fs, k) => {
+        const [x, y] = destino(k);
+        return Promise.all(fs.map((f, i) => mover(f, x - T/2 + 4, y - T/2 - i * dy, 0, 700, k * 160 + i * 2, 'cubic-bezier(.2,.8,.2,1)')));
+      }));
+      await espera(250);
+      if(!vivo()) return;
+      // cada jugador da vuelta la primera ficha: queda su pila visible
+      decir('Cada jugador descubre su primera ficha');
+      capa.animate([{opacity:1},{opacity:0}], {duration:dur(450), fill:'forwards'});
+      st.removeAttribute('data-reparto');
+      render();
+      await espera(1100);
+      capa.hidden = true;
+      capa.querySelectorAll('.ft').forEach(e => e.remove());
+      capa.getAnimations().forEach(a => a.cancel());
+      resolve();
+    })();
+  });
+}
+
 /* ---------- partida ---------- */
 function newGame(cfg){
   tileSeq = 0;
@@ -553,11 +683,16 @@ function newGame(cfg){
   }
   render();
   const gid = G.gameId;
-  if(cfg.mano === 'dados' && players.length > 1){
-    elegirManoConDados(ganador => { if(G.gameId === gid) setTimeout(() => { if(G.gameId === gid) startTurn(ganador); }, 500); });
-    return;
-  }
-  setTimeout(() => { if(G.gameId === gid) startTurn(start); }, 900);
+  repartir().then(() => {
+    if(G.gameId !== gid) return;
+    log(`Se mezclaron y repartieron ${players.length === 1 ? '1 pila' : players.length + ' pilas'} de 15 fichas.`, 'sys');
+    render();
+    if(cfg.mano === 'dados' && players.length > 1){
+      elegirManoConDados(ganador => { if(G.gameId === gid) setTimeout(() => { if(G.gameId === gid) startTurn(ganador); }, 500); });
+      return;
+    }
+    setTimeout(() => { if(G.gameId === gid) startTurn(start); }, 900);
+  });
 }
 
 function active(){ return G.players.filter(p => !p.finished); }
@@ -1162,6 +1297,7 @@ $('#setupForm').addEventListener('submit', e => {
   e.preventDefault();
   $('#setupModal').classList.remove('open');
   if(G) G.gameId = Math.random(); // cancela temporizadores de la partida anterior
+  const capa = $('#reparto'); if(capa){ capa.hidden = true; capa.querySelectorAll('.ft').forEach(e => e.remove()); $('#stage').removeAttribute('data-reparto'); }
   newGame({
     name: $('#fName').value.trim(),
     bots: +$('#fBots').value,
