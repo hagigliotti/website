@@ -1,7 +1,7 @@
 import { Lector, miniaturaPDF } from './reader.js';
 import { IDIOMAS, idioma, cambiarIdioma, t, n, L, locale } from './i18n.js';
 import { vistaMusica, activarMusica, salirDeMusica, iniciarRadio, renombrarRadio } from './musica.js';
-import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace, listaDeVideos, activarVideos } from './vitrina.js';
+import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace, listaDeVideos, activarVideos, mezclaDelCanal, mezclaGuardada } from './vitrina.js';
 
 /* ==========================================================================
    Utilidades
@@ -228,8 +228,23 @@ function emblemas(src, cantidad) {
 }
 
 // Miniaturas de videos de YouTube sobre la portada (se cargan en el navegador de quien visita).
-function mosaicoVideos(ids) {
-  return `<span class="mosaico" aria-hidden="true">${ids.slice(0, 6).map((id) => `<img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`).join('')}</span>`;
+function mosaicoVideos(ids, lista) {
+  const guardada = lista && mezclaGuardada(lista);
+  const usar = guardada ? guardada.ids : ids;
+  return `<span class="mosaico" aria-hidden="true" ${lista ? `data-mezcla="${esc(lista)}"` : ''}>${usar.slice(0, 6).map((id) => `<img src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`).join('')}</span>`;
+}
+// Cambia las miniaturas por una mezcla variada del canal (cuando la página ya cargó).
+function activarMezclas() {
+  const cajas = $$('[data-mezcla]');
+  if (!cajas.length) return;
+  setTimeout(() => cajas.forEach(async (caja) => {
+    const ids = await mezclaDelCanal(caja.dataset.mezcla);
+    if (!ids.length || !caja.isConnected) return;
+    const actuales = $$('img', caja).map((i) => i.src).join();
+    const nuevas = ids.map((id) => `https://i.ytimg.com/vi/${id}/mqdefault.jpg`);
+    if (actuales === nuevas.join()) return;
+    caja.innerHTML = nuevas.map((u) => `<img src="${esc(u)}" alt="" onerror="this.remove()">`).join('');
+  }), 2500);
 }
 
 function hito(h, { completo = true } = {}) {
@@ -355,7 +370,7 @@ function vistaInicio() {
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
           <a class="proyecto revela" ${p.directo && p.enlace ? `href="${esc(p.enlace)}" target="_blank" rel="noopener"` : `href="${enlace(p.ruta)}"`}>
-            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos) : ''}${p.emblema && p.partes && p.partes.length ? emblemas(p.emblema, p.partes.length) : ''}</div>
+            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos, idLista(p.lista)) : ''}${p.emblema && p.partes && p.partes.length ? emblemas(p.emblema, p.partes.length) : ''}</div>
             <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(p.directo && p.enlace ? etiquetaEnlace(p.enlace) : t('ver_proyecto'))}${p.directo ? ' ↗' : ''}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}
@@ -873,6 +888,7 @@ function activarVista(ctx) {
 
   activarDispositivos();
   activarVideos();
+  activarMezclas();
   if (ctx.item && ctx.item.reproductor) activarMusica(ctx.item); else salirDeMusica();
   revelar();
   efectos.medirLigero();

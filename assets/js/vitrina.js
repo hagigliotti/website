@@ -270,6 +270,74 @@ async function tituloDeVideo(id) {
   return '';
 }
 
+// Mezcla de videos del canal para la portada de HAG Producciones.
+// Lee todos los videos subidos (lista "UU…" del canal) con el reproductor oficial,
+// separa los de Conquistadores por el título y arma una mezcla variada:
+// drones, carreras, series y demás, con un solo video del club.
+// El resultado se guarda un día en el navegador para no repetir la consulta.
+const CLAVE_MEZCLA = 'yt_mezcla';
+const DEL_CLUB = /conquistador|pathfinder|\bclase\b|\bamigo\b|compa[ñn]ero|explorador|pionero|excursionista|\bgu[ií]a\b|especialidad|\bvoto\b|ideales|club/i;
+
+function idsDeLista(lista) {
+  return cargarApiYT().then((YT) => new Promise((res) => {
+    const caja = document.createElement('div');
+    caja.style.cssText = 'position:fixed;left:-9999px;top:0;width:200px;height:120px;opacity:0;pointer-events:none';
+    const dentro = document.createElement('div');
+    caja.appendChild(dentro);
+    document.body.appendChild(caja);
+    let listo = false;
+    const fin = (ids) => { if (listo) return; listo = true; try { p.destroy(); } catch (_) { /* nada */ } caja.remove(); res(ids || []); };
+    const p = new YT.Player(dentro, {
+      host: 'https://www.youtube-nocookie.com',
+      playerVars: { listType: 'playlist', list: lista, mute: 1 },
+      events: {
+        onReady: () => {
+          let n = 0;
+          const leer = () => {
+            const pl = p.getPlaylist && p.getPlaylist();
+            if (pl && pl.length) fin(pl);
+            else if (n++ < 25) setTimeout(leer, 300);
+            else fin([]);
+          };
+          leer();
+        },
+      },
+    });
+    setTimeout(() => fin([]), 15000);
+  }));
+}
+
+export function mezclaGuardada(lista) {
+  try {
+    const c = JSON.parse(localStorage.getItem(CLAVE_MEZCLA) || 'null');
+    if (c && c.lista === lista && c.ids && c.ids.length) return c;
+  } catch (_) { /* nada */ }
+  return null;
+}
+
+export async function mezclaDelCanal(lista, cantidad = 6) {
+  const guardada = mezclaGuardada(lista);
+  if (guardada && Date.now() - guardada.t < 24 * 3600e3) return guardada.ids;
+  const ids = await idsDeLista(lista);
+  if (!ids.length) return guardada ? guardada.ids : [];
+  const muestra = ids.slice(0, 60);
+  const conTitulo = await Promise.all(muestra.map(async (id) => ({ id, titulo: await tituloDeVideo(id) })));
+  const otros = conTitulo.filter((v) => !DEL_CLUB.test(v.titulo));
+  const club = conTitulo.filter((v) => DEL_CLUB.test(v.titulo));
+  // Repartidos a lo largo del canal (no solo los últimos) para que haya de todo.
+  const repartir = (arr, n) => (arr.length <= n ? arr.slice() : Array.from({ length: n }, (_, i) => arr[Math.floor((i * arr.length) / n)]));
+  const elegidos = repartir(otros, club.length ? cantidad - 1 : cantidad);
+  if (club.length) elegidos.splice(Math.min(2, elegidos.length), 0, club[0]);
+  while (elegidos.length < cantidad && club.length > elegidos.filter((v) => DEL_CLUB.test(v.titulo)).length) {
+    const sig = club.find((v) => !elegidos.includes(v));
+    if (!sig) break;
+    elegidos.push(sig);
+  }
+  const resultado = elegidos.slice(0, cantidad).map((v) => v.id);
+  try { localStorage.setItem(CLAVE_MEZCLA, JSON.stringify({ lista, t: Date.now(), ids: resultado })); } catch (_) { /* nada */ }
+  return resultado;
+}
+
 export function activarVideos() {
   document.querySelectorAll('[data-videos]').forEach((caja) => {
     const lista = caja.dataset.videos;
