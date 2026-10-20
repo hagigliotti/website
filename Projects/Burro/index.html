@@ -412,7 +412,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
       <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible completa se da vuelta y pasa a ser la nueva reserva, en el mismo orden en que pusiste las fichas. Luego sigues tomando de ella (regla 12).</li>
-      <li>Al empezar se ven las 12 pilas de 15 fichas: se apartan las que sobran, cada pila que se usa se mezcla boca abajo (así cada una sigue teniendo todas las fichas del 1 al 15) y se reparte una a cada jugador. Con «Saltar» pasas directo a los dados.</li>
+      <li>Al empezar se ven las 12 pilas de 15 fichas: se apartan las que sobran, todas las fichas de las pilas que se usan se mezclan juntas boca abajo, se vuelven a armar pilas de 15 y se reparte una a cada jugador. Con «Saltar» pasas directo a los dados.</li>
       <li>Para elegir quién empieza: «Yo», «Al azar» o «Dados». Con dados, cada jugador tira dos y empieza el número más alto; si hay empate, desempatan solo los igualados.</li>
       <li>Puedes elegir la mesa (madera o paño verde, bordó, azul, púrpura o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
       <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
@@ -622,24 +622,39 @@ function repartir(){
       }
       if(!vivo()) return;
 
-      // se mezclan: cada pila se desparrama boca abajo y se revuelve
-      decir('Se mezclan las fichas boca abajo');
-      const usadas = pilas.slice(0, n);
-      usadas.flat().forEach(f => { f.innerHTML = '<div class="tile back"></div>'; });
-      const radio = modo === 'P' ? 46 : 64;
+      // gran mezcla: TODAS las fichas, de todas las pilas, se juntan en el centro y se revuelven entre sí
+      decir('Gran mezcla: todas las fichas juntas, boca abajo');
+      let usadas = pilas.slice(0, n);
+      const todas = usadas.flat();
+      todas.forEach(f => { f.innerHTML = '<div class="tile back"></div>'; });
       const base = usadas.map(fs => [fs[0]._p[0], fs[0]._p[1]]);
+      // tamaño de la zona de mezcla: crece con la cantidad de fichas
+      const zx = (modo === 'P' ? 55 : 150) + Math.sqrt(todas.length) * (modo === 'P' ? 5.5 : 14);
+      const zy = (modo === 'P' ? 120 : 70) + Math.sqrt(todas.length) * (modo === 'P' ? 11 : 7);
+      const enZona = (escala=1) => { const a = Math.random() * Math.PI * 2, d = Math.sqrt(Math.random()) * escala;
+        return [g.cx - T/2 + Math.cos(a) * zx * d, g.cy - T/2 + 10 + Math.sin(a) * zy * d]; };
+      // 1) todas las pilas se vuelcan al centro
+      await Promise.all(todas.map(f => { const [x, y] = enZona(.35); f.style.zIndex = Math.floor(Math.random()*999);
+        return mover(f, x, y, Math.random()*360-180, 650, Math.random()*250, 'cubic-bezier(.5,0,.3,1)'); }));
+      if(!vivo()) return;
+      // 2) se revuelven por toda la mesa, varias veces, en remolino
       for(let vuelta = 0; vuelta < 3; vuelta++){
-        await Promise.all(usadas.flatMap((fs, k) => fs.map((f, i) => {
-          const a = Math.random() * Math.PI * 2, d = radio * (.3 + Math.random() * .7);
-          f.style.zIndex = Math.floor(Math.random() * 400);
-          return mover(f, base[k][0] + Math.cos(a) * d, base[k][1] + Math.sin(a) * d * .8, Math.random() * 160 - 80, 520, Math.random() * 120, 'ease-in-out');
-        })));
+        await Promise.all(todas.map(f => {
+          const [x, y] = enZona(vuelta % 2 ? .75 : 1);
+          f.style.zIndex = Math.floor(Math.random()*999);
+          return mover(f, x, y, f._p[2] + (vuelta % 2 ? -1 : 1) * (60 + Math.random()*120), 500, Math.random()*130, 'ease-in-out');
+        }));
         if(!vivo()) return;
       }
+      // 3) se juntan en un montón
+      await Promise.all(todas.map(f => { const [x, y] = enZona(.3); return mover(f, x, y, Math.random()*90-45, 450, Math.random()*120); }));
+      if(!vivo()) return;
 
-      // se vuelven a armar las pilas de 15, boca abajo
+      // se vuelven a armar las pilas de 15 boca abajo, tomando fichas de todo el montón
       decir('Se arman las pilas de 15 fichas, boca abajo');
-      await Promise.all(usadas.flatMap((fs, k) => fs.map((f, i) => { f.style.zIndex = k * 20 + i; return mover(f, base[k][0], base[k][1] - i * dy, 0, 550, i * 35); })));
+      shuffle(todas);
+      usadas = Array.from({length:n}, (_, k) => todas.slice(k*15, k*15 + 15));
+      await Promise.all(usadas.flatMap((fs, k) => fs.map((f, i) => { f.style.zIndex = k * 20 + i; return mover(f, base[k][0], base[k][1] - i * dy, 0, 550, i * 30 + k * 15); })));
       await espera(350); if(!vivo()) return;
 
       // se reparte una pila a cada jugador
