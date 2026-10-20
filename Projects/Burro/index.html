@@ -96,8 +96,6 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 
 /* jugador */
 #status{margin-top:14px;font-size:.95rem;min-height:1.4em;text-shadow:0 1px 1px rgba(0,0,0,.6)}
-#burro:active{transform:translateY(5px);box-shadow:0 2px 0 #5e1b0f}
-#burro small{display:block;font-size:.65rem;font-weight:600;opacity:.85;font-family:system-ui,sans-serif}
 
 
 /* ===== mesa ovalada: cada jugador en su lugar, como en un casino ===== */
@@ -136,9 +134,24 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .seat.me .lbl{font-size:.66rem}
 .seat.turn{z-index:3}
 .seat.turn::before{content:"";position:absolute;inset:-26px;border-radius:50%;background:radial-gradient(ellipse,rgba(255,170,80,.28),rgba(0,0,0,0) 65%);z-index:-1;pointer-events:none}
-#burro{position:absolute;transform:translate(-50%,-50%);width:118px;height:118px;border-radius:50%;font-family:var(--serif);background:radial-gradient(circle at 35% 30%,#ff8a6a,var(--danger) 60%,#8a2a18);color:#fff;font-size:1.2rem;font-weight:900;box-shadow:0 7px 0 #5e1b0f,0 12px 22px rgba(0,0,0,.55);transition:box-shadow .08s,margin .08s;z-index:4}
-.stage.P #burro{width:92px;height:92px;font-size:1rem}
-#burro:active{margin-top:5px;box-shadow:0 2px 0 #5e1b0f}
+#burro{position:absolute;transform:translate(-50%,-50%);z-index:4;width:132px;height:132px;padding:0;border:0;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;color:#fff;cursor:pointer;
+  background:
+    radial-gradient(circle at 36% 28%,rgba(255,255,255,.32),rgba(255,255,255,0) 38%),
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,0) 0 60%,#f3e3c3 60% 62.5%,rgba(0,0,0,0) 63%),
+    radial-gradient(circle at 50% 50%,#d63c25 0 40%,#b52a17 60%,rgba(0,0,0,0) 60.5%),
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,0) 0 92%,rgba(0,0,0,.22) 100%),
+    repeating-conic-gradient(from 7.5deg,#f6ecd8 0 15deg,#a8221a 15deg 45deg);
+  box-shadow:0 0 0 3px #5e140b,inset 0 0 0 2px rgba(0,0,0,.25),0 6px 0 #4d1008,0 14px 24px rgba(0,0,0,.55);
+  transition:transform .1s ease,box-shadow .1s ease}
+#burro b{font-family:var(--serif);font-weight:900;font-size:19px;line-height:1;letter-spacing:.02em;text-shadow:0 2px 0 rgba(80,10,0,.65)}
+#burro small{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+#burro:hover{box-shadow:0 0 0 3px #5e140b,inset 0 0 0 2px rgba(0,0,0,.25),0 6px 0 #4d1008,0 14px 24px rgba(0,0,0,.55),0 0 0 9px rgba(255,120,80,.18)}
+#burro:active{transform:translate(-50%,calc(-50% + 4px)) scale(.97);box-shadow:0 0 0 3px #5e140b,0 2px 0 #4d1008,0 6px 12px rgba(0,0,0,.5)}
+.stage.P #burro{width:98px;height:98px}
+.stage.P #burro b{font-size:14px}
+.stage.P #burro small{font-size:8px}
+@media (hover:none){#burro small{display:none}} /* en pantallas táctiles no hay tecla B */
 /* celular: bandejas de los rivales más compactas; la ficha en la mano flota sobre la bandeja */
 .stage.P .seat:not(.me){padding:6px 8px 8px}
 .stage.P .seat:not(.me) .lbl{display:none}
@@ -316,7 +329,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
           <div id="center"></div>
         </div>
         <div id="seats"></div>
-        <button id="burro" data-act="burro">¡BURRO!<small>tecla B</small></button>
+        <button id="burro" data-act="burro" aria-label="Cantar ¡Burro! (tecla B)"><b>¡BURRO!</b><small>tecla B</small></button>
       </div>
     </div>
     <div id="status"></div>
@@ -919,8 +932,8 @@ function placeLabel(p){
 /* ---------- geometría: mesa ovalada con los jugadores alrededor ---------- */
 // L = pantalla ancha (mesa apaisada), P = celular (mesa vertical). Medidas de diseño; luego se escala.
 const GEO = {
-  L: {W:1200, H:800, cx:600, cy:392, rx:498, ry:300, me:[600,712], burro:[1108,712], gap:32, borde:46},
-  P: {W:520, H:1000, cx:260, cy:462, rx:182, ry:376, me:[260,890], burro:[458,906], gap:40, borde:40}
+  L: {W:1200, H:800, cx:600, cy:392, rx:498, ry:300, me:[600,712], burro:[1100,712], gap:32, borde:46},
+  P: {W:520, H:1000, cx:260, cy:462, rx:182, ry:376, me:[260,890], burro:[452,890], gap:40, borde:40}
 };
 let geoCache = {};
 // Reparte a los rivales a lo largo del borde (por longitud de arco, así quedan a la misma distancia),
