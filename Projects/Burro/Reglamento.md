@@ -17,7 +17,8 @@ El juego se desarrolla por turnos y exige rapidez, atención y capacidad para id
 
 Para facilitar la interpretación del reglamento, se utilizarán las siguientes denominaciones:
 
-- **Pila visible:** pila personal cuya ficha superior está descubierta y determina la ficha prioritaria del jugador.
+- **Pila visible:** pila personal, boca arriba, donde el jugador apoya sus fichas. La ficha de arriba es su ficha visible.
+- **Ficha visible (o ficha prioritaria):** la ficha descubierta que está arriba de la pila visible de cada jugador. Se la llama prioritaria porque es la primera que el jugador debe intentar jugar, antes de tomar una ficha de su reserva. En este reglamento se la nombra siempre como «ficha visible».
 - **Pila de reserva:** pila personal que contiene las fichas boca abajo, de la que se toman nuevas fichas cuando corresponde.
 - **Pila central:** pila situada en el centro de la mesa, donde se colocan las fichas en orden ascendente, del 1 al 15.
 - **Jugador en turno:** jugador que está realizando su jugada.
@@ -52,13 +53,13 @@ Cuando un jugador pueda colocar una ficha en una pila central, esta jugada tendr
 
 El jugador mano inicia la partida. Los turnos continúan en sentido horario.
 
-El jugador deberá observar si su ficha prioritaria es apta para jugar.
+El jugador deberá observar si su ficha visible es apta para jugar.
 
-Para iniciar una jugada, el jugador debe levantar una ficha, primeramente la ficha de la pila visible si es posible. En caso de no poder jugar deberá jugar desde la pila de reserva.
+Para iniciar una jugada, el jugador debe levantar una ficha, primeramente su ficha visible si es posible. En caso de no poder jugar deberá jugar desde la pila de reserva.
 
 Levantar una ficha de cualquiera de sus dos pilas, la pila visible o la pila de reserva, constituye el inicio de la jugada y, una vez levantada la ficha, deberá jugarla sí o sí.
 
-La ficha prioritaria es siempre la que se encuentra descubierta en la pila visible. Por lo tanto, el jugador deberá comprobar primero si esa ficha puede descargarse antes de tomar una ficha de la pila de reserva.
+La ficha visible es la ficha prioritaria: por eso el jugador deberá comprobar primero si su ficha visible puede descargarse antes de tomar una ficha de la pila de reserva.
 
 Una vez levantada una ficha, el jugador deberá comprobar sus posibilidades de descarga respetando el siguiente orden de prioridades:
 
@@ -70,7 +71,7 @@ El jugador continuará jugando mientras pueda descargar fichas de acuerdo con es
 
 ## 7. Prioridad de la ficha visible
 
-La ficha descubierta en la pila visible tiene prioridad sobre las fichas ocultas de la pila de reserva.
+La ficha visible tiene prioridad sobre las fichas ocultas de la pila de reserva.
 
 - Si la ficha visible puede jugarse en una pila central, el jugador deberá colocarla allí.
 - Si no puede jugarse en una pila central, deberá comprobar si puede descargarse sobre la pila visible de algún contrincante.
@@ -84,7 +85,7 @@ Las pilas centrales se construyen obligatoriamente en orden ascendente del 1 al 
 
 Si una pila central termina en un número inmediatamente inferior al de la ficha levantada, esta deberá colocarse en ella.
 
-Por ejemplo, si una pila central termina en 4, una ficha 5 podrá colocarse sobre ella.
+Por ejemplo, si una pila central termina en 4, una ficha 5 podrá colocarse sobre ella. En cambio, un 3 no podrá colocarse sobre ella, ni ningún otro número que no sea el 5: las pilas centrales solo suben de uno en uno.
 
 Si existen varias pilas centrales en las que la ficha puede jugarse, el jugador podrá elegir cualquiera de ellas.
 
@@ -103,7 +104,7 @@ La descarga será válida cuando el número de la ficha sea inmediatamente super
 
 Si hay varios contrincantes sobre cuyas pilas visibles se puede descargar la ficha, el jugador podrá elegir libremente dónde colocarla.
 
-Una vez realizada la descarga, el jugador deberá comprobar el nuevo número que haya quedado visible en su pila visible y continuar jugando mientras tenga posibilidades de descarga.
+Una vez realizada la descarga, el jugador deberá comprobar su nueva ficha visible (la que quedó arriba de su pila visible) y continuar jugando mientras tenga posibilidades de descarga.
 
 No está permitido elegir una descarga sobre un contrincante cuando la ficha puede colocarse obligatoriamente en una pila central. Omitir una jugada obligatoria en una pila central constituye una infracción y podrá ser sancionado con un «¡Burro!».
 
@@ -148,7 +149,7 @@ El procedimiento será el siguiente:
 4. La pila completa recomienza como reserva en el mismo orden en que se fueron colocando las fichas: la primera que se colocó en la pila visible será la primera en salir. No se descubre ninguna ficha al darla vuelta.
 5. El jugador continúa su jugada tomando fichas de la nueva pila de reserva, como en cualquier otro momento.
 
-En cuanto el jugador apoye una ficha en su pila visible, volverá a tener una ficha visible.
+En cuanto el jugador apoye una ficha en su pila visible, terminará su turno y volverá a tener una ficha visible. El juego continuará con el próximo jugador.
 
 ## 13. Ganador de la mano
 
@@ -244,7 +245,7 @@ Esta excepción permite al siguiente jugador revisar la jugada anterior antes de
 
 ## 20. Principios generales
 
-- La ficha de la pila visible tiene prioridad sobre las fichas ocultas de la pila de reserva.
+- La ficha visible (ficha prioritaria) tiene prioridad sobre las fichas ocultas de la pila de reserva.
 - Las pilas centrales tienen prioridad sobre las descargas en las pilas visibles de los contrincantes.
 - Para iniciar una jugada, debe levantarse una ficha de cualquiera de las dos pilas personales.
 - Se considera ficha levantada cuando se ha tomado la ficha con la mano y se ha levantado al menos una esquina.
