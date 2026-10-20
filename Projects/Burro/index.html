@@ -100,10 +100,12 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 
 /* ===== mesa ovalada: cada jugador en su lugar, como en un casino ===== */
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;padding:12px 14px;max-width:1500px;margin:0 auto}
-@media(max-width:980px){.layout{grid-template-columns:1fr;padding:8px}}
+@media(max-width:1180px){.layout{grid-template-columns:1fr;padding:8px}}
 .board{min-width:0}
 .sala{position:relative;width:100%}
-.stage{position:absolute;left:50%;top:0;transform-origin:top left}
+.stage{position:absolute;left:50%;top:0;transform-origin:top left;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.con-zoom .stage{position:relative;left:auto;margin:0 auto}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .stage.L{--tb:58px;--ts:42px;--tc:56px}
 .stage.P{--tb:50px;--ts:36px;--tc:42px}
 .mesa{position:absolute;border-radius:50%;
@@ -285,7 +287,7 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
 aside .section-title{color:#7a5a36;text-shadow:none}
-@media(max-width:920px){aside{position:static;max-height:240px}}
+@media(max-width:1180px){aside{position:static;max-height:240px}}
 #log{list-style:none;margin:0;padding:0;font-size:.82rem;line-height:1.35}
 #log li{padding:4px 2px;border-bottom:1px dashed rgba(90,60,30,.25)}
 #log li.burro{color:#a3260f;font-weight:700}
@@ -1106,20 +1108,33 @@ function asientos(n, modo){
   return (geoCache[key] = res);
 }
 let modoMesa = 'L';
+const ZOOM = typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom', '2');
+if(ZOOM) document.documentElement.classList.add('con-zoom');
 function ajustarMesa(){
   const sala = $('#sala'), st = $('#stage');
   if(!sala || !st) return;
+  // Espacio disponible: ancho de la sala y alto de la pantalla menos la barra de arriba y el mensaje de abajo.
   const w = sala.clientWidth;
-  modoMesa = w < 760 ? 'P' : 'L';
+  const cab = document.querySelector('header');
+  const h = Math.max(260, window.innerHeight - (cab ? cab.offsetHeight : 50) - 70);
+  // Mesa vertical en pantallas altas (celulares y tablets en vertical) y apaisada en las anchas.
+  modoMesa = (w < 640 || (h / w > 1.05 && w < 1000)) ? 'P' : 'L';
   const g = GEO[modoMesa];
-  let k = w / g.W;
-  if(modoMesa === 'L') k = Math.min(k, Math.max(.5, (window.innerHeight - 110) / g.H));
-  k = Math.min(k, 1.15);
+  let k = modoMesa === 'L'
+    ? Math.max(Math.min(w / g.W, h / g.H), Math.min(w / g.W, .55))   // celular acostado: no achicar de más
+    : Math.max(Math.min(w / g.W, h / g.H), Math.min(w / g.W, .6));
+  k = Math.min(k, 1.25);
   st.className = 'stage ' + modoMesa;
   st.style.width = g.W + 'px'; st.style.height = g.H + 'px';
-  st.style.transform = `translateX(-50%) scale(${k})`;
-  st.style.transformOrigin = 'top center';
-  sala.style.height = Math.ceil(g.H * k) + 'px';
+  if(ZOOM){
+    // zoom vuelve a dibujar todo a la resolución real de la pantalla: letras y fichas nítidas
+    st.style.transform = ''; st.style.zoom = k;
+    sala.style.height = '';
+  } else {
+    st.style.transform = `translateX(-50%) scale(${k})`;
+    st.style.transformOrigin = 'top center';
+    sala.style.height = Math.ceil(g.H * k) + 'px';
+  }
   const m = $('#mesa');
   m.style.left = (g.cx - g.rx - g.borde) + 'px'; m.style.top = (g.cy - g.ry - g.borde) + 'px';
   m.style.width = 2*(g.rx + g.borde) + 'px'; m.style.height = 2*(g.ry + g.borde) + 'px';

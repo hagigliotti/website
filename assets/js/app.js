@@ -890,7 +890,7 @@ function activarVista(ctx) {
     }));
     $$('[data-leer]').forEach((b) => b.addEventListener('click', () => {
       const d = docs[Number(b.dataset.leer)];
-      lector.abrir({ titulo: limpiarNombre(d.nombre), sub: tituloDe(it), tipo: d.tipo, url: url(d.ruta), descarga: url(d.ruta) });
+      lector.abrir({ titulo: limpiarNombre(d.nombre), sub: tituloDe(it), tipo: d.tipo, url: url(d.ruta), descarga: url(d.ruta), tema: it.libro || '', obra: tituloDe(it) });
     }));
     const bImgs = $('[data-leer-imagenes]');
     if (bImgs) bImgs.addEventListener('click', () => lector.abrir({ titulo: t('imagenes_proyecto'), sub: tituloDe(it), tipo: 'imagenes', urls: imgs.map((x) => url(x.ruta)) }));

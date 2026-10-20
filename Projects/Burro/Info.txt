@@ -1,4 +1,5 @@
 Título: Burro
+Libro: casino
 Juego: index.html
 
 Juego de fichas del 1 al 15 que exige rapidez y atención: gana quien primero se queda sin fichas, y quien se equivoca y es descubierto es el «Burro». Jugalo acá mismo contra la computadora, con el reglamento oficial completo más abajo.

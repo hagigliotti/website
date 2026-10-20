@@ -139,9 +139,37 @@ export function textoAHTML(texto) {
   }).join('\n');
 }
 
+/* Tema «casino» (reglamento de Burro): portada de paño verde y páginas con adornos dorados. */
+const escHTML = (s = '') => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function adornarCasino(html) {
+  return html
+    // «7. Título» → número en una ficha redonda
+    .replace(/<h2([^>]*)>\s*(\d+)\.\s*/g, '<h2$1><span class="cap-num">$2</span>')
+    // la palabra Burro, destacada
+    .replace(/«¡?Burro!?»/g, (m) => `<span class="palabra-burro">${m}</span>`);
+}
+function portadaCasino(obra, titulo, firma, ancho) {
+  const p = document.createElement('div');
+  p.className = 'pag-portada pag-portada--casino';
+  p.style.setProperty('--tam-portada', `${Math.max(30, ancho / 5.2)}px`);
+  p.innerHTML = `
+    <div class="pc-marco">
+      <small class="pc-ante">Reglamento oficial</small>
+      <div class="pc-fichas"><i>1</i><i>7</i><i>15</i></div>
+      <b class="pc-titulo"></b>
+      <span class="pc-orla">◆ ◆ ◆</span>
+      <em class="pc-sub"></em>
+      <span class="pc-firma"></span>
+    </div>`;
+  p.querySelector('.pc-titulo').textContent = obra;
+  p.querySelector('.pc-sub').textContent = /reglamento/i.test(titulo) ? 'del juego de fichas' : titulo;
+  p.querySelector('.pc-firma').textContent = '@hagigliotti';
+  return p;
+}
+
 class DocTexto {
-  constructor({ url, markdown, titulo, firma }) {
-    this.url = url; this.markdown = markdown; this.titulo = titulo; this.firma = firma;
+  constructor({ url, markdown, titulo, firma, tema = '', obra = '' }) {
+    this.url = url; this.markdown = markdown; this.titulo = titulo; this.firma = firma; this.tema = tema; this.obra = obra;
     this.texto = true; this.escala = 1; this.paginas = []; this.clave = '';
   }
   async iniciar() {
@@ -154,6 +182,7 @@ class DocTexto {
     } else {
       this.html = textoAHTML(crudo);
     }
+    if (this.tema === 'casino') this.html = adornarCasino(this.html);
     this.aspecto = 0.7;
   }
   total() { return this.paginas.length + 1; }
@@ -166,7 +195,7 @@ class DocTexto {
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
 
     const medidor = document.createElement('div');
-    medidor.className = 'medidor pag-texto__cuerpo';
+    medidor.className = `medidor pag-texto__cuerpo${this.tema ? ` tema-${this.tema}` : ''}`;
     medidor.style.display = 'flow-root';
     medidor.style.width = `${ancho * 0.8}px`;
     medidor.style.fontSize = `${this.tamLetra(ancho)}px`;
@@ -175,6 +204,21 @@ class DocTexto {
 
     const plantilla = document.createElement('div');
     plantilla.innerHTML = this.html;
+    // Las listas largas se separan ítem por ítem, así una lista puede seguir en la página siguiente
+    // en vez de desbordar la hoja o dejar una página casi vacía.
+    for (const lista of Array.from(plantilla.querySelectorAll(':scope > ul, :scope > ol'))) {
+      const items = Array.from(lista.children).filter((li) => li.tagName === 'LI');
+      if (items.length < 2) continue;
+      const inicio = lista.tagName === 'OL' ? Number(lista.getAttribute('start') || 1) : 1;
+      items.forEach((li, j) => {
+        const una = document.createElement(lista.tagName);
+        if (lista.tagName === 'OL') una.setAttribute('start', String(inicio + j));
+        una.className = `${lista.className} lista-partida${j ? ' lista-sigue' : ''}`.trim();
+        una.appendChild(li);
+        lista.before(una);
+      });
+      lista.remove();
+    }
     const cola = Array.from(plantilla.children);
     const paginas = [];
     let actual = [];
@@ -254,6 +298,7 @@ class DocTexto {
 
   async pagina(i, ancho) {
     const tam = this.tamLetra(ancho);
+    if (i === 0 && this.tema === 'casino') return portadaCasino(this.obra || this.titulo, this.titulo, this.firma, ancho);
     if (i === 0) {
       const p = document.createElement('div');
       p.className = 'pag-portada';
@@ -264,9 +309,10 @@ class DocTexto {
       return p;
     }
     const p = document.createElement('div');
-    p.className = 'pag-texto';
+    p.className = `pag-texto${this.tema ? ` pag-texto--${this.tema}` : ''}`;
     p.style.setProperty('--tam-libro', `${tam}px`);
-    p.innerHTML = `<div class="pag-texto__cuerpo">${this.paginas[i - 1] || ''}</div><div class="pag-texto__numero">${i}</div>`;
+    const cabeza = this.tema === 'casino' ? `<div class="pag-texto__cabeza"><span>${escHTML(this.obra || '')}</span><span>${escHTML(this.titulo)}</span></div>` : '';
+    p.innerHTML = `${cabeza}<div class="pag-texto__cuerpo${this.tema ? ` tema-${this.tema}` : ''}">${this.paginas[i - 1] || ''}</div><div class="pag-texto__numero"><span>${i}</span></div>`;
     return p;
   }
   precargar() {}
@@ -330,7 +376,7 @@ export class Lector {
     });
   }
 
-  async abrir({ titulo, sub = '', tipo, url, urls, descarga }) {
+  async abrir({ titulo, sub = '', tipo, url, urls, descarga, tema = '', obra = '' }) {
     this.ultimoFoco = document.activeElement;
     this.abierto = true;
     this.pos = 0;
@@ -350,7 +396,7 @@ export class Lector {
     try {
       if (tipo === 'pdf') this.doc = new DocPDF(url);
       else if (tipo === 'imagenes') this.doc = new DocImagenes(urls);
-      else this.doc = new DocTexto({ url, markdown: tipo === 'markdown', titulo, firma: this.firma });
+      else this.doc = new DocTexto({ url, markdown: tipo === 'markdown', titulo, firma: this.firma, tema: /^[a-z]+$/i.test(tema) ? tema.toLowerCase() : '', obra });
       await this.doc.iniciar();
       if (token !== this.token) return;
       await this.maquetar();

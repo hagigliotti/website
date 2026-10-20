@@ -857,7 +857,10 @@ svg { width: 1em; height: 1em; }
 .lector__tam[hidden] { display: none; }
 
 /* Medición de texto (fuera de pantalla) */
-.medidor { position: fixed; left: -99999px; top: 0; visibility: hidden; pointer-events: none; }
+.medidor { position: fixed; left: -99999px; top: 0; visibility: hidden; pointer-events: none; font-family: var(--f-libro); }
+/* listas separadas ítem por ítem para paginar: sin espacio extra entre ítems */
+.pag-texto__cuerpo .lista-sigue { margin-top: 0; }
+.pag-texto__cuerpo .lista-partida:not(:last-child) { margin-bottom: 0; }
 
 .visor { grid-template-rows: auto 1fr auto auto; background: #000; }
 .lector, .visor { grid-template-columns: minmax(0, 1fr); }
@@ -1401,3 +1404,98 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .juego__pantalla { height: 92svh; border-radius: 1rem; }
 }
 
+
+/* ==========================================================================
+   Libro con tema «casino» (reglamento de Burro). Se activa con «Libro: casino» en Info.txt.
+   Las medidas de texto son las mismas del libro común, así la paginación no cambia.
+   ========================================================================== */
+.pag-texto--casino {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 60%),
+    radial-gradient(ellipse at 50% 120%, rgba(150, 110, 50, 0.10), rgba(0, 0, 0, 0) 60%),
+    #f8f1e1;
+  color: #2a2216;
+}
+/* marco fino dorado alrededor de la página */
+.pag-texto--casino::before {
+  content: ""; position: absolute; inset: 1.6% 2.4%; pointer-events: none; border-radius: 3px;
+  border: 1px solid rgba(166, 128, 58, 0.55);
+  box-shadow: inset 0 0 0 3px rgba(248, 241, 225, 1), inset 0 0 0 4px rgba(166, 128, 58, 0.28);
+}
+.pag-texto__cabeza {
+  position: absolute; top: 0; padding-top: 4.4%; left: 10%; right: 10%; display: flex; justify-content: space-between; gap: 1em;
+  font-family: var(--f-libro); font-size: max(8px, calc(var(--tam-libro, 17px) * 0.5)); line-height: 1.2; letter-spacing: 0.22em; text-transform: uppercase; color: #8a6a32;
+  border-bottom: 1px solid rgba(166, 128, 58, 0.35); padding-bottom: 0.35em;
+}
+.pag-texto__cabeza span:first-child { color: #0f5a36; font-weight: 700; }
+.pag-texto--casino .pag-texto__numero { bottom: 4.6%; }
+.pag-texto--casino .pag-texto__numero span {
+  display: inline-grid; place-items: center; min-width: 2.2em; height: 2.2em; padding: 0 0.4em; border-radius: 999px;
+  font-family: var(--f-libro); font-weight: 700; font-size: 12px; color: #f8ecd0;
+  background: radial-gradient(circle at 40% 30%, #1b7a4b, #0d4a2c); box-shadow: 0 0 0 1.5px #c9a25a, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.tema-casino h1 {
+  font-family: var(--f-libro); font-weight: 700; font-size: 1.55em; line-height: 1.15; text-align: center; color: #0f4a2e;
+  letter-spacing: 0.02em; margin: 0.3em 0 0.9em; padding-bottom: 0.55em;
+  background: linear-gradient(90deg, rgba(166, 128, 58, 0), #b8924a 30%, #b8924a 70%, rgba(166, 128, 58, 0)) bottom / 70% 1px no-repeat;
+}
+.tema-casino h1::after { content: "◆"; display: block; font-size: 0.45em; color: #b8924a; margin-top: 0.6em; letter-spacing: 0; }
+.tema-casino h2 {
+  display: flex; align-items: center; gap: 0.45em; font-family: var(--f-libro); font-weight: 700; font-size: 1.22em; line-height: 1.2;
+  color: #0f4a2e; margin: 1em 0 0.55em; padding-bottom: 0.3em; border-bottom: 1px solid rgba(166, 128, 58, 0.45);
+}
+.tema-casino h2:first-child { margin-top: 0.2em; }
+.tema-casino .cap-num {
+  flex: none; display: grid; place-items: center; width: 1.7em; height: 1.7em; border-radius: 50%;
+  font-size: 0.82em; font-weight: 700; color: #fbefd3; background: radial-gradient(circle at 40% 30%, #1d7d4d, #0b4127);
+  box-shadow: 0 0 0 2px #f8f1e1, 0 0 0 3px #c9a25a;
+}
+.tema-casino h3 { font-family: var(--f-libro); font-weight: 700; font-style: italic; font-size: 1.08em; color: #6b4a14; margin: 0.9em 0 0.4em; }
+.tema-casino p { text-indent: 0; margin: 0 0 0.6em; }
+.tema-casino strong, .tema-casino b { color: #0f4a2e; }
+.tema-casino em { color: #6b5638; }
+.tema-casino ul { list-style: none; padding-left: 1.2em; margin: 0.3em 0 0.7em; }
+.tema-casino ul li { position: relative; margin-bottom: 0.3em; }
+.tema-casino ul li::before { content: "◆"; position: absolute; left: -1.15em; top: 0.12em; font-size: 0.62em; color: #b8924a; }
+.tema-casino ol { padding-left: 1.5em; margin: 0.3em 0 0.7em; }
+.tema-casino ol li { margin-bottom: 0.3em; }
+.tema-casino ol li::marker { color: #0f5a36; font-weight: 700; }
+.tema-casino { hyphens: auto; -webkit-hyphens: auto; }
+@media (max-width: 600px) { .tema-casino { text-align: left; } }
+.tema-casino .palabra-burro { color: #a8221a; font-weight: 700; white-space: nowrap; }
+
+/* portada: paño verde con marco dorado */
+.pag-portada--casino {
+  padding: 0; background:
+    radial-gradient(ellipse at 50% 35%, rgba(255, 236, 190, 0.22), rgba(0, 0, 0, 0) 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.5) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .3 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #0f5534;
+  color: #f1d9a0;
+}
+.pc-marco {
+  position: absolute; inset: 5.5%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.7em; text-align: center;
+  border: 2px solid rgba(214, 180, 100, 0.85); border-radius: 6px;
+  box-shadow: inset 0 0 0 6px rgba(15, 85, 52, 0.0), inset 0 0 0 7px rgba(214, 180, 100, 0.45);
+  font-size: calc(var(--tam-portada, 60px) * 0.24);
+}
+.pag-portada--casino .pc-ante { font-family: var(--f-libro); font-size: 0.9em; letter-spacing: 0.35em; text-transform: uppercase; color: #e6c579; }
+.pag-portada--casino .pc-titulo {
+  font-family: var(--f-display); font-weight: 900; text-transform: uppercase; line-height: 0.85; letter-spacing: 0.02em;
+  font-size: var(--tam-portada, 60px);
+  background: linear-gradient(180deg, #fbe7b0 0%, #e6c06a 50%, #b98a35 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 3px 0 rgba(30, 18, 2, 0.8));
+}
+.pag-portada--casino .pc-orla { font-size: 0.7em; letter-spacing: 0.8em; padding-left: 0.8em; color: #c9a25a; }
+.pag-portada--casino .pc-sub { font-family: var(--f-libro); font-style: italic; font-size: 1.1em; color: #f1dca8; }
+.pag-portada--casino .pc-firma { font-family: var(--f-firma); font-size: 2em; line-height: 1.1; color: #e6c579; margin-top: 0.3em; }
+.pag-portada--casino .pc-fichas { display: flex; gap: 0.5em; margin: 0.4em 0 0.2em; }
+.pag-portada--casino .pc-fichas i {
+  display: grid; place-items: center; width: 2.4em; height: 2.4em; border-radius: 0.35em; font-style: normal;
+  font-family: var(--f-libro); font-weight: 700; font-size: 1.05em; color: #3a210e;
+  background: radial-gradient(circle at 40% 30%, #f8eed8, #e6d4ad 62%, rgba(0, 0, 0, 0) 63%) center / 72% 72% no-repeat,
+    linear-gradient(150deg, #d6a86c, #b47c44 60%, #93602e);
+  box-shadow: inset 0 1px 0 rgba(255, 236, 205, 0.7), 0 3px 0 #6b411c, 0 6px 8px rgba(0, 0, 0, 0.45);
+}
+.pag-portada--casino .pc-fichas i:nth-child(1) { transform: rotate(-8deg); }
+.pag-portada--casino .pc-fichas i:nth-child(3) { transform: rotate(7deg); }
