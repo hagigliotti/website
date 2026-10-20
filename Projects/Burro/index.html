@@ -147,16 +147,14 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 
 
 /* ===== mesas: madera o paño de casino, cada una con su diseño ===== */
-.mesa .deco,.mesa .logo{position:absolute;pointer-events:none}
+.mesa .deco{position:absolute;pointer-events:none}
 .mesa .deco{inset:0;border-radius:50%;overflow:hidden}
-.mesa .logo{left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;white-space:nowrap;margin-top:-18%}
-.mesa .logo span{font-family:var(--serif);font-weight:900;letter-spacing:.3em;font-size:46px;line-height:1}
-.mesa .logo small{font-family:var(--serif);font-size:13px;letter-spacing:.35em;text-transform:uppercase}
-.stage.P .mesa .logo span{font-size:30px}
-.stage.P .mesa .logo{margin-top:-62%}
+.centro .logo{display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;margin-bottom:6px}
+.centro .logo span{font-family:var(--serif);font-weight:900;letter-spacing:.22em;padding-left:.22em;font-size:68px;line-height:1}
+.centro .logo small{font-family:var(--serif);font-size:14px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+.stage.P .centro .logo span{font-size:36px;letter-spacing:.1em;padding-left:.1em}
+.stage.P .centro .logo small{font-size:10px;letter-spacing:.18em}
 /* madera: logo grabado */
-.mesa.madera .logo span{color:rgba(40,20,6,.28);text-shadow:0 1px 0 rgba(255,220,170,.18)}
-.mesa.madera .logo small{color:rgba(40,20,6,.25)}
 /* paños: base común (textura de fieltro, luz de lámpara y baranda acolchada) */
 .mesa.pano{
   --fieltro:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .32 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -168,8 +166,6 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .mesa.verde{--pano:#0e5534;--hilo:#c9a25a}
 .mesa.verde .deco::before{inset:17%;border:2px solid rgba(214,180,100,.75);box-shadow:0 0 0 6px rgba(0,0,0,0),0 0 0 8px rgba(214,180,100,.45)}
 .mesa.verde .deco::after{inset:28%;border:1px dashed rgba(214,180,100,.35)}
-.mesa.verde .logo span{color:rgba(225,190,110,.55);text-shadow:0 2px 2px rgba(0,0,0,.35)}
-.mesa.verde .logo small{color:rgba(225,190,110,.5)}
 /* bordó: brocado (damasco) y anillo ornamental dorado */
 .mesa.bordo{--pano:#5e1020;--hilo:#d4ad62}
 .mesa.bordo .deco{background:
@@ -178,15 +174,11 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
   radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 30%,rgba(0,0,0,.25) 75%)}
 .mesa.bordo .deco::before{inset:16%;border:3px double rgba(222,184,110,.7);box-shadow:inset 0 0 0 10px rgba(94,16,32,.65)}
 .mesa.bordo .deco::after{inset:19%;border:1px dotted rgba(222,184,110,.5)}
-.mesa.bordo .logo span{font-style:italic;letter-spacing:.12em;text-transform:none;color:rgba(240,215,170,.55)}
-.mesa.bordo .logo small{color:rgba(240,215,170,.45)}
 /* azul: rayos art déco y línea plateada */
 .mesa.azul{--pano:#123e78;--hilo:#c9d3e0}
 .mesa.azul .deco{background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.055) 0 4deg,rgba(255,255,255,0) 4deg 12deg);
   -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 38%,rgba(0,0,0,.25) 70%,transparent 80%);mask:radial-gradient(ellipse at 50% 50%,#000 0 38%,rgba(0,0,0,.25) 70%,transparent 80%)}
 .mesa.azul .deco::before{inset:18%;border:2px solid rgba(220,230,245,.55);box-shadow:inset 0 0 0 5px rgba(18,62,120,.9),inset 0 0 0 6px rgba(220,230,245,.35)}
-.mesa.azul .logo span{font-family:"Futura","Century Gothic","Avenir",system-ui,sans-serif;font-weight:700;letter-spacing:.45em;color:rgba(225,235,250,.5)}
-.mesa.azul .logo small{color:rgba(225,235,250,.45)}
 /* negro: rombos finos dorados, elegante */
 .mesa.negro{--pano:#141414;--hilo:#b8924a}
 .mesa.negro .deco{background:
@@ -194,8 +186,6 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
   repeating-linear-gradient(-45deg,rgba(201,162,90,.09) 0 1px,rgba(0,0,0,0) 1px 34px);
   -webkit-mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%);mask:radial-gradient(ellipse at 50% 50%,#000 0 55%,transparent 82%)}
 .mesa.negro .deco::before{inset:17%;border:1px solid rgba(201,162,90,.7);box-shadow:0 0 0 5px rgba(20,20,20,.95),0 0 0 6px rgba(201,162,90,.4)}
-.mesa.negro .logo span{color:rgba(214,178,105,.6);letter-spacing:.5em;font-weight:400}
-.mesa.negro .logo small{color:rgba(214,178,105,.5)}
 .mesa.pano ~ .centro .section-title{color:rgba(255,245,225,.6)}
 /* selector de mesa */
 .mesas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
@@ -235,6 +225,17 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 @keyframes rueda{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(14deg) translateY(-3px)}100%{transform:rotate(0) translateY(0)}}
 #dadosMsg{margin:4px 0 0;font-size:.95rem}
 
+.mesa.madera ~ .centro .logo span{color:#f3dcb4;text-shadow:0 2px 0 #2a1508,0 -1px 0 rgba(255,235,200,.4),0 0 18px rgba(0,0,0,.35);}
+.mesa.madera ~ .centro .logo small{color:#e9cfa3;opacity:.9}
+.mesa.verde ~ .centro .logo span{color:#e8c574;text-shadow:0 2px 0 #4a3510,0 0 14px rgba(0,0,0,.45);}
+.mesa.verde ~ .centro .logo small{color:#e8c574;opacity:.9}
+.mesa.bordo ~ .centro .logo span{color:#f1d9a6;text-shadow:0 2px 0 #3b0812,0 0 14px rgba(0,0,0,.45);font-style:italic;letter-spacing:.1em;padding-left:.1em;}
+.mesa.bordo ~ .centro .logo small{color:#ecd3a0;opacity:.9}
+.mesa.azul ~ .centro .logo span{color:#eef3fb;text-shadow:0 2px 0 #0a2448,0 0 16px rgba(0,0,0,.4);font-family:"Futura","Century Gothic","Avenir",system-ui,sans-serif;font-weight:800;letter-spacing:.3em;}
+.mesa.azul ~ .centro .logo small{color:#d6e1f2;opacity:.9}
+.mesa.negro ~ .centro .logo span{color:#dcb66b;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.6);letter-spacing:.32em;font-weight:700;}
+.mesa.negro ~ .centro .logo small{color:#d0aa60;opacity:.9}
+.stage.P .mesa ~ .centro .logo span{font-size:34px;letter-spacing:.08em;padding-left:.08em}
 /* registro: hoja de papel */
 aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
@@ -288,9 +289,10 @@ aside .section-title{color:#7a5a36;text-shadow:none}
   <main class="board">
     <div class="sala" id="sala">
       <div class="stage" id="stage">
-        <div class="mesa madera" id="mesa"><div class="deco"></div><div class="logo"><span>BURRO</span><small>fichas del 1 al 15</small></div></div>
+        <div class="mesa madera" id="mesa"><div class="deco"></div></div>
         <div class="centro" id="centro">
-          <p class="section-title">Pilas centrales · del 1 al 15</p>
+          <div class="logo"><span>BURRO</span><small>fichas del 1 al 15</small></div>
+          <p class="section-title">Pilas centrales</p>
           <div id="center"></div>
         </div>
         <div id="seats"></div>
@@ -439,7 +441,7 @@ function ponerMesa(m){
   try { localStorage.setItem('burro.mesa', m); } catch(_) {}
   const el = $('#mesa');
   el.className = 'mesa ' + m + (m === 'madera' ? '' : ' pano');
-  el.querySelector('.logo small').textContent = LOGO[m];
+  $('#centro .logo small').textContent = LOGO[m];
   $('#hMesa').value = m;
   document.querySelectorAll('#fMesa [data-mesa]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mesa === m));
 }
