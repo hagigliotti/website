@@ -145,9 +145,10 @@ El procedimiento será el siguiente:
 1. Se toma la pila visible.
 2. Se da vuelta la pila completa para que todas las fichas queden boca abajo, sin revelar sus valores.
 3. Se coloca la pila boca abajo en la posición de la pila de reserva.
-4. Se toma la ficha superior de la nueva pila de reserva y se coloca descubierta delante de ella para formar nuevamente la pila visible.
+4. La pila completa recomienza como reserva en el mismo orden en que se fueron colocando las fichas: la primera que se colocó en la pila visible será la primera en salir. No se descubre ninguna ficha al darla vuelta.
+5. El jugador continúa su jugada tomando fichas de la nueva pila de reserva, como en cualquier otro momento.
 
-El jugador deberá mantener siempre una ficha visible mientras continúe participando en la partida.
+En cuanto el jugador apoye una ficha en su pila visible, volverá a tener una ficha visible.
 
 ## 13. Ganador de la mano
 

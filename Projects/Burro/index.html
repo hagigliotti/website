@@ -236,6 +236,9 @@ button.ghost{background:transparent;color:var(--ink);border:1px solid rgba(255,2
 .mesa.negro ~ .centro .logo span{color:#dcb66b;text-shadow:0 2px 0 #000,0 0 14px rgba(0,0,0,.6);letter-spacing:.32em;font-weight:700;}
 .mesa.negro ~ .centro .logo small{color:#d0aa60;opacity:.9}
 .stage.P .mesa ~ .centro .logo span{font-size:34px;letter-spacing:.08em;padding-left:.08em}
+.mesa .marca{position:absolute;left:50%;top:81%;transform:translate(-50%,-50%);pointer-events:none;font-family:var(--serif);font-style:italic;font-size:19px;letter-spacing:.12em;white-space:nowrap;color:rgba(255,255,255,.16);text-shadow:0 1px 0 rgba(0,0,0,.25)}
+.mesa.madera .marca{color:rgba(40,18,4,.32);text-shadow:0 1px 0 rgba(255,220,170,.14)}
+.stage.P .mesa .marca{top:84%;font-size:15px}
 /* registro: hoja de papel */
 aside{border-radius:12px;padding:12px;max-height:calc(100vh - 80px);overflow:auto;position:sticky;top:12px;
   background:linear-gradient(#f2e6cc,#e6d5b0);color:#3a2412;box-shadow:inset 0 0 0 1px #b99a6b,0 10px 22px rgba(0,0,0,.5)}
@@ -289,7 +292,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
   <main class="board">
     <div class="sala" id="sala">
       <div class="stage" id="stage">
-        <div class="mesa madera" id="mesa"><div class="deco"></div></div>
+        <div class="mesa madera" id="mesa"><div class="deco"></div><div class="marca">@hagigliotti</div></div>
         <div class="centro" id="centro">
           <div class="logo"><span>BURRO</span><small>fichas del 1 al 15</small></div>
           <p class="section-title">Pilas centrales</p>
@@ -364,7 +367,7 @@ aside .section-title{color:#7a5a36;text-shadow:none}
     <ul>
       <li>Haz clic en tu <b>visible</b> o tu <b>reserva</b> para levantar. Luego haz clic en el destino: una pila central (o «nueva pila» para un 1), la visible de un rival, o tu propia visible para terminar.</li>
       <li>Cuando un rival levanta su ficha visible se ve en su bandeja; si saca una de la reserva, se ve boca abajo y su número aparece recién cuando la apoya. Vigila sus errores y pulsa <b>¡BURRO!</b> (o la tecla B).</li>
-      <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible pasa a ser la nueva reserva y la ficha de abajo queda descubierta como nueva ficha visible (regla 12). Si solo te queda una ficha y no tiene jugada, toca «pasar».</li>
+      <li>Cuando se acaba tu reserva, toca la reserva vacía («dar vuelta»): tu pila visible completa se da vuelta y pasa a ser la nueva reserva, en el mismo orden en que pusiste las fichas. Luego sigues tomando de ella (regla 12).</li>
       <li>Para elegir quién empieza: «Yo», «Al azar» o «Dados». Con dados, cada jugador tira dos y empieza el número más alto; si hay empate, desempatan solo los igualados.</li>
       <li>Puedes elegir la mesa (madera o paño verde, bordó, azul o negro) al empezar o en cualquier momento desde el menú de arriba; se recuerda para la próxima vez.</li>
       <li>Cada ficha que se juega vuela hasta su lugar y queda iluminada un instante, para que puedas seguir las jugadas de los rivales.</li>
@@ -603,15 +606,13 @@ function drawReserve(pid){
   let inf = null;
   if(vt && hasMove(pid, vt.n)) inf = addInfraction(pid, p.reserve.length ? `tomó de la reserva teniendo el ${vt.n} visible con jugada obligatoria` : `dio vuelta su pila visible teniendo el ${vt.n} con jugada obligatoria`, null);
   if(!p.reserve.length){
-    // Regla 12: sin reserva, se da vuelta la pila visible (nueva reserva) y la ficha de arriba
-    // se descubre como nueva ficha visible. El jugador sigue: esa ficha tiene prioridad.
-    if(p.visible.length <= 1){
-      log(dice(p, 'no tiene reserva ni otra jugada posible: pasa el turno.', 'No tienes reserva ni otra jugada posible: pasas el turno.'), 'sys');
-      render(); endTurn();
-      return 'pasa';
-    }
-    p.reserve = p.visible.reverse(); p.visible = [p.reserve.pop()];
-    log(`🔄 ${dice(p, `agotó su reserva: da vuelta su pila visible y descubre un ${p.visible[0].n}.`, `Agotaste tu reserva: das vuelta tu pila visible y descubres un ${p.visible[0].n}.`)}`, 'sys');
+    // Regla 12: sin reserva, la pila visible COMPLETA se da vuelta y pasa a ser la reserva,
+    // en el mismo orden en que se fueron poniendo las fichas (la primera que se puso sale primero).
+    // No queda ninguna ficha descubierta: el jugador sigue tomando de esa nueva reserva.
+    if(!p.visible.length){ render(); endTurn(); return 'pasa'; }
+    const cuantas = p.visible.length;
+    p.reserve = p.visible.reverse(); p.visible = [];
+    log(`🔄 ${dice(p, `agotó su reserva: da vuelta su pila visible completa (${cuantas} fichas) y sigue tomando de ahí.`, `Agotaste tu reserva: das vuelta tu pila visible completa (${cuantas} fichas). Sigue tomando de la reserva.`)}`, 'sys');
     render();
     return 'vuelta';
   }
@@ -982,7 +983,7 @@ function render(){
     let piles;
     if(p.human){
       piles = `
-      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${p.reserve.length ? towerHTML(p.reserve.length, null, '', 'data-res="0"') : `<div class="tile empty" data-res="0">${p.visible.length > 1 ? '↻' : '—'}</div>`}</div><div class="lbl">${p.reserve.length ? 'reserva' : (p.visible.length > 1 ? 'dar vuelta' : 'pasar')}</div></div>
+      <div class="pile-col"><div class="target ${myTurn&&!held?'clickable':''} ${hRes?'hint':''}" data-act="my-reserve">${p.reserve.length ? towerHTML(p.reserve.length, null, '', 'data-res="0"') : `<div class="tile empty" data-res="0">↻</div>`}</div><div class="lbl">${p.reserve.length ? 'reserva' : 'dar vuelta'}</div></div>
       <div class="pile-col"><div class="target ${myTurn?'clickable':''} ${hVis||hOwn?'hint':''}" data-act="my-visible">${towerHTML(p.visible.length, vt)}</div><div class="lbl">visible</div></div>
       <div class="pile-col">${handHTML(myTurn ? held : null, '', false, 0)}<div class="lbl ${myTurn&&held?'hot':''}">en la mano</div></div>`;
     } else {
@@ -1006,9 +1007,8 @@ function render(){
   if(G.over) s = 'Partida terminada.';
   else if(me.finished) s = '🏆 Ya no tienes fichas. Espera quieto: si cantas «Burro» serás penalizado.';
   else if(myTurn && held) s = `Tienes un <b>${held.n}</b> en la mano: colócalo en el centro, sobre un rival o en tu pila visible (termina el turno).`;
-  else if(myTurn) s = me.reserve.length ? 'Tu turno: levanta tu ficha visible o toma de la reserva.'
-    : me.visible.length > 1 ? 'Tu turno: levanta tu ficha visible o, si no tiene jugada, toca la reserva para dar vuelta tu pila visible.'
-    : 'Tu turno: levanta tu ficha visible o, si no tiene jugada, toca «pasar».';
+  else if(myTurn) s = me.reserve.length ? (me.visible.length ? 'Tu turno: levanta tu ficha visible o toma de la reserva.' : 'Toma una ficha de tu reserva.')
+    : 'Tu turno: levanta tu ficha visible o, si no tiene jugada, toca la reserva para dar vuelta tu pila visible.';
   else if(G.turn && held && G.turn.from === 'reserve') s = `<b>${esc(P(turnPid).name)}</b> tomó una ficha de su reserva. ¿Debía hacerlo? Si no, ¡canta Burro!`;
   else if(G.turn && held) s = `<b>${esc(P(turnPid).name)}</b> levantó su <b>${held.n}</b> visible. ¿Lo juega bien? Si no, ¡canta Burro!`;
   else if(G.turn) s = `Turno de <b>${esc(P(turnPid).name)}</b>. Si ves un error, ¡canta Burro!`;
