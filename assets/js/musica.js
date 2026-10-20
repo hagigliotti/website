@@ -11,12 +11,12 @@ const LETRAS_URL = 'https://hagigliotti.github.io/cancionero_mv/data/canciones.j
 const CACHE_HORAS = 6;
 
 const TXT = {
-  es: { canciones: 'Canciones', letra: 'Letra', buscar: 'Buscar un canto', sin_letra: 'Este canto todavía no tiene la letra cargada.', reproducir: 'Reproducir', pausar: 'Pausar', siguiente: 'Siguiente', anterior: 'Anterior', aleatorio: 'Aleatorio', repetir: 'Repetir', repetir_uno: 'Repetir este canto', volumen: 'Volumen', cerrar: 'Detener y cerrar', sonando: 'Sonando ahora', elegir: 'Elegí un canto para empezar', error: 'No se pudo reproducir este canto.', sin_resultados: 'No hay cantos con ese nombre.', n: '{n} cantos', todo: 'Reproducir todo', abrir: 'Abrir el reproductor', cargando: 'Cargando cantos…' },
-  en: { canciones: 'Songs', letra: 'Lyrics', buscar: 'Search a song', sin_letra: 'The lyrics for this song have not been added yet.', reproducir: 'Play', pausar: 'Pause', siguiente: 'Next', anterior: 'Previous', aleatorio: 'Shuffle', repetir: 'Repeat', repetir_uno: 'Repeat this song', volumen: 'Volume', cerrar: 'Stop and close', sonando: 'Now playing', elegir: 'Pick a song to start', error: 'This song could not be played.', sin_resultados: 'No songs with that name.', n: '{n} songs', todo: 'Play all', abrir: 'Open the player', cargando: 'Loading songs…' },
-  fr: { canciones: 'Chants', letra: 'Paroles', buscar: 'Chercher un chant', sin_letra: 'Les paroles de ce chant n’ont pas encore été ajoutées.', reproducir: 'Lire', pausar: 'Pause', siguiente: 'Suivant', anterior: 'Précédent', aleatorio: 'Aléatoire', repetir: 'Répéter', repetir_uno: 'Répéter ce chant', volumen: 'Volume', cerrar: 'Arrêter et fermer', sonando: 'En cours de lecture', elegir: 'Choisissez un chant pour commencer', error: 'Impossible de lire ce chant.', sin_resultados: 'Aucun chant avec ce nom.', n: '{n} chants', todo: 'Tout lire', abrir: 'Ouvrir le lecteur', cargando: 'Chargement des chants…' },
-  de: { canciones: 'Lieder', letra: 'Text', buscar: 'Lied suchen', sin_letra: 'Der Text zu diesem Lied wurde noch nicht hinzugefügt.', reproducir: 'Abspielen', pausar: 'Pause', siguiente: 'Weiter', anterior: 'Zurück', aleatorio: 'Zufällig', repetir: 'Wiederholen', repetir_uno: 'Dieses Lied wiederholen', volumen: 'Lautstärke', cerrar: 'Stoppen und schließen', sonando: 'Läuft gerade', elegir: 'Wähle ein Lied zum Starten', error: 'Dieses Lied konnte nicht abgespielt werden.', sin_resultados: 'Kein Lied mit diesem Namen.', n: '{n} Lieder', todo: 'Alle abspielen', abrir: 'Player öffnen', cargando: 'Lieder werden geladen…' },
-  pt: { canciones: 'Cânticos', letra: 'Letra', buscar: 'Buscar um cântico', sin_letra: 'A letra deste cântico ainda não foi adicionada.', reproducir: 'Tocar', pausar: 'Pausar', siguiente: 'Próximo', anterior: 'Anterior', aleatorio: 'Aleatório', repetir: 'Repetir', repetir_uno: 'Repetir este cântico', volumen: 'Volume', cerrar: 'Parar e fechar', sonando: 'Tocando agora', elegir: 'Escolha um cântico para começar', error: 'Não foi possível tocar este cântico.', sin_resultados: 'Nenhum cântico com esse nome.', n: '{n} cânticos', todo: 'Tocar tudo', abrir: 'Abrir o player', cargando: 'Carregando cânticos…' },
-  it: { canciones: 'Canti', letra: 'Testo', buscar: 'Cerca un canto', sin_letra: 'Il testo di questo canto non è ancora stato aggiunto.', reproducir: 'Riproduci', pausar: 'Pausa', siguiente: 'Successivo', anterior: 'Precedente', aleatorio: 'Casuale', repetir: 'Ripeti', repetir_uno: 'Ripeti questo canto', volumen: 'Volume', cerrar: 'Ferma e chiudi', sonando: 'In riproduzione', elegir: 'Scegli un canto per iniziare', error: 'Impossibile riprodurre questo canto.', sin_resultados: 'Nessun canto con questo nome.', n: '{n} canti', todo: 'Riproduci tutto', abrir: 'Apri il lettore', cargando: 'Caricamento dei canti…' },
+  es: { radio: 'Mis cantos', ir_rep: 'Ir al reproductor', canciones: 'Canciones', letra: 'Letra', buscar: 'Buscar un canto', sin_letra: 'Este canto todavía no tiene la letra cargada.', reproducir: 'Reproducir', pausar: 'Pausar', siguiente: 'Siguiente', anterior: 'Anterior', aleatorio: 'Aleatorio', repetir: 'Repetir', repetir_uno: 'Repetir este canto', volumen: 'Volumen', cerrar: 'Detener y cerrar', sonando: 'Sonando ahora', elegir: 'Elegí un canto para empezar', error: 'No se pudo reproducir este canto.', sin_resultados: 'No hay cantos con ese nombre.', n: '{n} cantos', todo: 'Reproducir todo', abrir: 'Abrir el reproductor', cargando: 'Cargando cantos…' },
+  en: { radio: 'My songs', ir_rep: 'Go to the player', canciones: 'Songs', letra: 'Lyrics', buscar: 'Search a song', sin_letra: 'The lyrics for this song have not been added yet.', reproducir: 'Play', pausar: 'Pause', siguiente: 'Next', anterior: 'Previous', aleatorio: 'Shuffle', repetir: 'Repeat', repetir_uno: 'Repeat this song', volumen: 'Volume', cerrar: 'Stop and close', sonando: 'Now playing', elegir: 'Pick a song to start', error: 'This song could not be played.', sin_resultados: 'No songs with that name.', n: '{n} songs', todo: 'Play all', abrir: 'Open the player', cargando: 'Loading songs…' },
+  fr: { radio: 'Mes chants', ir_rep: 'Aller au lecteur', canciones: 'Chants', letra: 'Paroles', buscar: 'Chercher un chant', sin_letra: 'Les paroles de ce chant n’ont pas encore été ajoutées.', reproducir: 'Lire', pausar: 'Pause', siguiente: 'Suivant', anterior: 'Précédent', aleatorio: 'Aléatoire', repetir: 'Répéter', repetir_uno: 'Répéter ce chant', volumen: 'Volume', cerrar: 'Arrêter et fermer', sonando: 'En cours de lecture', elegir: 'Choisissez un chant pour commencer', error: 'Impossible de lire ce chant.', sin_resultados: 'Aucun chant avec ce nom.', n: '{n} chants', todo: 'Tout lire', abrir: 'Ouvrir le lecteur', cargando: 'Chargement des chants…' },
+  de: { radio: 'Meine Lieder', ir_rep: 'Zum Player', canciones: 'Lieder', letra: 'Text', buscar: 'Lied suchen', sin_letra: 'Der Text zu diesem Lied wurde noch nicht hinzugefügt.', reproducir: 'Abspielen', pausar: 'Pause', siguiente: 'Weiter', anterior: 'Zurück', aleatorio: 'Zufällig', repetir: 'Wiederholen', repetir_uno: 'Dieses Lied wiederholen', volumen: 'Lautstärke', cerrar: 'Stoppen und schließen', sonando: 'Läuft gerade', elegir: 'Wähle ein Lied zum Starten', error: 'Dieses Lied konnte nicht abgespielt werden.', sin_resultados: 'Kein Lied mit diesem Namen.', n: '{n} Lieder', todo: 'Alle abspielen', abrir: 'Player öffnen', cargando: 'Lieder werden geladen…' },
+  pt: { radio: 'Meus cânticos', ir_rep: 'Ir ao player', canciones: 'Cânticos', letra: 'Letra', buscar: 'Buscar um cântico', sin_letra: 'A letra deste cântico ainda não foi adicionada.', reproducir: 'Tocar', pausar: 'Pausar', siguiente: 'Próximo', anterior: 'Anterior', aleatorio: 'Aleatório', repetir: 'Repetir', repetir_uno: 'Repetir este cântico', volumen: 'Volume', cerrar: 'Parar e fechar', sonando: 'Tocando agora', elegir: 'Escolha um cântico para começar', error: 'Não foi possível tocar este cântico.', sin_resultados: 'Nenhum cântico com esse nome.', n: '{n} cânticos', todo: 'Tocar tudo', abrir: 'Abrir o player', cargando: 'Carregando cânticos…' },
+  it: { radio: 'I miei canti', ir_rep: 'Vai al lettore', canciones: 'Canti', letra: 'Testo', buscar: 'Cerca un canto', sin_letra: 'Il testo di questo canto non è ancora stato aggiunto.', reproducir: 'Riproduci', pausar: 'Pausa', siguiente: 'Successivo', anterior: 'Precedente', aleatorio: 'Casuale', repetir: 'Ripeti', repetir_uno: 'Ripeti questo canto', volumen: 'Volume', cerrar: 'Ferma e chiudi', sonando: 'In riproduzione', elegir: 'Scegli un canto per iniziare', error: 'Impossibile riprodurre questo canto.', sin_resultados: 'Nessun canto con questo nome.', n: '{n} canti', todo: 'Riproduci tutto', abrir: 'Apri il lettore', cargando: 'Caricamento dei canti…' },
 };
 const tx = (k, vars) => {
   let s = (TXT[idioma] || TXT.es)[k] || TXT.es[k] || k;
@@ -377,7 +377,8 @@ function pintar() {
   const p = actual();
   const sonando = !!p && !audio.paused;
   // Mini reproductor
-  mini.el.hidden = !p || !!raiz?.isConnected;
+  mini.el.hidden = !p || !!raiz?.isConnected || !!radio.el;
+  pintarRadio();
   document.body.classList.toggle('con-mini', !mini.el.hidden);
   if (p) {
     mini.el.querySelector('[data-mini-tapa]').innerHTML = tapaHTML(p);
@@ -428,6 +429,7 @@ function progreso() {
   const dur = audio.duration || (actual() && actual().duracion) || 0;
   const pct = dur ? audio.currentTime / dur : 0;
   mini.el.style.setProperty('--avance', pct);
+  progresoRadio(pct, dur);
   if (!raiz || !raiz.isConnected) return;
   const r = raiz.querySelector('[data-m-rango]');
   if (document.activeElement !== r) r.value = Math.round(pct * 1000);
@@ -472,3 +474,162 @@ document.addEventListener('keydown', (e) => {
   e.preventDefault();
   alternar();
 });
+
+/* ------------------------------------------------------------------------ */
+/* Radio en el menú: reproductor chico, siempre a mano                      */
+/* ------------------------------------------------------------------------ */
+const radio = { el: null, item: null, titulo: '', cargando: null };
+
+function cargarRadio() {
+  if (!radio.cargando) {
+    radio.cargando = cargarMusica(radio.item).then(() => { pintarListaRadio(); pintarRadio(); }).catch(() => {
+      radio.cargando = null;
+      if (radio.el) radio.el.querySelector('[data-r-lista]').innerHTML = `<li class="radio__vacio">${esc(tx('error'))}</li>`;
+    });
+  }
+  return radio.cargando;
+}
+
+export function iniciarRadio(item, titulo) {
+  if (radio.el || !item) return;
+  const nav = document.querySelector('.nav');
+  const derecha = nav && nav.querySelector('.nav__derecha');
+  if (!derecha) return;
+  radio.item = item;
+  radio.titulo = titulo || tx('radio');
+  const el = document.createElement('div');
+  el.className = 'radio';
+  el.innerHTML = `
+    <div class="radio__pastilla">
+      <button class="radio__boton radio__play" type="button" data-r="alternar" aria-label="${esc(tx('reproducir'))}">${I.play}</button>
+      <button class="radio__info" type="button" data-r="panel" aria-expanded="false" aria-controls="radio-panel">
+        <i class="eq radio__eq" aria-hidden="true"><b></b><b></b><b></b></i>
+        <span class="radio__texto" data-r-titulo>${esc(radio.titulo)}</span>
+        <svg class="radio__flecha" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="m7 10 5 5 5-5"/></svg>
+      </button>
+      <button class="radio__boton radio__sig" type="button" data-r="siguiente" aria-label="${esc(tx('siguiente'))}">${I.sig}</button>
+      <span class="radio__barra" aria-hidden="true"></span>
+    </div>
+    <div class="radio__panel" id="radio-panel" role="dialog" aria-label="${esc(radio.titulo)}" hidden>
+      <div class="radio__cab">
+        <span class="radio__tapa" data-r-tapa></span>
+        <span class="radio__datos"><b data-r-tit>${esc(radio.titulo)}</b><small data-r-art></small></span>
+      </div>
+      <input class="musica__rango radio__rango" type="range" min="0" max="1000" value="0" step="1" aria-label="${esc(tx('sonando'))}" data-r-rango>
+      <div class="musica__marcas"><span data-r-ya>0:00</span><span data-r-total>–:––</span></div>
+      <div class="radio__controles">
+        <button class="mboton" type="button" data-r="aleatorio" aria-label="${esc(tx('aleatorio'))}" aria-pressed="false">${I.aleatorio}</button>
+        <button class="mboton mboton--m" type="button" data-r="anterior" aria-label="${esc(tx('anterior'))}">${I.ant}</button>
+        <button class="mboton mboton--play" type="button" data-r="alternar" aria-label="${esc(tx('reproducir'))}">${I.play}</button>
+        <button class="mboton mboton--m" type="button" data-r="siguiente" aria-label="${esc(tx('siguiente'))}">${I.sig}</button>
+        <button class="mboton" type="button" data-r="repetir" aria-label="${esc(tx('repetir'))}" aria-pressed="false">${I.repetir}<i>1</i></button>
+      </div>
+      <div class="musica__volumen radio__volumen">
+        <button class="mboton" type="button" data-r="mudo" aria-label="${esc(tx('volumen'))}">${I.volumen}</button>
+        <input type="range" min="0" max="100" value="${Math.round(audio.volume * 100)}" aria-label="${esc(tx('volumen'))}" data-r-vol>
+      </div>
+      <ol class="radio__lista" data-r-lista><li class="radio__vacio">${esc(tx('cargando'))}</li></ol>
+      <a class="radio__ir" href="#/${urlRuta(item.ruta)}" data-r-ir>${esc(tx('ir_rep'))} →</a>
+    </div>`;
+  nav.insertBefore(el, derecha);
+  radio.el = el;
+  mini.el.hidden = true;
+
+  const panel = el.querySelector('.radio__panel');
+  const abrir = (si) => {
+    panel.hidden = !si;
+    el.classList.toggle('radio--abierta', si);
+    el.querySelector('[data-r="panel"]').setAttribute('aria-expanded', String(si));
+    if (si) { cargarRadio(); const a = el.querySelector('.radio__item--actual'); if (a) a.scrollIntoView({ block: 'nearest' }); }
+  };
+  el.addEventListener('click', async (e) => {
+    if (e.target.closest('[data-r-ir]')) { abrir(false); return; }
+    const fila = e.target.closest('[data-r-pista]');
+    if (fila) {
+      const i = Number(fila.dataset.rPista);
+      if (actual() === est.pistas[i]) { alternar(); return; }
+      if (est.aleatorio) armarCola(i);
+      tocar(est.cola.indexOf(i));
+      return;
+    }
+    const b = e.target.closest('[data-r]');
+    if (!b) return;
+    const a = b.dataset.r;
+    if (a === 'panel') { abrir(panel.hidden); return; }
+    await cargarRadio();
+    if (a === 'alternar') {
+      if (!actual() && est.cola.length) tocar(Math.floor(Math.random() * est.cola.length));
+      else alternar();
+    } else if (a === 'siguiente') siguiente();
+    else if (a === 'anterior') anterior();
+    else if (a === 'aleatorio') { est.aleatorio = !est.aleatorio; armarCola(actual() ? est.pistas.indexOf(actual()) : -1); pintar(); }
+    else if (a === 'repetir') { est.repetir = { no: 'todo', todo: 'uno', uno: 'no' }[est.repetir]; pintar(); }
+    else if (a === 'mudo') { audio.muted = !audio.muted; pintar(); }
+  });
+  el.querySelector('[data-r-rango]').addEventListener('input', (e) => { if (audio.duration) audio.currentTime = (e.target.value / 1000) * audio.duration; });
+  el.querySelector('[data-r-vol]').addEventListener('input', (e) => {
+    audio.volume = e.target.value / 100;
+    audio.muted = false;
+    try { localStorage.setItem('musica_vol', String(audio.volume)); } catch (_) { /* nada */ }
+    pintar();
+  });
+  document.addEventListener('click', (e) => { if (!panel.hidden && !e.composedPath().includes(el)) abrir(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) abrir(false); });
+  pintarRadio();
+}
+
+function pintarListaRadio() {
+  if (!radio.el) return;
+  radio.el.querySelector('[data-r-lista]').innerHTML = est.pistas.map((p, i) => `
+    <li><button type="button" class="radio__item" data-r-pista="${i}">
+      <span class="radio__num"><span>${i + 1}</span><i class="eq" aria-hidden="true"><b></b><b></b><b></b></i></span>
+      <span class="radio__nombre">${esc(p.titulo)}</span>
+      <span class="radio__dur">${mmss(p.duracion)}</span>
+    </button></li>`).join('');
+}
+
+function pintarRadio() {
+  const el = radio.el;
+  if (!el) return;
+  const p = actual();
+  const sonando = !!p && !audio.paused;
+  el.classList.toggle('radio--sonando', sonando);
+  el.classList.toggle('radio--activa', !!p);
+  el.querySelectorAll('[data-r="alternar"]').forEach((b) => {
+    b.innerHTML = sonando ? I.pausa : I.play;
+    b.setAttribute('aria-label', tx(sonando ? 'pausar' : 'reproducir'));
+  });
+  el.querySelector('[data-r-titulo]').textContent = p ? p.titulo : radio.titulo;
+  el.querySelector('[data-r-tit]').textContent = p ? p.titulo : radio.titulo;
+  el.querySelector('[data-r-art]').textContent = p ? p.artista : (est.pistas.length ? tx('n', { n: est.pistas.length }) : '');
+  const vista = p || est.pistas.find((x) => x.portada);
+  el.querySelector('[data-r-tapa]').innerHTML = vista ? tapaHTML(vista) : '';
+  el.querySelector('[data-r="aleatorio"]').setAttribute('aria-pressed', String(est.aleatorio));
+  const br = el.querySelector('[data-r="repetir"]');
+  br.setAttribute('aria-pressed', String(est.repetir !== 'no'));
+  br.classList.toggle('mboton--uno', est.repetir === 'uno');
+  el.querySelector('[data-r="mudo"]').innerHTML = audio.muted || audio.volume === 0 ? I.mudo : I.volumen;
+  el.querySelectorAll('[data-r-pista]').forEach((b) => {
+    const es = p && est.pistas[Number(b.dataset.rPista)] === p;
+    b.classList.toggle('radio__item--actual', !!es);
+    b.setAttribute('aria-current', es ? 'true' : 'false');
+  });
+}
+
+function progresoRadio(pct, dur) {
+  const el = radio.el;
+  if (!el) return;
+  el.style.setProperty('--avance', pct);
+  const r = el.querySelector('[data-r-rango]');
+  if (document.activeElement !== r) r.value = Math.round(pct * 1000);
+  r.style.setProperty('--avance', `${pct * 100}%`);
+  el.querySelector('[data-r-ya]').textContent = mmss(audio.currentTime) === '–:––' ? '0:00' : mmss(audio.currentTime);
+  el.querySelector('[data-r-total]').textContent = mmss(dur);
+}
+
+export function renombrarRadio(titulo) {
+  if (!radio.el) return;
+  radio.titulo = titulo;
+  radio.el.querySelector('[data-r-ir]').textContent = `${tx('ir_rep')} →`;
+  pintarRadio();
+}

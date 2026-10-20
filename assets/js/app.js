@@ -1,6 +1,6 @@
 import { Lector, miniaturaPDF } from './reader.js';
 import { IDIOMAS, idioma, cambiarIdioma, t, n, L, locale } from './i18n.js';
-import { vistaMusica, activarMusica, salirDeMusica } from './musica.js';
+import { vistaMusica, activarMusica, salirDeMusica, iniciarRadio, renombrarRadio } from './musica.js';
 import { textoRico, seccionesDe, dispositivo, celular, activarDispositivos, colorDe, reproductorLista, idLista, etiquetaEnlace, listaDeVideos, activarVideos } from './vitrina.js';
 
 /* ==========================================================================
@@ -109,6 +109,7 @@ function iniciarCabecera() {
     if (b.dataset.idioma === idioma) return;
     cambiarIdioma(b.dataset.idioma);
     pintarCabecera();
+    { const m = items('Projects').find((x) => x.reproductor); if (m) renombrarRadio(tituloDe(m)); }
     navegar({ mismoLugar: true });
   });
   document.addEventListener('click', (e) => { if (e.target.closest('[data-abrir-contacto]')) { alternarMenu(false); contacto.abrir(); } });
@@ -1053,6 +1054,8 @@ function ocultarCargador() {
   }
   pintarCabecera();
   iniciarCabecera();
+  const conMusica = items('Projects').find((x) => x.reproductor);
+  if (conMusica) iniciarRadio(conMusica, tituloDe(conMusica));
   contacto.iniciar();
   visor.iniciar();
   efectos.iniciar();

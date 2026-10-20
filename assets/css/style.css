@@ -1499,3 +1499,87 @@ body.con-mini .pie { padding-bottom: 6rem; }
 }
 .pag-portada--casino .pc-fichas i:nth-child(1) { transform: rotate(-8deg); }
 .pag-portada--casino .pc-fichas i:nth-child(3) { transform: rotate(7deg); }
+
+/* ==========================================================================
+   Radio en el menú: reproductor chico de Mis Cantos
+   ========================================================================== */
+.radio { position: relative; margin-left: auto; margin-right: -0.5rem; }
+.radio__pastilla {
+  position: relative; display: flex; align-items: center; gap: 0.1rem;
+  height: 3rem; padding: 0.25rem; border-radius: 999px; overflow: hidden;
+  background: rgba(18, 19, 21, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+.radio__boton { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; color: rgba(242, 240, 236, 0.85); transition: background-color 150ms ease, color 150ms ease, transform 120ms var(--ease-out); }
+.radio__boton svg { width: 1.05rem; height: 1.05rem; }
+.radio__play { background: rgba(255, 122, 0, 0.14); color: var(--naranja); }
+.radio--sonando .radio__play { background: var(--naranja); color: var(--negro); }
+.radio__boton:active { transform: scale(0.92); }
+.radio__info { display: flex; align-items: center; gap: 0.5rem; height: 2.5rem; padding: 0 0.6rem 0 0.55rem; border-radius: 999px; color: rgba(242, 240, 236, 0.85); font-size: 0.875rem; font-weight: 600; transition: background-color 150ms ease; }
+.radio__texto { max-width: 11rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio__flecha { width: 0.95rem; height: 0.95rem; opacity: 0.6; transition: transform 200ms var(--ease-out); }
+.radio--abierta .radio__flecha { transform: rotate(180deg); }
+.radio__eq { display: inline-flex; height: 0.8rem; }
+.radio:not(.radio--sonando) .radio__eq b { animation-play-state: paused; transform: scaleY(0.35); }
+.radio:not(.radio--activa) .radio__eq b { opacity: 0.55; }
+.radio__barra { position: absolute; left: 1.2rem; right: 1.2rem; bottom: 0.2rem; height: 2px; border-radius: 2px; background: var(--naranja); transform-origin: left; transform: scaleX(var(--avance, 0)); opacity: 0.9; pointer-events: none; }
+.radio:not(.radio--activa) .radio__barra { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .radio__boton:hover, .radio__info:hover { background: rgba(255, 255, 255, 0.08); color: var(--hueso); }
+  .radio--sonando .radio__play:hover { background: #ff8f2b; color: var(--negro); }
+}
+
+.radio__panel {
+  position: absolute; top: calc(100% + 0.6rem); right: 0; width: min(21rem, calc(100vw - 1.5rem));
+  display: grid; gap: 0.55rem; padding: 0.9rem; border-radius: 1.25rem;
+  background: rgba(24, 25, 28, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 60px -16px rgba(0, 0, 0, 0.85);
+  transform-origin: top right; animation: aparecer-pop 200ms var(--ease-out);
+}
+.radio__panel[hidden] { display: none; }
+.radio__cab { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: 0.75rem; align-items: center; }
+.radio__tapa .tapa { border-radius: 0.6rem; }
+.radio__datos { display: grid; min-width: 0; }
+.radio__datos b { font-family: var(--f-display); font-weight: 800; font-size: 1.3rem; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio__datos small { font-size: 0.8125rem; color: rgba(242, 240, 236, 0.6); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio__rango { margin-top: 0.15rem; }
+.radio__controles { display: flex; justify-content: space-between; align-items: center; }
+.radio__controles .mboton--play { width: 3.1rem; height: 3.1rem; }
+.radio__controles .mboton--play svg { width: 1.35rem; height: 1.35rem; }
+.radio__volumen { padding: 0 0.1rem; }
+.radio__volumen .mboton { width: 2.2rem; height: 2.2rem; }
+.radio__lista { list-style: none; margin: 0.15rem 0 0; padding: 0.35rem 0 0; max-height: 13.5rem; overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid rgba(255, 255, 255, 0.08); scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.2) transparent; }
+.radio__vacio { padding: 0.75rem 0.5rem; font-size: 0.875rem; color: rgba(242, 240, 236, 0.6); }
+.radio__item { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr) auto; align-items: center; gap: 0.5rem; width: 100%; padding: 0.42rem 0.5rem; border-radius: 0.6rem; text-align: left; font-size: 0.875rem; transition: background-color 120ms ease; }
+.radio__num { display: grid; place-items: center; font-size: 0.75rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.5); }
+.radio__num .eq { display: none; height: 0.7rem; }
+.radio__nombre { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.radio__dur { font-size: 0.75rem; font-variant-numeric: tabular-nums; color: rgba(242, 240, 236, 0.5); }
+.radio__item--actual .radio__nombre { color: var(--naranja); font-weight: 700; }
+.radio__item--actual .radio__num > span { display: none; }
+.radio__item--actual .radio__num .eq { display: inline-flex; }
+.radio:not(.radio--sonando) .radio__item--actual .eq b { animation-play-state: paused; transform: scaleY(0.35); }
+.radio__item:active { background: rgba(255, 255, 255, 0.1); }
+@media (hover: hover) and (pointer: fine) { .radio__item:hover { background: rgba(255, 255, 255, 0.06); } }
+.radio__ir { justify-self: end; font-size: 0.8125rem; font-weight: 600; color: var(--naranja); }
+
+/* En pantallas chicas la píldora queda en un solo botón; el panel trae todo */
+@media (max-width: 1100px) { .radio__texto { max-width: 7rem; } }
+@media (max-width: 900px) {
+  .radio__sig, .radio__texto, .radio__flecha { display: none; }
+  .radio__info { padding: 0 0.55rem; }
+}
+@media (max-width: 480px) {
+  .nav { gap: 0.3rem; }
+  .radio { margin-right: 0; }
+  .radio__pastilla { height: 2.6rem; padding: 0.15rem; }
+  .radio__play { display: none; }
+  .radio__info { width: 2.3rem; height: 2.3rem; padding: 0; justify-content: center; }
+  .radio--sonando .radio__info { background: var(--naranja); }
+  .radio--sonando .radio__eq b { background: var(--negro); }
+  .red { width: 1.95rem; }
+  .radio__panel { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 4.1rem); left: 0.75rem; right: 0.75rem; width: auto; }
+  .radio__lista { max-height: 40svh; }
+}
+@media (max-width: 360px) { .nav__marca { padding-inline: 0.55rem; } .red { width: 1.75rem; } }
+@media (prefers-reduced-motion: reduce) { .radio__panel { animation: none; } }
