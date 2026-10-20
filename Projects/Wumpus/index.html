@@ -255,7 +255,7 @@ const ART_DEFS = `<svg id="artDefs" width="0" height="0" style="position:absolut
 <filter id="fTex" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="3" seed="4" result="n"/><feColorMatrix in="n" type="matrix" values=".33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1" result="g"/><feComponentTransfer in="g" result="g2"><feFuncR type="linear" slope=".8" intercept=".62"/><feFuncG type="linear" slope=".8" intercept=".62"/><feFuncB type="linear" slope=".8" intercept=".62"/></feComponentTransfer><feComposite in="SourceGraphic" in2="g2" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>
 <filter id="fFur" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="turbulence" baseFrequency=".7 .09" numOctaves="2" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="4" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency=".3 1.7" numOctaves="2" seed="2" result="n"/><feColorMatrix in="n" type="matrix" values=".33 .33 .33 0 0 .33 .33 .33 0 0 .33 .33 .33 0 0 0 0 0 0 1" result="g"/><feComponentTransfer in="g" result="g2"><feFuncR type="linear" slope="1.2" intercept=".3"/><feFuncG type="linear" slope="1.2" intercept=".3"/><feFuncB type="linear" slope="1.2" intercept=".3"/></feComponentTransfer><feComposite in="d" in2="g2" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>
 <filter id="fB1" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1"/></filter>
-<filter id="fB2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter>
+<filter id="fB2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.2"/></filter>
 <filter id="fB4" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4.5"/></filter>
 <radialGradient id="gPitRim" cx=".5" cy=".55" r=".5"><stop offset="0" stop-color="#000"/><stop offset=".6" stop-color="#0a0705"/><stop offset=".82" stop-color="#241b14" stop-opacity=".85"/><stop offset="1" stop-color="#3a2e24" stop-opacity="0"/></radialGradient>
 <radialGradient id="gPitHole" cx=".5" cy=".62" r=".55"><stop offset="0" stop-color="#000"/><stop offset=".78" stop-color="#020101"/><stop offset="1" stop-color="#120c08"/></radialGradient>
@@ -355,22 +355,25 @@ function coinHeap(){
 }
 function furStrands(){
   const r = artRand(5); let s = '';
-  for(let i=0; i<64; i++){
-    const a = Math.PI*(1.02 + i/64*.96) + (r()-.5)*.05;
-    const ex = 50 + Math.cos(a)*23.5, ey = 53 + Math.sin(a)*27.5;
-    const len = 2.5 + r()*4, dx = Math.cos(a)*len*.6 + (r()-.5)*1.5, dy = Math.sin(a)*len*.6 + len*.5;
-    s += '<path d="M'+ex.toFixed(1)+' '+ey.toFixed(1)+' q'+(dx*.5).toFixed(1)+' '+(dy*.3).toFixed(1)+' '+dx.toFixed(1)+' '+dy.toFixed(1)+'" stroke="'+(i%3 ? '#140e0a' : '#6a503e')+'" stroke-width=".8" fill="none" opacity=".75"/>';
+  // lomo y hombros
+  for(let i=0; i<90; i++){
+    const t = i/89, a = Math.PI*(1.06 + t*.88);
+    const ex = 50 + Math.cos(a)*43.5, ey = 63 + Math.sin(a)*41;
+    const len = 2.5 + r()*4.5, dx = Math.cos(a)*len*.5 + (r()-.5)*1.6, dy = Math.sin(a)*len*.4 + len*.6;
+    s += '<path d="M'+ex.toFixed(1)+' '+ey.toFixed(1)+' q'+(dx*.5).toFixed(1)+' '+(dy*.3).toFixed(1)+' '+dx.toFixed(1)+' '+dy.toFixed(1)+'" stroke="'+(i%3 ? '#120c09' : (t<.5 ? '#5a4232' : '#2e2219'))+'" stroke-width=".8" fill="none" opacity=".8"/>';
   }
-  for(let i=0; i<46; i++){
-    const t = i/46, side = i%2 ? 1 : -1;
-    const ex = 50 + side*(24 + t*20), ey = 44 + t*30 + (r()-.5)*3;
-    const len = 3 + r()*4;
-    s += '<path d="M'+ex.toFixed(1)+' '+ey.toFixed(1)+' l'+(side*len*.5).toFixed(1)+' '+(len*.9).toFixed(1)+'" stroke="'+(i%3 ? '#120c09' : '#5a4434')+'" stroke-width=".9" opacity=".7"/>';
+  // brazos
+  for(let i=0; i<40; i++){
+    const side = i%2 ? 1 : -1, t = Math.floor(i/2)/20;
+    const ex = 50 + side*(36 + t*8) , ey = 58 + t*30;
+    const len = 3 + r()*3.5;
+    s += '<path d="M'+ex.toFixed(1)+' '+ey.toFixed(1)+' l'+(side*len*.45).toFixed(1)+' '+(len*.9).toFixed(1)+'" stroke="'+(i%4 ? '#100a08' : (side<0 ? '#5e4434' : '#241a13'))+'" stroke-width=".85" opacity=".8"/>';
   }
   return s;
 }
 const FUR = furStrands();
 const HEAP = coinHeap();
+
 
 const SVG = {
   wind: '<svg class="fx fx-wind" viewBox="0 0 100 100"><g class="gust" filter="url(#fB2)" fill="none" stroke="#e6e2d8" stroke-linecap="round"><path stroke-width="5" opacity=".2" d="M-14 30 C16 24 40 36 70 28 S100 30 116 26"/><path stroke-width="8" opacity=".15" d="M-14 53 C16 46 46 59 72 50 S104 52 116 48"/><path stroke-width="4" opacity=".22" d="M-14 75 C20 70 44 81 74 72 S100 74 116 70"/></g><g class="dust" fill="#ddd6c8"><circle cx="18" cy="34" r=".8"/><circle cx="30" cy="57" r=".6"/><circle cx="12" cy="70" r=".9"/><circle cx="40" cy="44" r=".5"/><circle cx="24" cy="82" r=".7"/><circle cx="8" cy="48" r=".6"/></g></svg>',
@@ -393,52 +396,87 @@ const SVG = {
 
 function wumpusSVG(dead){
   const eyes = dead
-    ? '<path d="M36 49 q5 2 10 0 M54 49 q5 2 10 0" stroke="#050302" stroke-width="1.4" fill="none" stroke-linecap="round"/>'
-    : '<g class="eyes"><circle cx="41" cy="49" r="7" fill="#ff6a1a" opacity=".35" filter="url(#fB2)"/><circle cx="59" cy="49" r="7" fill="#ff6a1a" opacity=".35" filter="url(#fB2)"/>'
-      + '<ellipse cx="41" cy="49" rx="3.7" ry="2.4" fill="url(#gEye)" transform="rotate(14 41 49)"/><ellipse cx="59" cy="49" rx="3.7" ry="2.4" fill="url(#gEye)" transform="rotate(-14 59 49)"/>'
-      + '<ellipse cx="41" cy="49" rx=".7" ry="2.1" fill="#140402"/><ellipse cx="59" cy="49" rx=".7" ry="2.1" fill="#140402"/><circle cx="40" cy="48.1" r=".55" fill="#fff"/><circle cx="58" cy="48.1" r=".55" fill="#fff"/></g>';
-  const horn = '<path d="M35 37 C27 34 16 26 14 11 C13 5 16 2 17.6 5.6 C18.6 17 27 24 39 30Z" fill="url(#gHorn)"/><path d="M18.5 12 l3.6 -1.4 M20 18 l3.8 -2 M24 24 l3.6 -2.6 M29 28.6 l3 -2.6" stroke="#231b12" stroke-width=".8" opacity=".55"/>';
+    ? '<path d="M37 46.6 q5 2 9.5 .4 M54 47 q4.5 1.6 9.5 -.4" stroke="#050302" stroke-width="1.4" fill="none" stroke-linecap="round"/>'
+    : '<g class="eyes"><circle cx="42" cy="46.5" r="6.5" fill="#ff6a1a" opacity=".4" filter="url(#fB2)"/><circle cx="58" cy="46.5" r="6.5" fill="#ff6a1a" opacity=".4" filter="url(#fB2)"/>'
+      + '<path d="M37.4 45.2 Q42 43.4 46.4 46.6 Q42 49 37.4 45.2Z" fill="url(#gEye)"/><path d="M62.6 45.2 Q58 43.4 53.6 46.6 Q58 49 62.6 45.2Z" fill="url(#gEye)"/>'
+      + '<ellipse cx="42.2" cy="46" rx=".6" ry="1.7" fill="#140402"/><ellipse cx="57.8" cy="46" rx=".6" ry="1.7" fill="#140402"/><circle cx="41.3" cy="45.3" r=".45" fill="#fff"/><circle cx="56.9" cy="45.3" r=".45" fill="#fff"/></g>';
+  const horn = '<path d="M34.5 37 C25 35 15 29 12.5 17 C11.4 11 14.6 7.6 16.6 11 C17.6 21 25.6 28.6 37 31.6Z" fill="url(#gHorn)"/>'
+    + '<path d="M16.4 14 l3.4 -1 M17.4 19 l3.8 -1.6 M20.4 24 l3.8 -2.2 M24.6 28 l3.4 -2.4 M29.4 31.2 l2.8 -2.4" stroke="#231b12" stroke-width=".75" opacity=".6"/>'
+    + '<path d="M14.6 12.4 C15.6 21 22 27 30 30.6" stroke="#f0e6cc" stroke-width=".6" opacity=".35" fill="none"/>';
+  const claws = (x, dir) => [0,1,2,3].map(i => { const cx = x + dir*i*3.6; return '<path d="M'+cx+' 90 q'+(dir*-1.4)+' 4.6 '+(dir*1.8)+' 7.4 q'+(dir*.2)+' -4.2 '+(dir*2.6)+' -7.2z" fill="url(#gFang)"/>'; }).join('');
   return '<svg class="obj wum'+(dead ? ' dead' : '')+'" viewBox="0 0 100 100">'
-    + '<ellipse cx="50" cy="92" rx="40" ry="6" fill="#000" opacity=".65" filter="url(#fB2)"/>'
+    + '<ellipse cx="50" cy="94" rx="44" ry="5" fill="#000" opacity=".7" filter="url(#fB2)"/>'
     + horn + '<g transform="translate(100 0) scale(-1 1)">'+horn+'</g>'
-    + '<g filter="url(#fFur)"><path d="M7 94 C5 72 13 52 28 42 C38 35 62 35 72 42 C87 52 95 72 93 94Z" fill="url(#gFurBody)"/>'
-    + '<path d="M9 94 C9 80 13 68 21 60 C26 70 26 82 28 94Z" fill="#241a13"/><path d="M91 94 C91 80 87 68 79 60 C74 70 74 82 72 94Z" fill="#120d09"/>'
-    + '<path d="M27 57 C25 38 36 25 50 25 C64 25 75 38 73 57 C71 71 61 80 50 80 C39 80 29 71 27 57Z" fill="url(#gFurHead)"/></g>'
+    + '<g filter="url(#fFur)">'
+    + '<path d="M8 72 C5 50 16 30 34 24 C42 21 58 21 66 24 C84 30 95 50 92 72 C92 82 90 91 85 93 L15 93 C10 91 8 82 8 72Z" fill="url(#gFurBody)"/>'
+    + '<path d="M15 56 C8 64 5 78 7 92 L23 92 C22 83 23 73 28 63Z" fill="#2c2018"/>'
+    + '<path d="M85 56 C92 64 95 78 93 92 L77 92 C78 83 77 73 72 63Z" fill="#110c09"/>'
+        + '<ellipse cx="50" cy="82" rx="22" ry="10" fill="#050302" opacity=".55" filter="url(#fB4)"/>'
+    + '<path d="M30 50 C29 36 38 28 50 28 C62 28 71 36 70 50 C69 62 61 72 50 73 C39 72 31 62 30 50Z" fill="url(#gFurHead)"/>'
+    + '</g>'
     + FUR
-    + '<path d="M28.5 56 C27.5 41 36 29 48 26.5" stroke="#c98a4a" stroke-width="1.6" opacity=".35" fill="none" filter="url(#fB1)"/>'
-    + '<ellipse cx="50" cy="47" rx="19" ry="7" fill="#050302" opacity=".7" filter="url(#fB2)"/>'
+    + '<path d="M9 70 C7 52 16 34 32 26" stroke="#d08a48" stroke-width="1.8" opacity=".32" fill="none" filter="url(#fB1)"/><path d="M8 90 C6 78 8 66 14 58" stroke="#d08a48" stroke-width="1.4" opacity=".28" fill="none" filter="url(#fB1)"/><path d="M31 50 C30 39 37 31 46 29" stroke="#d08a48" stroke-width="1.2" opacity=".3" fill="none" filter="url(#fB1)"/>'
+    + '<path d="M34 43 C40 39 46 41 50 44 C54 41 60 39 66 43 C62 45 56 44 50 47 C44 44 38 45 34 43Z" fill="#070403" opacity=".9" filter="url(#fB1)"/>'
+    + '<ellipse cx="50" cy="45" rx="17" ry="6" fill="#050302" opacity=".5" filter="url(#fB2)"/>'
     + eyes
-    + '<ellipse cx="50" cy="61" rx="11" ry="7.5" fill="#4a362a" opacity=".5" filter="url(#fB1)"/><ellipse cx="46.5" cy="59" rx="1.3" ry=".9" fill="#080503"/><ellipse cx="53.5" cy="59" rx="1.3" ry=".9" fill="#080503"/>'
-    + '<path d="M36 66 C42 64 58 64 64 66 C61 75 55 79 50 79 C45 79 39 75 36 66Z" fill="#170605"/><path d="M39 67 C45 66 55 66 61 67 C58 71 42 71 39 67Z" fill="#4a1410" opacity=".8"/>'
-    + '<path d="M40.4 66 L42.2 75.5 L44 66Z M56 66 L57.8 75.5 L59.6 66Z M46 66.3 L47 70.5 L48 66.3Z M52 66.3 L53 70.5 L54 66.3Z M44.6 78.4 L45.6 73 L46.8 78.6Z M53.2 78.6 L54.4 73 L55.4 78.4Z" fill="url(#gFang)"/>'
-    + '<path d="M57.4 75.4 q.6 5 .2 9" stroke="#d8d2c0" stroke-width=".6" opacity=".3" fill="none"/>'
-    + '<path d="M13 94 q-2.4 -4 .8 -7.4 q.2 4 2.2 7.4z M18 94 q-1.6 -4.4 1.6 -7.4 q-.2 4.2 1.4 7.4z M23 94 q-1 -4 1.8 -6.6 q-.6 3.8 .8 6.6z M87 94 q2.4 -4 -.8 -7.4 q-.2 4 -2.2 7.4z M82 94 q1.6 -4.4 -1.6 -7.4 q.2 4.2 -1.4 7.4z M77 94 q1 -4 -1.8 -6.6 q.6 3.8 -.8 6.6z" fill="url(#gFang)"/>'
+    + '<path d="M44.6 34 l1.4 6.6" stroke="#8a6a54" stroke-width=".6" opacity=".55"/>'
+    + '<ellipse cx="50" cy="55" rx="10" ry="6" fill="#55402f" opacity=".45" filter="url(#fB1)"/><path d="M46.6 53.4 q1.4 -1 2.6 .4 M53.4 53.4 q-1.4 -1 -2.6 .4" stroke="#070403" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M43 51 q2 1.6 3 0 M57 51 q-2 1.6 -3 0" stroke="#1a120c" stroke-width=".5" fill="none" opacity=".7"/>'
+    + '<path d="M35 59 C41 57.4 59 57.4 65 59 C62.6 67.4 56.4 72 50 72 C43.6 72 37.4 67.4 35 59Z" fill="#160504"/>'
+    + '<path d="M38 60 C44 59 56 59 62 60 C59 63.6 41 63.6 38 60Z" fill="#5a1812" opacity=".85"/><path d="M41 69 C46 71.4 54 71.4 59 69 C55 70 45 70 41 69Z" fill="#4a1410" opacity=".8"/>'
+    + '<path d="M38.4 59.2 L40 67.6 L41.6 59.4Z M43 59 L43.9 63.4 L44.8 59Z M46 58.8 L46.7 62 L47.4 58.8Z M52.6 58.8 L53.3 62.4 L54 58.8Z M55.4 59 L56.3 63 L57.2 59Z M58.6 59.4 L60.2 67.8 L61.8 59.2Z" fill="url(#gFang)"/>'
+    + '<path d="M42.4 71 L43.6 66.4 L44.8 71.2Z M47 71.8 L47.8 68.6 L48.6 71.9Z M51.6 71.9 L52.4 68.4 L53.2 71.8Z M55.4 71.2 L56.6 66.8 L57.8 71Z" fill="url(#gFang)"/>'
+    + '<path d="M40.6 61 l.4 3" stroke="#fff" stroke-width=".35" opacity=".6"/><path d="M59.8 61 l.4 3" stroke="#fff" stroke-width=".35" opacity=".5"/>'
+    + '<path d="M60 67.6 q.8 6 .2 12" stroke="#d8d2c0" stroke-width=".55" opacity=".3" fill="none"/><circle cx="60.2" cy="79.8" r=".7" fill="#d8d2c0" opacity=".3"/>'
+    + claws(9, 1) + claws(91, -1)
     + '</svg>';
 }
 
 function hunterSVG(o){
   const lit = !o.blind;
-  const flame = '<g class="flame"><ellipse cx="78.4" cy="13" rx="6" ry="9" fill="#ff7a1a" opacity=".5" filter="url(#fB2)"/><path d="M78.4 21 C72.6 17 73.4 10 78.4 3 C79.4 9 84.4 12 81.9 18 C81.4 20 79.9 21 78.4 21Z" fill="url(#gFlame)"/><path d="M78.4 20 C76.6 17 77 13 78.7 10 C79.4 13 80.9 15 79.9 18 C79.5 19.4 79 20 78.4 20Z" fill="#fff4cc" opacity=".9"/></g>';
-  const smoke = '<g fill="#8a847a" opacity=".35" filter="url(#fB2)"><ellipse cx="78" cy="15" rx="2.4" ry="3.6"/><ellipse cx="80" cy="7" rx="3" ry="4"/></g><circle cx="78.4" cy="20.6" r=".9" fill="#ff5a1a"/>';
-  const sack = '<path d="M60 72 C56 78 57 88 64 89 C71 89 72 79 68 72 C66 70 62 70 60 72Z" fill="url(#gLeather)" filter="url(#fTex)"/><path d="M60.5 72.5 C63 74 65.5 74 67.5 72.5" stroke="#1a0f06" stroke-width="1.1" fill="none"/><ellipse cx="63" cy="71.2" rx="2.6" ry="1.1" fill="url(#gCoin)"/><ellipse cx="65.6" cy="70.4" rx="2.2" ry=".95" fill="url(#gCoin)"/>';
+  const flame = '<g class="flame"><ellipse cx="79.2" cy="8.6" rx="5.6" ry="8" fill="#ff7a1a" opacity=".5" filter="url(#fB2)"/><path d="M79.2 15.6 C73.8 12 74.6 5.6 79.2 -.6 C80.2 4.8 84.8 7.6 82.6 13 C82.1 14.8 80.6 15.6 79.2 15.6Z" fill="url(#gFlame)"/><path d="M79.2 14.8 C77.6 12 78 8.4 79.5 5.8 C80.2 8.4 81.6 10.4 80.6 13 C80.2 14.2 79.8 14.8 79.2 14.8Z" fill="#fff4cc" opacity=".9"/></g>';
+  const smoke = '<g fill="#8a847a" opacity=".35" filter="url(#fB2)"><ellipse cx="79" cy="10" rx="2.2" ry="3.4"/><ellipse cx="81" cy="3" rx="2.8" ry="3.6"/></g><circle cx="79.2" cy="15.6" r=".8" fill="#ff5a1a"/>';
+  const sack = '<path d="M55 63 C52 68 53 76 58.6 77 C64.2 77 65 69 62 63 C60.4 61.6 56.6 61.6 55 63Z" fill="url(#gLeather)" filter="url(#fTex)"/><path d="M55.4 63.4 C57.6 64.6 59.6 64.6 61.6 63.4" stroke="#1a0f06" stroke-width=".9" fill="none"/><ellipse cx="57.8" cy="62.4" rx="2.2" ry=".9" fill="url(#gCoin)"/><ellipse cx="60" cy="61.8" rx="1.9" ry=".8" fill="url(#gCoin)"/>';
   return '<svg class="obj" viewBox="0 0 100 100">'
-    + (lit && !o.nolight ? '<circle cx="76" cy="24" r="44" fill="url(#gTorchLight)" style="mix-blend-mode:screen"/>' : '')
-    + '<ellipse cx="50" cy="93" rx="21" ry="4.5" fill="#000" opacity=".6" filter="url(#fB2)"/>'
-    + '<path d="M31 22 C21 40 21 66 32 88" fill="none" stroke="#2e1c0e" stroke-width="3.2" stroke-linecap="round"/><path d="M31.8 22.4 C22 40 22 66 32.8 87.6" fill="none" stroke="#7a5230" stroke-width="1" stroke-linecap="round" opacity=".6"/><path d="M31 22 L32 88" stroke="#cfc6b0" stroke-width=".45" opacity=".6"/>'
-    + '<path d="M58 24 L66 26 L63 50 L56 48Z" fill="url(#gLeather)"/><path d="M60 25 L59 19 M62.5 25.6 L62.6 19 M65 26.4 L66.2 20" stroke="#5a3a1c" stroke-width=".7"/><path d="M58.6 20.4 l.4 -4 1.6 1 z M61.8 20.2 l.8 -4 1.4 1.2z M65.2 21 l1.4 -3.8 1.2 1.4z" fill="#5e2418"/>'
-    + '<g filter="url(#fTex)"><path d="M29 93 C29 72 32 56 40 47 L60 47 C68 56 71 72 71 93Z" fill="url(#gCloak)"/><path d="M43.5 50 L56.5 50 L55.6 77 L44.4 77Z" fill="#3e3024"/></g>'
-    + '<path d="M38 60 C36 72 36 82 37 93 M47 56 C46 70 46 82 46 93 M58 58 C60 70 61 82 62 93" stroke="#0b0d08" stroke-width="2" opacity=".35" fill="none" filter="url(#fB1)"/>'
-    + '<path d="M40.4 70 L59.6 70 L59.6 74 L40.4 74Z" fill="#24160b"/><rect x="48" y="69.6" width="4.4" height="4.8" rx=".6" fill="none" stroke="#8a8780" stroke-width="1"/>'
-    + '<path d="M38.4 72.6 L30.6 92 L33 93 L40.8 73.4Z" fill="#1c130b"/><path d="M35.6 69.6 L42.6 74.6" stroke="#77736c" stroke-width="2" stroke-linecap="round"/><path d="M39.2 72 L41.6 67.2" stroke="#3a2412" stroke-width="2.2" stroke-linecap="round"/><circle cx="41.9" cy="66.4" r="1.3" fill="#8a8780"/>'
+    + (lit && !o.nolight ? '<circle cx="78" cy="14" r="44" fill="url(#gTorchLight)" style="mix-blend-mode:screen"/>' : '')
+    + '<ellipse cx="50" cy="94.4" rx="22" ry="3.8" fill="#000" opacity=".65" filter="url(#fB2)"/>'
+    // carcaj a la espalda
+    + '<path d="M56 19 L63 16.6 L67 34 L60 36.4Z" fill="url(#gLeather)"/><path d="M57.6 18.4 L56.6 11 M60 17.6 L60 10 M62.4 17 L63.6 10" stroke="#5a3a1c" stroke-width=".6"/><path d="M55.6 12 l.6 -4 1.4 1.2z M58.8 11 l.8 -4 1.2 1.4z M62.4 11 l1.4 -3.8 1 1.6z" fill="#5e2418"/>'
+    // capa
+    + '<g filter="url(#fTex)"><path d="M38 33 C33 35 29.4 40.6 28.6 47 C27 59 27 73 27.6 86 C33 88.4 39 86.2 44 87.4 L56 87.4 C61 86.2 67 88.4 72.4 86 C73 73 73 59 71.4 47 C70.6 40.6 67 35 62 33Z" fill="url(#gCloak)"/>'
+    + '<path d="M44.6 36 L55.4 36 L57.4 85 L42.6 85Z" fill="#3a2a1c"/></g>'
+    + '<path d="M44.6 36 L42.6 85 M55.4 36 L57.4 85" stroke="#0a0b07" stroke-width="1.2" opacity=".6"/>'
+    + '<path d="M33 48 C31.4 60 31.6 74 32.6 86 M38.4 44 C37.6 58 38 72 39 86 M65 46 C66.6 60 67 74 66.4 86" stroke="#080906" stroke-width="1.8" opacity=".38" fill="none" filter="url(#fB1)"/>'
+    + '<path d="M71 46 C72.6 58 72.8 72 72.2 85.6" stroke="#d48a46" stroke-width="1.2" opacity=".35" fill="none" filter="url(#fB1)"/>'
+    + '<path d="M48 40 l4 .8 M47.8 44 l4.4 .8 M47.6 48 l4.8 .8" stroke="#1a120a" stroke-width=".6" opacity=".7"/>'
+    // correa del carcaj y cinturón
+    + '<path d="M60 35.4 L44 60.4 L46.4 61.6 L62 36.6Z" fill="#2a1a0e"/>'
+    + '<path d="M43.2 58.6 L56.8 58.6 L57 62 L43 62Z" fill="#22150a"/><rect x="48.2" y="58.2" width="3.6" height="4.2" rx=".5" fill="none" stroke="#8a8780" stroke-width=".9"/>'
+    // espada a la cadera
+    + '<path d="M57.4 64 L66.6 91.6 L64.6 92.4 L55.6 64.8Z" fill="#17100a"/><path d="M53.6 62.8 L59.8 60.6" stroke="#77736c" stroke-width="1.7" stroke-linecap="round"/><path d="M56.2 62 L54.8 57" stroke="#3a2412" stroke-width="1.9" stroke-linecap="round"/><circle cx="54.6" cy="56.4" r="1.1" fill="#8a8780"/>'
     + (o.gold ? sack : '')
-    + '<g filter="url(#fTex)"><path d="M36 46 C33 31 40 18 50 18 C60 18 67 31 64 46 C60 52 40 52 36 46Z" fill="url(#gHood)"/></g>'
-    + '<ellipse cx="50.5" cy="37" rx="8.6" ry="10" fill="#0b0906"/>'
-    + '<path d="M44 36 C44 30 47 28 51 28 C55 28 57.5 31 57.5 36 C57.5 42 54.5 46 51 46 C47.5 46 44 42 44 36Z" fill="url(#gSkin)"/>'
-    + '<path d="M42 33 C45 27 56 27 59 33 C55 30.4 46 30.4 42 33Z" fill="#0b0906" opacity=".85" filter="url(#fB1)"/>'
-    + '<ellipse cx="48" cy="35.8" rx="1.3" ry=".75" fill="#e8dccb" opacity=".55"/><ellipse cx="54.2" cy="35.8" rx="1.3" ry=".75" fill="#e8dccb" opacity=".7"/><circle cx="48.2" cy="35.8" r=".55" fill="#1a100a"/><circle cx="54.4" cy="35.8" r=".55" fill="#1a100a"/><path d="M47 34.4 q1.2 -.6 2.4 0 M53.2 34.4 q1.2 -.6 2.4 0" stroke="#2a1a10" stroke-width=".5" fill="none"/><path d="M51.6 36.4 C52.4 38.4 52.8 39.4 51.4 40.2" stroke="#6a4430" stroke-width=".7" fill="none"/><path d="M49.2 42.4 q2 .7 4 0" stroke="#5a3424" stroke-width=".6" fill="none"/><path d="M44.4 36 C44.6 41 47 45 50 46 C47 43 45.6 39.6 44.4 36Z" fill="#20140c" opacity=".55"/><path d="M45.5 40 C47 45 55 45 56.5 40 C55 46.4 47 46.4 45.5 40Z" fill="#3a2618" opacity=".6"/>'
-    + '<g filter="url(#fTex)"><path d="M58 50 C64 50 69 46 72 41 L76 44 C72 51 66 56 60 57Z" fill="url(#gCloak)"/></g>'
-    + '<path d="M73 47 L77.2 22" stroke="#432a16" stroke-width="2.6" stroke-linecap="round"/><path d="M75.8 27.6 L79.4 28.2 L80.2 21 L76.8 20.4Z" fill="#241810"/>'
-    + '<ellipse cx="74.6" cy="41.6" rx="3.2" ry="2.8" fill="url(#gSkin)"/>'
+    // botas
+    + '<path d="M42 85 L48 85 L48.6 93.6 L40.4 93.6 C40 91 40.6 88 42 85Z" fill="#1e140c"/><path d="M52 85 L58 85 L59.6 93.6 L51.6 93.6Z" fill="#2a1c10"/><path d="M40.6 93.2 L48.6 93.2 M51.8 93.2 L59.6 93.2" stroke="#000" stroke-width=".8" opacity=".6"/>'
+    // brazo izquierdo con el arco
+    + '<g filter="url(#fTex)"><path d="M38.6 34.4 C33.4 36.4 30.4 42.4 29 50 C28 54 27.2 58 26.6 60.8 L30.6 61.6 C31.2 56 32.6 49.6 37 43.6Z" fill="url(#gCloak)"/></g>'
+    + '<path d="M28 24 C23.4 44 23.4 74 28 94" fill="none" stroke="#2a190c" stroke-width="2.6" stroke-linecap="round"/><path d="M27.4 25 C23 44 23 74 27.4 93" fill="none" stroke="#7a5230" stroke-width=".8" opacity=".55"/><path d="M28.4 24.6 L28.4 93.4" stroke="#cfc6b0" stroke-width=".4" opacity=".6"/>'
+    + '<path d="M24.8 56.6 L24.8 64.6" stroke="#3a2210" stroke-width="3" stroke-linecap="round"/>'
+    + '<ellipse cx="26.6" cy="61.4" rx="2.6" ry="2.4" fill="url(#gSkin)"/>'
+    // capucha y cara
+    + '<g filter="url(#fTex)"><path d="M39.6 33.4 C36.4 24 39.6 12.6 50 12 C60.4 12 64 22.6 60.6 33.4 C56.6 36.6 43.6 36.6 39.6 33.4Z" fill="url(#gHood)"/></g>'
+    + '<ellipse cx="50.8" cy="25" rx="6.6" ry="8.2" fill="#0b0906"/>'
+    + '<path d="M46.2 24.6 C46.2 20.6 48.2 18.6 51.2 18.6 C54.2 18.6 56.2 20.8 56.2 24.6 C56.2 29.4 53.8 32.4 51.2 32.4 C48.6 32.4 46.2 29.4 46.2 24.6Z" fill="url(#gSkin)"/>'
+    + '<path d="M46.2 24.6 C46.2 20.6 48.2 18.6 51.2 18.6 C49 20 48.4 24 49.2 32.2 C47.4 31 46.2 28.4 46.2 24.6Z" fill="#1a0f08" opacity=".55"/>'
+    + '<path d="M45 22.4 C47.6 17.6 54.6 17.6 57 22.4 C54 20.4 48 20.4 45 22.4Z" fill="#0b0906" opacity=".9" filter="url(#fB1)"/>'
+    + '<path d="M48.2 23.2 q1.2 -.5 2.2 0 M52.6 23.2 q1.2 -.5 2.2 0" stroke="#1e130b" stroke-width=".55" fill="none"/>'
+    + '<ellipse cx="49.3" cy="24.2" rx=".9" ry=".5" fill="#d8ccb8" opacity=".5"/><ellipse cx="53.7" cy="24.2" rx=".9" ry=".5" fill="#e0d4c0" opacity=".7"/><circle cx="49.4" cy="24.2" r=".42" fill="#140c06"/><circle cx="53.8" cy="24.2" r=".42" fill="#140c06"/>'
+    + '<path d="M52 24.6 C52.8 26.4 53 27.4 51.8 28" stroke="#6a4430" stroke-width=".6" fill="none"/>'
+    + '<path d="M47.2 27.6 C48 31.6 50 32.8 51.2 32.8 C52.6 32.8 54.6 31.6 55.4 27.6 C54.4 30 52.6 30.6 51.2 30.6 C49.8 30.6 48 30 47.2 27.6Z" fill="#2e1c10" opacity=".7"/><path d="M49.8 29.4 q1.4 .5 2.8 0" stroke="#4a2a1a" stroke-width=".5" fill="none"/>'
+    + '<path d="M60.2 26 C60.4 30 59 33 56.6 34.6" stroke="#d48a46" stroke-width=".9" opacity=".45" fill="none" filter="url(#fB1)"/>'
+    // brazo derecho con la antorcha
+    + '<g filter="url(#fTex)"><path d="M61 35.4 C67 36 71.6 40.6 73 46.6 C71.4 48.6 69.2 48.6 68.2 46.6 C67.2 43 64.6 40.6 60.6 39.6Z" fill="url(#gCloak)"/><path d="M68.2 46.6 C70 42 71.4 38 72.8 34 L77.2 35 C76.4 39.6 74.6 44.4 73 48.6 C71.6 49.6 69.4 48.8 68.2 46.6Z" fill="url(#gCloak)"/></g>'
+    + '<path d="M72.4 34.4 C71 39 69.6 42.6 68.4 46.4" stroke="#d48a46" stroke-width=".8" opacity=".4" fill="none"/>'
+    + '<path d="M74.6 44 L78.6 12.6" stroke="#432a16" stroke-width="2.4" stroke-linecap="round"/><path d="M77.2 19.4 L80.4 19.8 L81 13.4 L77.8 13Z" fill="#241810"/><path d="M77.4 17.2 L80.6 17.6 M77.6 15.2 L80.8 15.6" stroke="#4a3220" stroke-width=".5"/>'
+    + '<ellipse cx="75.4" cy="33.4" rx="2.8" ry="2.5" fill="url(#gSkin)"/><path d="M73.4 32.6 q2 -1 4 0" stroke="#5a3a26" stroke-width=".5" fill="none"/>'
     + (lit ? flame : smoke)
     + '</svg>';
 }
