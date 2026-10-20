@@ -167,6 +167,33 @@ function portadaCasino(obra, titulo, firma, ancho) {
   return p;
 }
 
+/* Tema «cueva» (reglamento del Wumpus): portada de piedra con título de bronce y páginas de pergamino. */
+const ICONOS_CUEVA = { Pozo: 'pozo', Wumpus: 'wumpus', Oro: 'oro' };
+function adornarCueva(html) {
+  return html
+    .replace(/<h2([^>]*)>\s*(\d+)\.\s*/g, '<h2$1><span class="cap-num">$2</span>')
+    .replace(/<h3([^>]*)>(Pozo|Wumpus|Oro)<\/h3>/g, (m, a, n) => `<h3${a} class="con-icono"><span class="ico ico--${ICONOS_CUEVA[n]}" aria-hidden="true"></span>${n}</h3>`)
+    .replace(/<strong>(Viento|Olor|Resplandor)<\/strong>/g, (m, n) => `<strong class="senal senal--${n.toLowerCase()}">${n}</strong>`);
+}
+function portadaCueva(titulo, firma, ancho) {
+  const p = document.createElement('div');
+  p.className = 'pag-portada pag-portada--cueva';
+  p.style.setProperty('--tam-portada', `${Math.max(28, ancho / 6.2)}px`);
+  p.innerHTML = `
+    <div class="pq-marco">
+      <small class="pq-ante"></small>
+      <svg class="pq-ojos" viewBox="0 0 120 40" aria-hidden="true"><defs><radialGradient id="pqOjo"><stop offset="0" stop-color="#ffe6a8"/><stop offset=".4" stop-color="#ff9a2e"/><stop offset="1" stop-color="#a82a0a"/></radialGradient><filter id="pqBrillo" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="4"/></filter></defs><g filter="url(#pqBrillo)" fill="#ff6a1a" opacity=".55"><ellipse cx="38" cy="20" rx="14" ry="8"/><ellipse cx="82" cy="20" rx="14" ry="8"/></g><path d="M26 18 Q38 10 50 22 Q38 28 26 18Z M94 18 Q82 10 70 22 Q82 28 94 18Z" fill="url(#pqOjo)"/><path d="M38 14.5 v10 M82 14.5 v10" stroke="#1a0603" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span class="pq-pre">La cueva del</span>
+      <b class="pq-titulo">Wumpus</b>
+      <span class="pq-orla">◆ ◆ ◆</span>
+      <em class="pq-sub">Entrá, encontrá el oro y volvé con vida</em>
+      <span class="pq-firma"></span>
+    </div>`;
+  p.querySelector('.pq-ante').textContent = titulo;
+  p.querySelector('.pq-firma').textContent = '@hagigliotti';
+  return p;
+}
+
 class DocTexto {
   constructor({ url, markdown, titulo, firma, tema = '', obra = '' }) {
     this.url = url; this.markdown = markdown; this.titulo = titulo; this.firma = firma; this.tema = tema; this.obra = obra;
@@ -183,6 +210,7 @@ class DocTexto {
       this.html = textoAHTML(crudo);
     }
     if (this.tema === 'casino') this.html = adornarCasino(this.html);
+    else if (this.tema === 'cueva') this.html = adornarCueva(this.html);
     this.aspecto = 0.7;
   }
   total() { return this.paginas.length + 1; }
@@ -224,7 +252,14 @@ class DocTexto {
     let actual = [];
     medidor.innerHTML = '';
     const desborda = () => medidor.scrollHeight > maxAlto + 0.5;
-    const cerrarPagina = () => {
+    // sigue=true: la página se cierra porque lo que viene no entra. Un título que quedaría
+    // solo al pie de la página pasa a la siguiente, junto con su texto.
+    const cerrarPagina = (sigue = false) => {
+      if (sigue) {
+        const titulos = [];
+        while (actual.length > 1 && /^H[1-6]$/.test(actual[actual.length - 1].tagName)) titulos.unshift(actual.pop());
+        if (titulos.length) cola.unshift(...titulos);
+      }
       paginas.push(actual.map((n) => n.outerHTML).join(''));
       actual = [];
       medidor.innerHTML = '';
@@ -241,7 +276,7 @@ class DocTexto {
         const [cabe, resto] = this.partir(nodo, medidor, desborda);
         if (cabe) { actual.push(cabe); }
         if (resto) cola.unshift(resto);
-        if (cabe || actual.length) { cerrarPagina(); continue; }
+        if (cabe || actual.length) { cerrarPagina(true); continue; }
       }
       if (actual.length === 0) {
         medidor.appendChild(nodo);
@@ -249,7 +284,7 @@ class DocTexto {
         cerrarPagina();
       } else {
         cola.unshift(nodo);
-        cerrarPagina();
+        cerrarPagina(true);
       }
     }
     if (actual.length) cerrarPagina();
@@ -299,6 +334,7 @@ class DocTexto {
   async pagina(i, ancho) {
     const tam = this.tamLetra(ancho);
     if (i === 0 && this.tema === 'casino') return portadaCasino(this.obra || this.titulo, this.titulo, this.firma, ancho);
+    if (i === 0 && this.tema === 'cueva') return portadaCueva(this.titulo, this.firma, ancho);
     if (i === 0) {
       const p = document.createElement('div');
       p.className = 'pag-portada';
@@ -311,7 +347,7 @@ class DocTexto {
     const p = document.createElement('div');
     p.className = `pag-texto${this.tema ? ` pag-texto--${this.tema}` : ''}`;
     p.style.setProperty('--tam-libro', `${tam}px`);
-    const cabeza = this.tema === 'casino' ? `<div class="pag-texto__cabeza"><span>${escHTML(this.obra || '')}</span><span>${escHTML(this.titulo)}</span></div>` : '';
+    const cabeza = (this.tema === 'casino' || this.tema === 'cueva') ? `<div class="pag-texto__cabeza"><span>${escHTML(this.obra || '')}</span><span>${escHTML(this.titulo)}</span></div>` : '';
     p.innerHTML = `${cabeza}<div class="pag-texto__cuerpo${this.tema ? ` tema-${this.tema}` : ''}">${this.paginas[i - 1] || ''}</div><div class="pag-texto__numero"><span>${i}</span></div>`;
     return p;
   }

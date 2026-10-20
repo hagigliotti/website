@@ -1583,3 +1583,113 @@ body.con-mini .pie { padding-bottom: 6rem; }
 }
 @media (max-width: 360px) { .nav__marca { padding-inline: 0.55rem; } .red { width: 1.75rem; } }
 @media (prefers-reduced-motion: reduce) { .radio__panel { animation: none; } }
+
+/* ==========================================================================
+   Libro con tema «cueva» (reglamento del Wumpus). Se activa con «Libro: cueva» en Info.txt.
+   Pergamino gastado, títulos de bronce y portada de piedra. Las medidas de texto no cambian.
+   ========================================================================== */
+.pag-texto--cueva {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(255, 250, 235, 0.55), rgba(255, 250, 235, 0) 62%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 58%, rgba(96, 60, 26, 0.32) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .38 0 0 0 0 .24 0 0 0 0 .1 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #ecdfc2;
+  color: #2b2016;
+}
+.pag-texto--cueva::before {
+  content: ""; position: absolute; inset: 1.8% 2.6%; pointer-events: none; border-radius: 2px;
+  border: 1px solid rgba(122, 82, 38, 0.5);
+  outline: 1px solid rgba(122, 82, 38, 0.22); outline-offset: -5px;
+}
+.pag-texto--cueva .pag-texto__cabeza { color: #7a5226; border-bottom-color: rgba(122, 82, 38, 0.35); font-family: "Cinzel", var(--f-libro); letter-spacing: 0.16em; }
+.pag-texto--cueva .pag-texto__cabeza span:first-child { color: #4a2e14; }
+.pag-texto--cueva .pag-texto__numero { bottom: 4.6%; }
+.pag-texto--cueva .pag-texto__numero span {
+  display: inline-grid; place-items: center; min-width: 2.2em; height: 2.2em; padding: 0 0.4em; border-radius: 999px;
+  font-family: "Cinzel", var(--f-libro); font-weight: 700; font-size: 12px; color: #2a1a0c;
+  background: radial-gradient(circle at 38% 30%, #f3d9a0, #c9924a 55%, #8a5a26); box-shadow: 0 0 0 1px #6a4218, 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.tema-cueva h1 {
+  font-family: "Cinzel", var(--f-libro); font-weight: 700; font-size: 1.45em; line-height: 1.2; text-align: center; color: #4a2c12;
+  letter-spacing: 0.03em; margin: 0.3em 0 0.9em; padding-bottom: 0.55em;
+  background: linear-gradient(90deg, rgba(122, 82, 38, 0), #9a6a32 30%, #9a6a32 70%, rgba(122, 82, 38, 0)) bottom / 70% 1px no-repeat;
+}
+.tema-cueva h1::after { content: "◆"; display: block; font-size: 0.45em; color: #9a6a32; margin-top: 0.6em; letter-spacing: 0; }
+.tema-cueva h2 {
+  display: flex; align-items: center; gap: 0.5em; font-family: "Cinzel", var(--f-libro); font-weight: 700; font-size: 1.15em; line-height: 1.2;
+  color: #3e2410; margin: 1em 0 0.55em; padding-bottom: 0.3em; border-bottom: 1px solid rgba(122, 82, 38, 0.4);
+}
+.tema-cueva h2:first-child { margin-top: 0.2em; }
+.tema-cueva .cap-num {
+  flex: none; display: grid; place-items: center; width: 1.75em; height: 1.75em; border-radius: 50%;
+  font-size: 0.8em; font-weight: 700; color: #2a1a0c;
+  background: radial-gradient(circle at 38% 30%, #f6dfa8, #c9924a 55%, #7a4c1e);
+  box-shadow: 0 0 0 1.5px #5a3612, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.tema-cueva h3 { display: flex; align-items: center; gap: 0.45em; font-family: var(--f-libro); font-weight: 600; font-style: italic; font-size: 1.08em; color: #7a3a14; margin: 0.9em 0 0.35em; }
+.tema-cueva .ico { flex: none; width: 1.5em; height: 1.5em; background: center / contain no-repeat; }
+.tema-cueva .ico--pozo { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cellipse cx='12' cy='13' rx='11' ry='8' fill='%23826a52'/%3E%3Cellipse cx='12' cy='13.6' rx='8.4' ry='5.8' fill='%23140c06'/%3E%3Ccircle cx='3' cy='10' r='1.6' fill='%235e4c3a'/%3E%3Ccircle cx='21' cy='15' r='1.4' fill='%235e4c3a'/%3E%3C/svg%3E"); }
+.tema-cueva .ico--wumpus { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9C3 8 1.5 5 2 2c1.5 2.5 3.5 4 6 4.6M18 9c3-1 4.5-4 4-7-1.5 2.5-3.5 4-6 4.6' fill='%23b9a684'/%3E%3Ccircle cx='12' cy='13' r='9' fill='%232a1c12'/%3E%3Cpath d='M6.5 11.5Q9 9.6 11 12q-2.4 1.4-4.5-.5zM17.5 11.5Q15 9.6 13 12q2.4 1.4 4.5-.5z' fill='%23ff8a2a'/%3E%3Cpath d='M8 17l1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2' stroke='%23e8dcc0' stroke-width='.9' fill='none'/%3E%3C/svg%3E"); }
+.tema-cueva .ico--oro { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%236e4808' stroke-width='.8'%3E%3Cellipse cx='12' cy='19' rx='8' ry='3' fill='%23c9952a'/%3E%3Cellipse cx='12' cy='15.5' rx='7' ry='2.7' fill='%23dcae3e'/%3E%3Cellipse cx='12' cy='12' rx='6' ry='2.4' fill='%23ecc55a'/%3E%3Cellipse cx='12' cy='8.6' rx='4.6' ry='2' fill='%23f6dc86'/%3E%3C/g%3E%3C/svg%3E"); }
+.tema-cueva p { text-indent: 0; margin: 0 0 0.6em; }
+.tema-cueva strong, .tema-cueva b { color: #4a2c12; }
+.tema-cueva em { color: #6b5638; }
+.tema-cueva ul { list-style: none; padding-left: 1.2em; margin: 0.3em 0 0.7em; }
+.tema-cueva ul li { position: relative; margin-bottom: 0.3em; }
+.tema-cueva ul li::before { content: "◆"; position: absolute; left: -1.75em; top: 0.55em; font-size: 0.6em; line-height: 1; color: #9a6a32; }
+.tema-cueva ol { padding-left: 1.5em; margin: 0.3em 0 0.7em; }
+.tema-cueva ol li::marker { color: #7a4c1e; font-weight: 700; }
+.tema-cueva .senal { white-space: nowrap; }
+.tema-cueva .senal::before { content: ""; display: inline-block; width: 0.62em; height: 0.62em; margin-right: 0.3em; border-radius: 50%; vertical-align: 0.05em; box-shadow: 0 0 0 1px rgba(40, 26, 12, 0.55); }
+.tema-cueva .senal--viento::before { background: #b8b9b0; }
+.tema-cueva .senal--olor::before { background: #9a9532; }
+.tema-cueva .senal--resplandor::before { background: #e8b23a; box-shadow: 0 0 0 1px rgba(40, 26, 12, 0.55), 0 0 6px rgba(232, 178, 58, 0.8); }
+.tema-cueva table { width: 100%; border-collapse: collapse; font-size: 0.82em; margin: 0.4em 0 0.8em; text-align: left; }
+.tema-cueva th, .tema-cueva td { padding: 0.25em 0.4em; border-bottom: 1px solid rgba(122, 82, 38, 0.3); vertical-align: top; }
+.tema-cueva th { font-family: "Cinzel", var(--f-libro); color: #4a2c12; }
+@media (max-width: 600px) { .tema-cueva { text-align: left; } }
+
+/* portada: piedra oscura con marco de bronce y los ojos del Wumpus en la oscuridad */
+.pag-portada--cueva {
+  padding: 0; background:
+    radial-gradient(ellipse at 50% 38%, rgba(255, 150, 60, 0.16), rgba(0, 0, 0, 0) 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .02' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .32 0 0 0 .32 -.06'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #171210;
+  color: #e6cfa2;
+}
+.pq-marco {
+  position: absolute; inset: 5.5%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.55em; text-align: center;
+  border: 2px solid rgba(201, 146, 74, 0.8); border-radius: 4px;
+  outline: 1px solid rgba(201, 146, 74, 0.4); outline-offset: -8px;
+  font-size: calc(var(--tam-portada, 60px) * 0.22);
+}
+.pag-portada--cueva .pq-ante { font-family: "Cinzel", var(--f-libro); font-weight: 600; font-size: 0.95em; letter-spacing: 0.4em; padding-left: 0.4em; text-transform: uppercase; color: #c9a06a; }
+.pag-portada--cueva .pq-ojos { width: 46%; height: auto; margin: 0.6em 0 0.2em; }
+.pag-portada--cueva .pq-pre { font-family: "Cinzel", var(--f-libro); font-weight: 600; font-size: 1.15em; line-height: 1; letter-spacing: 0.3em; padding-left: 0.3em; text-transform: uppercase; color: #e0c597; }
+.pag-portada--cueva .pq-titulo {
+  font-family: "Cinzel", var(--f-libro); font-weight: 800; text-transform: uppercase; line-height: 0.95; letter-spacing: 0.04em;
+  font-size: var(--tam-portada, 60px); color: transparent;
+  background: linear-gradient(180deg, #f8e6bc 0%, #d9a253 52%, #7a4418 100%); -webkit-background-clip: text; background-clip: text;
+  filter: drop-shadow(0 3px 0 rgba(20, 10, 2, 0.85)) drop-shadow(0 0 14px rgba(255, 150, 60, 0.3));
+}
+.pag-portada--cueva .pq-orla { font-family: var(--f-libro); font-size: 0.7em; line-height: 1; letter-spacing: 0.8em; padding-left: 0.8em; color: #a8763a; }
+.pag-portada--cueva .pq-sub { font-family: var(--f-libro); font-style: italic; font-size: 1.1em; line-height: 1.3; color: #d8c29a; max-width: 85%; }
+.pag-portada--cueva .pq-firma { font-family: var(--f-firma); font-size: 2em; line-height: 1.1; color: #d9a253; margin-top: 0.3em; }
+
+/* tapa en el estante */
+.libro__tapa--cueva {
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(255, 150, 60, 0.2), rgba(0, 0, 0, 0) 60%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.65) 100%),
+    #1a1411;
+  color: #e6cfa2; box-shadow: inset 6px 0 0 rgba(0, 0, 0, 0.45), inset 7px 0 0 rgba(201, 146, 74, 0.25), inset 0 0 0 1px rgba(201, 146, 74, 0.35), 0 18px 40px -18px rgba(255, 140, 50, 0.35);
+}
+.libro__tapa--cueva b { font-family: "Cinzel", var(--f-libro); font-weight: 800; font-size: 1.05rem; padding-right: 2.6rem; letter-spacing: 0.06em; color: transparent; background: linear-gradient(180deg, #f8e6bc, #d9a253 55%, #8a5222); -webkit-background-clip: text; background-clip: text; }
+.libro__tapa--cueva small { font-family: "Cinzel", var(--f-libro); font-weight: 600; letter-spacing: 0.08em; color: #c9a06a; }
+.libro__tapa--cueva .libro__tipo { background: #c9924a; color: #1a1411; }
+.libro__tapa--cueva::after {
+  content: ""; position: absolute; left: 50%; top: 52%; width: 56%; aspect-ratio: 3; transform: translate(-50%, -50%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cpath d='M26 18Q38 10 50 22Q38 28 26 18ZM94 18Q82 10 70 22Q82 28 94 18Z' fill='%23ff8a2a'/%3E%3Cpath d='M38 14.5v10M82 14.5v10' stroke='%231a0603' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 6px rgba(255, 110, 30, 0.8));
+}

@@ -440,7 +440,7 @@ function estante(it, docs, imgs) {
     const et = tipoEtiqueta[d.tipo] || '';
     const tapa = d.tipo === 'pdf'
       ? `<div class="libro__tapa" data-miniatura="${esc(d.ruta)}"><span class="libro__tipo">${et}</span></div>`
-      : `<div class="libro__tapa libro__tapa--texto"><span class="libro__tipo">${et}</span><b>${esc(limpiarNombre(d.nombre))}</b><small>${esc(tituloDe(it))}</small></div>`;
+      : `<div class="libro__tapa libro__tapa--texto${it.libro ? ` libro__tapa--${esc(it.libro)}` : ''}"><span class="libro__tipo">${et}</span><b>${esc(limpiarNombre(d.nombre))}</b><small>${esc(tituloDe(it))}</small></div>`;
     return `
       <button class="libro revela" type="button" data-leer="${i}">
         ${tapa}

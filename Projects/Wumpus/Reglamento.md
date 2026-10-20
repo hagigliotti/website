@@ -15,17 +15,19 @@ Gana quien sale de la cueva con el oro. Se puede salir sin el oro, pero en ese c
 
 ## 3. Lo que hay dentro
 
-| Elemento | Qué es | Señal que deja en las casillas vecinas |
-|---|---|---|
-| **Pozo** | Si el cazador cae, muere. | **Viento** |
-| **Wumpus** | Un bicho horrible y hambriento. Si el cazador entra en su casilla, se lo come. | **Olor** |
-| **Oro** | El tesoro que hay que llevarse. | **Resplandor** |
+Cada peligro deja una señal en las casillas que lo tocan: arriba, abajo, a la izquierda y a la derecha, nunca en diagonal.
 
-Las señales aparecen solo arriba, abajo, a la izquierda y a la derecha del peligro, nunca en diagonal.
+### Pozo
 
-- **Viento:** hay un pozo en alguna casilla vecina.
-- **Olor:** el Wumpus está en alguna casilla vecina.
-- **Resplandor:** el oro está en alguna casilla vecina.
+Si el cazador cae en un pozo, muere. Alrededor se siente **Viento**.
+
+### Wumpus
+
+Un bicho horrible y hambriento. Si el cazador entra en su casilla, se lo come. Alrededor se siente **Olor**.
+
+### Oro
+
+El tesoro que hay que llevarse. Alrededor se ve un **Resplandor**.
 
 Una **casilla segura** es la que no tiene pozo, Wumpus, viento ni olor.
 
@@ -61,18 +63,45 @@ La antorcha es lo que le permite ver la casilla donde está parado. Si se apaga,
 
 ## 6. Niveles
 
-| Nivel | Cueva | Pozos | Wumpus | Qué ve el cazador | Señales en una casilla | El Wumpus |
-|---|---|---|---|---|---|---|
-| Muy fácil | 4×4 o 5×5 | 1 | 1 | Toda la cueva | Una sola | Quieto |
-| Fácil | 5×5 o 6×6 | 2 o 3 | 1 | Su casilla y las señales de las 4 vecinas | Una sola | Quieto |
-| Intermedio | 6×6 | 3 o 4 | 1 | Solo su casilla | Hasta 2 | Se mueve y puede caer en un pozo |
-| Difícil | 5×5 o 7×7 | 4 a 6 | 2 | Solo su casilla | Hasta 3 | Se mueve y esquiva los pozos |
-| Muy difícil | 7×7 u 8×8 | 7 a 9 | 2 o 3 | Solo su casilla | Hasta 3 | Se mueve y esquiva los pozos |
-| Oscuridad total | 7×7 u 8×8 | 6 a 9 | 2 o 3 | Nada | Hasta 3 | Se mueve y esquiva los pozos |
+### Muy fácil
+
+- Cueva de 4×4 o 5×5, con 1 pozo y 1 Wumpus.
+- El cazador ve toda la cueva.
+- Cada casilla tiene una sola señal. El Wumpus no se mueve.
+
+### Fácil
+
+- Cueva de 5×5 o 6×6, con 2 o 3 pozos y 1 Wumpus.
+- El cazador ve su casilla y las señales de las 4 casillas vecinas.
+- Cada casilla tiene una sola señal. El Wumpus no se mueve.
+
+### Intermedio
+
+- Cueva de 6×6, con 3 o 4 pozos y 1 Wumpus.
+- El cazador ve solo su casilla.
+- Una casilla puede tener hasta 2 señales. El Wumpus se mueve y puede caer en un pozo.
+
+### Difícil
+
+- Cueva de 5×5 o 7×7, con 4 a 6 pozos y 2 Wumpus.
+- El cazador ve solo su casilla.
+- Una casilla puede tener hasta 3 señales. El Wumpus se mueve y esquiva los pozos.
+
+### Muy difícil
+
+- Cueva de 7×7 u 8×8, con 7 a 9 pozos y 2 o 3 Wumpus.
+- El cazador ve solo su casilla.
+- Una casilla puede tener hasta 3 señales. El Wumpus se mueve y esquiva los pozos.
+- Quedarse quieto es peligroso (ver el punto 7).
 
 ### Oscuridad total
 
-Es el nivel más difícil. No hay antorcha: el cazador no ve la cueva, ni su propia casilla, ni a sí mismo. Juega solo por percepción, con los mensajes de lo que siente:
+- Cueva de 7×7 u 8×8, con 6 a 9 pozos y 2 o 3 Wumpus.
+- No hay antorcha: el cazador no ve la cueva, ni su propia casilla, ni a sí mismo.
+- Una casilla puede tener hasta 3 señales. El Wumpus se mueve y esquiva los pozos.
+- Quedarse quieto es peligroso (ver el punto 7).
+
+Es el nivel más difícil. Se juega solo por percepción, con los mensajes de lo que siente el cazador:
 
 - hacia dónde dio cada paso;
 - si siente viento, olor o resplandor;
@@ -82,13 +111,13 @@ Es el nivel más difícil. No hay antorcha: el cazador no ve la cueva, ni su pro
 
 Empieza en la entrada, abajo a la izquierda. Al terminar la partida se muestra la cueva entera.
 
-## 7. Peligro por quedarse quieto (Muy difícil y Oscuridad total)
+## 7. Peligro por quedarse quieto
 
 En los niveles Muy difícil y Oscuridad total, quedarse mucho tiempo en una casilla con una señal es peligroso:
 
 - **10 segundos con olor:** el cazador se duerme y el Wumpus lo encuentra.
 - **8 segundos con viento:** el viento lo arrastra al pozo.
-- **6 segundos con resplandor:** queda ciego, la antorcha se apaga y tiene que salir guiándose solo por lo que siente. (En Oscuridad total no aplica, porque ya no ve nada.)
+- **6 segundos con resplandor:** queda ciego, la antorcha se apaga y tiene que salir guiándose solo por lo que siente. En Oscuridad total no pasa, porque ya no ve nada.
 
 El tiempo vuelve a cero cada vez que el cazador se mueve.
 
@@ -98,11 +127,9 @@ En los niveles Muy fácil y Fácil se pueden marcar casillas, como en el buscami
 
 ## 9. Controles
 
-| Acción | Teclado | Pantalla |
-|---|---|---|
-| Moverse | Flechas o W A S D | Botones de dirección |
-| Disparar flecha | F y después una dirección | «Disparar flecha» y después una dirección |
-| Usar la espada | E y después una dirección | «Usar espada» y después una dirección |
-| Agarrar el oro | G | «Agarrar oro» |
-| Salir de la cueva | X (en la entrada) | «Salir de la cueva» |
-| Cancelar | Esc | — |
+- **Moverse:** flechas o W A S D en el teclado, o los botones de dirección.
+- **Disparar una flecha:** F, o el botón «Disparar flecha», y después una dirección.
+- **Usar la espada:** E, o el botón «Usar espada», y después una dirección.
+- **Agarrar el oro:** G, o el botón «Agarrar oro».
+- **Salir de la cueva:** X, o el botón «Salir de la cueva». Solo funciona en la entrada.
+- **Cancelar un disparo o un golpe:** Esc.

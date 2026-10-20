@@ -1,4 +1,5 @@
 Título: La cueva del Wumpus
+Libro: cueva
 Juego: index.html
 Ayuda: Movete con las flechas del teclado o los botones. Fijate en el viento, el olor y el resplandor para adivinar dónde está cada peligro.
 
