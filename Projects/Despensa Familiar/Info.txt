@@ -1,0 +1,34 @@
+Título: Despensa Familiar
+Enlace: https://midespensa-app.vercel.app/?demo=1
+Demo: https://midespensa-app.vercel.app/?demo=1
+Dispositivos: celular, imac
+
+[es]
+Despensa Familiar es una aplicación web para organizar las compras de la casa en familia: una lista compartida que todos ven al instante, la despensa con heladera y freezer, recetas, el historial de compras y los precios de cada supermercado. Funciona en Italia y Argentina, en español, italiano e inglés.
+
+En esta demostración está habilitada solo la Lista de compras: probá agregar lo que falta en casa y pasar al modo "Estoy comprando". Despensa, Productos, Recetas, Compras y Precios están en la app completa.
+
+[en]
+Despensa Familiar is a web app for organising household shopping as a family: a shared list everyone sees instantly, the pantry with fridge and freezer, recipes, purchase history and prices at each supermarket. It works in Italy and Argentina, in Spanish, Italian and English.
+
+Only the Shopping list is enabled in this demo: try adding what's missing at home and switching to "I'm shopping" mode. Pantry, Products, Recipes, Purchases and Prices are in the full app.
+
+[fr]
+Despensa Familiar est une application web pour organiser les courses de la maison en famille : une liste partagée que tout le monde voit instantanément, le garde-manger avec réfrigérateur et congélateur, des recettes, l'historique des achats et les prix de chaque supermarché. Elle fonctionne en Italie et en Argentine, en espagnol, italien et anglais.
+
+Dans cette démo, seule la Liste de courses est activée : essayez d'ajouter ce qui manque à la maison et de passer en mode « Je fais les courses ». Garde-manger, Produits, Recettes, Achats et Prix sont dans l'application complète.
+
+[de]
+Despensa Familiar ist eine Web-App, mit der die Familie den Einkauf gemeinsam organisiert: eine geteilte Liste, die alle sofort sehen, die Vorratskammer mit Kühlschrank und Gefrierfach, Rezepte, der Einkaufsverlauf und die Preise jedes Supermarkts. Sie funktioniert in Italien und Argentinien, auf Spanisch, Italienisch und Englisch.
+
+In dieser Demo ist nur die Einkaufsliste aktiv: Trag ein, was zu Hause fehlt, und wechsle in den Modus „Ich kaufe ein“. Vorrat, Produkte, Rezepte, Einkäufe und Preise gibt es in der vollständigen App.
+
+[pt]
+Despensa Familiar é um aplicativo web para organizar as compras da casa em família: uma lista compartilhada que todos veem na hora, a despensa com geladeira e freezer, receitas, o histórico de compras e os preços de cada supermercado. Funciona na Itália e na Argentina, em espanhol, italiano e inglês.
+
+Nesta demonstração só a Lista de compras está habilitada: experimente adicionar o que falta em casa e passar para o modo "Estou comprando". Despensa, Produtos, Receitas, Compras e Preços estão no aplicativo completo.
+
+[it]
+Despensa Familiar è un’applicazione web per organizzare la spesa di casa in famiglia: una lista condivisa che tutti vedono all’istante, la dispensa con frigorifero e freezer, ricette, lo storico degli acquisti e i prezzi di ogni supermercato. Funziona in Italia e in Argentina, in spagnolo, italiano e inglese.
+
+In questa dimostrazione è attiva solo la Lista della spesa: prova ad aggiungere ciò che manca in casa e a passare alla modalità "Sto facendo la spesa". Dispensa, Prodotti, Ricette, Acquisti e Prezzi sono nell’app completa.
