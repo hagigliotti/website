@@ -9,3 +9,7 @@ Elle affiche un compte à rebours en direct et prépare, pour chacun des 37 fuse
 - Plus de 300 villes, avec leur nom dans la langue locale et en anglais.
 - Message modifiable ; l’année se met à jour toute seule.
 - Un onglet avec le Nouvel An d’autres calendriers : chinois, juif, islamique, persan, éthiopien et thaï.
+- L’heure actuelle de chaque lieu et le décalage horaire avec le vôtre, hors du message.
+- Les jours fériés d’Argentine et d’Italie, avec leur compte à rebours.
+
+Cet aperçu montre Noël (les 5 premiers fuseaux horaires) et les jours fériés ; la page complète contient tout.

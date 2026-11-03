@@ -1,5 +1,6 @@
 Título: Año Nuevo {ciclo}
 Enlace: https://hagigliotti.github.io/new_year/
+Demo: https://hagigliotti.github.io/new_year/?vitrina=1
 Dispositivos: celular
 Portada texto: {ciclo}
 
@@ -11,4 +12,8 @@ Muestra una cuenta regresiva en vivo y arma, para cada una de las 37 zonas horar
 - Pestañas de Año Nuevo y de Navidad, con un botón para copiar cada saludo.
 - Más de 300 ciudades, con su nombre en el idioma local y en inglés.
 - Saludo editable; el año se actualiza solo.
-- Una pestaña con el Año Nuevo de otros calendarios: chino, judío, islámico, persa, etíope y tailandés.
+- Una pestaña con el Año Nuevo de otros calendarios: chino, judío, islámico, persa, tibetano, balinés, hindú, maorí, etíope y tailandés, entre otros.
+- Hora actual de cada lugar y la diferencia horaria con la tuya, fuera del saludo.
+- Feriados de Argentina e Italia, con su cuenta regresiva.
+
+En esta vista de prueba se ven la Navidad (los primeros 5 husos horarios) y los feriados; la página completa tiene todo.

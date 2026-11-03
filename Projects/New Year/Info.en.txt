@@ -9,3 +9,7 @@ It shows a live countdown and, for each of the 37 time zones, builds a greeting 
 - More than 300 cities, named in the local language and in English.
 - Editable greeting; the year updates itself.
 - A tab with the New Year of other calendars: Chinese, Jewish, Islamic, Persian, Ethiopian and Thai.
+- Current time in each place and the time difference with yours, outside the greeting.
+- Public holidays in Argentina and Italy, with their countdown.
+
+This preview shows Christmas (the first 5 time zones) and the holidays; the full page has everything.

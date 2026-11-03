@@ -9,3 +9,7 @@ Sie zeigt einen Live-Countdown und erstellt für jede der 37 Zeitzonen einen Gru
 - Über 300 Städte, mit ihrem Namen in der Landessprache und auf Englisch.
 - Bearbeitbarer Gruß; das Jahr aktualisiert sich von selbst.
 - Ein Reiter mit dem Neujahr anderer Kalender: chinesisch, jüdisch, islamisch, persisch, äthiopisch und thailändisch.
+- Die aktuelle Uhrzeit jedes Ortes und der Zeitunterschied zu deiner, außerhalb des Grußes.
+- Feiertage in Argentinien und Italien, mit Countdown.
+
+Diese Vorschau zeigt Weihnachten (die ersten 5 Zeitzonen) und die Feiertage; die vollständige Seite hat alles.

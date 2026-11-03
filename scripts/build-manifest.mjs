@@ -12,7 +12,7 @@ const SECCIONES = ['Projects', 'Trips', 'Works'];
 const LANGS = ['es', 'en', 'fr', 'de', 'pt', 'it'];
 
 const TIPOS = {
-  imagen: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif'],
+  imagen: ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif', '.svg'],
   pdf: ['.pdf'],
   texto: ['.txt'],
   markdown: ['.md', '.markdown'],
