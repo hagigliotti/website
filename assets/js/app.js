@@ -337,7 +337,7 @@ function hito(h, { completo = true } = {}) {
         ${lugar ? `<p class="hito__lugar">${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(lugar)}</a>` : esc(lugar)}</p>` : ''}
         ${completo && h.descripcion ? `<div class="hito__desc">${textoRico(L(h.descripcion))}</div>` : ''}
         ${completo && h.enlaces && !conMonitor ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
-        ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.embed || e.url)}" data-monitor-abrir-url="${esc(e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
+        ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.url)}" data-monitor-abrir-url="${esc(e.abrir || e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
       </div>
       ${conMonitor ? monitorMini(L(h.lugar), h.monitor) : ''}
     </li>`;

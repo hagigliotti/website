@@ -101,8 +101,8 @@
             "pt": "Vídeo institucional",
             "it": "Video istituzionale"
           },
-          "url": "https://www.youtube.com/watch?v=_vNtMD-afo4&t=121s",
-          "embed": "https://www.youtube-nocookie.com/embed/_vNtMD-afo4?start=121&rel=0"
+          "url": "https://www.youtube-nocookie.com/embed/_vNtMD-afo4?start=121&rel=0",
+          "abrir": "https://www.youtube.com/watch?v=_vNtMD-afo4&t=121s"
         }
       ],
       "aptitudes": [
