@@ -225,7 +225,9 @@ function fechaCorta(f = '') {
 // Portada de cada proyecto en la lista de inicio. Dos portadas están armadas en vivo:
 // - Grupo con partes y emblema (Conquistadores): cada clase es un libro en el estante, con su emblema centrado.
 // - Reproductor (Mis Cantos): el disco gira con su púa y las barritas siguen la música.
+// - "Animación: ciudad" (LSM Ciudad Inteligente): la colina se llena de edificios y la red se enciende.
 function fotoProyecto(p) {
+  if (p.animacion === 'ciudad') return `<div class="proyecto__foto">${portadaCiudad(p)}</div>`;
   if (p.emblema && p.partes && p.partes.length) return `<div class="proyecto__foto proyecto__foto--libros">${portadaLibros(p)}</div>`;
   if (p.reproductor) return `<div class="proyecto__foto">${portadaDisco(p)}</div>`;
   return `<div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos, idLista(p.lista)) : ''}</div>`;
@@ -263,6 +265,41 @@ function portadaDisco(p) {
       </svg>
       <img class="tocadiscos__tapa" src="${base}/tapa.jpg" alt="" loading="lazy">
       <span class="eq-portada">${'<i></i>'.repeat(8)}</span>
+    </div>`;
+}
+
+// Portada animada de LSM Ciudad Inteligente: una colina con edificios que crecen,
+// nodos que laten, paquetes que viajan por la red y una antena que emite desde la plaza.
+function portadaCiudad(p) {
+  const colina = (x) => 330 - 120 * Math.exp(-(((x - 200) / 210) ** 2) * 2.6);
+  const nodos = [34, 100, 162, 232, 300, 366].map((x, i) => ({ x, y: Math.round(colina(x) - 16 - (i % 2) * 14) }));
+  const enlaces = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [0, 2], [2, 4], [1, 3], [3, 5]];
+  let edificios = '', x = 2, i = 0;
+  while (x < 398) {
+    const ancho = 16 + ((i * 37) % 22), alto = 26 + ((i * 53) % 64), base = colina(x + ancho / 2) + 20;
+    const ventanas = Array.from({ length: Math.floor(alto / 14) }, (_, k) => (k + i) % 3 ? `<rect x="${x + 5}" y="${base - alto + 7 + k * 14}" width="4" height="5"/>` : '').join('');
+    edificios += `<g class="ciudad__edif" style="--i:${i}"><rect x="${x}" y="${base - alto}" width="${ancho}" height="${520 - base + alto}"/><g class="ciudad__ventanas">${ventanas}</g></g>`;
+    x += ancho + 3; i++;
+  }
+  const lineas = enlaces.map(([a, b]) => `<line x1="${nodos[a].x}" y1="${nodos[a].y}" x2="${nodos[b].x}" y2="${nodos[b].y}"/>`).join('');
+  const paquetes = enlaces.map(([a, b], k) => `<line pathLength="100" style="--k:${k}" ${k % 2 ? `x1="${nodos[b].x}" y1="${nodos[b].y}" x2="${nodos[a].x}" y2="${nodos[a].y}"` : `x1="${nodos[a].x}" y1="${nodos[a].y}" x2="${nodos[b].x}" y2="${nodos[b].y}"`} class="${k % 3 ? '' : 'naranja'}"/>`).join('');
+  const puntos = nodos.map((n, k) => `<g class="ciudad__nodo${k === 2 ? ' ciudad__nodo--plaza' : ''}" style="--k:${k}"><circle class="ciudad__halo" cx="${n.x}" cy="${n.y}" r="9"/><circle cx="${n.x}" cy="${n.y}" r="6"/></g>`).join('');
+  const plaza = nodos[2];
+  const colinaPath = `M0 ${colina(0)} ${Array.from({ length: 21 }, (_, k) => `L${k * 20} ${colina(k * 20).toFixed(1)}`).join(' ')}`;
+  return `
+    <div class="viva ciudad" data-paralaje-x role="img" aria-label="${esc(tituloDe(p))}">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><radialGradient id="ciudad-cielo" cx="50%" cy="100%" r="90%"><stop offset="0" stop-color="#1f5c43"/><stop offset=".65" stop-color="#0d1f18"/></radialGradient></defs>
+        <rect width="400" height="500" fill="url(#ciudad-cielo)"/>
+        <g class="ciudad__edificios">${edificios}</g>
+        <path class="ciudad__colina" d="${colinaPath}"/>
+        <g class="ciudad__ondas">${[0, 1, 2].map((k) => `<path style="--k:${k}" d="M${plaza.x - 22} ${plaza.y - 12} a 26 26 0 0 1 44 0"/>`).join('')}</g>
+        <g class="ciudad__enlaces">${lineas}</g>
+        <g class="ciudad__paquetes">${paquetes}</g>
+        ${puntos}
+      </svg>
+      <span class="ciudad__marca"><b>LSM</b><i>Ciudad inteligente</i></span>
+      <span class="ciudad__años"><b>2009</b><i></i><b>2026</b></span>
     </div>`;
 }
 

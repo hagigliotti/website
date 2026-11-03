@@ -1,0 +1,38 @@
+Título: LSM Ciudad Inteligente
+Fecha: 2026-11
+Enlace: https://hagigliotti.github.io/lsm_ciudad_inteligente/
+Animación: ciudad
+
+En julio de 2009 presenté un proyecto para convertir Libertador San Martín (Entre Ríos), la "Colina de la Esperanza", en una ciudad inteligente. Diecisiete años después la ciudad creció un 30 % y la tecnología cambió por completo.
+
+Este sitio analiza qué le faltó al proyecto original, qué potencial tiene hoy la ciudad (la UAP, el sanatorio, el turismo de salud, las 105 cuadras por pavimentar) y cómo implementarlo por etapas, con privacidad y seguridad desde el día uno. Incluye un servidor de referencia con pruebas automáticas.
+
+[en]
+Title: LSM Smart City
+In July 2009 I presented a project to turn Libertador San Martín (Entre Ríos, Argentina), the "Hill of Hope", into a smart city. Seventeen years later the town has grown by 30% and technology has changed completely.
+
+This site looks at what the original project was missing, the town's potential today (the university, the hospital, health tourism, 105 blocks still to be paved) and how to build it in stages, with privacy and security from day one. It includes a reference server with automated tests. The site is in Spanish.
+
+[fr]
+Title: LSM Ville intelligente
+En juillet 2009, j'ai présenté un projet pour faire de Libertador San Martín (Entre Ríos, Argentine), la « Colline de l'Espérance », une ville intelligente. Dix-sept ans plus tard, la ville a grandi de 30 % et la technologie a complètement changé.
+
+Ce site analyse ce qui manquait au projet d'origine, le potentiel actuel de la ville (l'université, l'hôpital, le tourisme de santé, les 105 rues encore à paver) et comment le mettre en place par étapes, avec la confidentialité et la sécurité dès le premier jour. Il comprend un serveur de référence avec des tests automatiques. Le site est en espagnol.
+
+[de]
+Title: LSM Smart City
+Im Juli 2009 habe ich ein Projekt vorgestellt, um Libertador San Martín (Entre Ríos, Argentinien), den „Hügel der Hoffnung“, zu einer Smart City zu machen. Siebzehn Jahre später ist die Stadt um 30 % gewachsen und die Technik hat sich völlig verändert.
+
+Diese Seite zeigt, was dem ursprünglichen Projekt fehlte, welches Potenzial die Stadt heute hat (die Universität, das Krankenhaus, der Gesundheitstourismus, 105 noch zu pflasternde Straßenblöcke) und wie man es schrittweise umsetzt, mit Datenschutz und Sicherheit vom ersten Tag an. Dazu gehört ein Referenzserver mit automatischen Tests. Die Seite ist auf Spanisch.
+
+[pt]
+Title: LSM Cidade Inteligente
+Em julho de 2009 apresentei um projeto para transformar Libertador San Martín (Entre Ríos, Argentina), a "Colina da Esperança", numa cidade inteligente. Dezessete anos depois a cidade cresceu 30% e a tecnologia mudou por completo.
+
+Este site analisa o que faltou ao projeto original, o potencial atual da cidade (a universidade, o hospital, o turismo de saúde, as 105 quadras a pavimentar) e como implementá-lo por etapas, com privacidade e segurança desde o primeiro dia. Inclui um servidor de referência com testes automáticos. O site está em espanhol.
+
+[it]
+Title: LSM Città Intelligente
+Nel luglio 2009 ho presentato un progetto per trasformare Libertador San Martín (Entre Ríos, Argentina), la "Collina della Speranza", in una città intelligente. Diciassette anni dopo la città è cresciuta del 30% e la tecnologia è cambiata del tutto.
+
+Questo sito analizza cosa mancava al progetto originale, il potenziale attuale della città (l'università, l'ospedale, il turismo sanitario, i 105 isolati ancora da asfaltare) e come realizzarlo per fasi, con privacy e sicurezza fin dal primo giorno. Include un server di riferimento con test automatici. Il sito è in spagnolo.

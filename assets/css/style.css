@@ -1796,3 +1796,35 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .lomo, .vinilo__giro, .pua__brazo, .eq-portada i { animation: none; }
   .eq-portada i:nth-child(odd) { height: 70%; }
 }
+
+/* LSM Ciudad Inteligente: la colina se llena de edificios y la red se enciende */
+.ciudad { background: #0d1f18; container-type: inline-size; }
+.ciudad svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ciudad__edif { transform-box: fill-box; transform-origin: 50% 100%; animation: ciudad-crece 1.4s var(--ease-out, cubic-bezier(.2,.8,.2,1)) both; animation-delay: calc(var(--i) * 70ms); }
+.ciudad__edif > rect { fill: #173a2d; }
+.ciudad__ventanas rect { fill: #ffc48c; opacity: .55; animation: ciudad-ventana 4s steps(1) infinite; animation-delay: calc(var(--i) * -0.7s); }
+.ciudad__colina { fill: none; stroke: #3ddc97; stroke-opacity: .45; stroke-width: 2; }
+.ciudad__enlaces line { stroke: #3ddc97; stroke-opacity: .55; stroke-width: 1.6; }
+.ciudad__paquetes line { stroke: #c9ffe6; stroke-width: 4.5; stroke-linecap: round; stroke-dasharray: 0.1 99.9; animation: ciudad-paquete 2.6s linear infinite; animation-delay: calc(var(--k) * -0.37s); }
+.ciudad__paquetes line.naranja { stroke: #ff7a00; animation-duration: 3.4s; }
+.ciudad__nodo circle:last-child { fill: #0d1f18; stroke: #3ddc97; stroke-width: 3; }
+.ciudad__nodo--plaza circle:last-child { fill: #ff7a00; stroke: #ff7a00; }
+.ciudad__halo { fill: #3ddc97; opacity: 0; transform-box: fill-box; transform-origin: center; animation: ciudad-halo 2.4s ease-out infinite; animation-delay: calc(var(--k) * -0.4s); }
+.ciudad__ondas path { fill: none; stroke: #ff7a00; stroke-width: 3; stroke-linecap: round; transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; animation: ciudad-onda 2.4s ease-out infinite; animation-delay: calc(var(--k) * 0.8s); }
+.ciudad__marca { position: absolute; left: 7%; top: 6%; display: grid; line-height: .85; color: #e8f5ee; }
+.ciudad__marca b { font-family: var(--f-display); font-weight: 900; font-size: 26cqw; letter-spacing: -0.01em; }
+.ciudad__marca i { font-style: normal; font-weight: 700; font-size: 4.6cqw; letter-spacing: .22em; text-transform: uppercase; color: #3ddc97; margin-top: 2cqw; }
+.ciudad__años { position: absolute; left: 7%; bottom: 6%; display: flex; align-items: center; gap: 2.5cqw; font-family: var(--f-display); font-weight: 800; font-size: 7cqw; color: #e8f5ee; }
+.ciudad__años b { padding: .5cqw 3.2cqw; border-radius: 999px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(61, 220, 151, .45); }
+.ciudad__años b:last-child { background: #ff7a00; border-color: #ff7a00; color: #0b0b0d; }
+.ciudad__años i { width: 12cqw; height: 2px; background: linear-gradient(90deg, #3ddc97, #ff7a00); }
+@keyframes ciudad-crece { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes ciudad-ventana { 0%, 60% { opacity: .55; } 61%, 100% { opacity: .15; } }
+@keyframes ciudad-paquete { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes ciudad-halo { 0% { opacity: .45; transform: scale(1); } 100% { opacity: 0; transform: scale(2.6); } }
+@keyframes ciudad-onda { 0% { opacity: .9; transform: scale(.4); } 100% { opacity: 0; transform: scale(2.2); } }
+@media (prefers-reduced-motion: reduce) {
+  .ciudad__edif, .ciudad__ventanas rect, .ciudad__paquetes line, .ciudad__halo, .ciudad__ondas path { animation: none; }
+  .ciudad__paquetes line { stroke-dashoffset: 50; }
+  .ciudad__ondas path:first-child { opacity: .8; }
+}

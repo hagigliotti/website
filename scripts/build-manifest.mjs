@@ -45,6 +45,7 @@ const CLAVES = {
   juego: /^(juego|game|jeu|spiel|gioco|jogo)$/i,
   libro: /^(libro|estilo libro|book)$/i,
   ayuda: /^(ayuda|help|aide|hilfe|aiuto|ajuda)$/i,
+  animacion: /^(animaci[oó]n|animation|portada animada)$/i,
 };
 const DISPOSITIVOS = ['celular', 'android', 'iphone', 'imac', 'proyector', 'tv'];
 
@@ -62,7 +63,7 @@ function bloquesPorIdioma(texto) {
 
 // Info.txt: primeras líneas opcionales "Título: …", "Fecha: …", "Enlace: …", "Portada: …"; el resto es la descripción.
 function parsearInfo(texto, idiomaArchivo) {
-  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {}, libro: '' };
+  const info = { titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {}, libro: '', animacion: '' };
   const bloques = bloquesPorIdioma(texto);
   for (const [lang, contenido] of Object.entries(bloques)) {
     const destino = idiomaArchivo && lang === '_' ? idiomaArchivo : lang;
@@ -135,7 +136,7 @@ async function esParte(abs) {
 async function leerCarpeta(seccion, carpeta, profundidad = 0) {
   const rel = `${seccion}/${carpeta}`;
   const dirAbs = join(RAIZ, rel);
-  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {}, libro: '', fotos: {}, archivos: [], partes: [], subido: '' };
+  const item = { carpeta, ruta: rel, titulo: {}, texto: {}, fecha: '', enlace: '', portada: '', demo: {}, dispositivos: [], color: '', lista: '', directo: false, portadaTexto: '', videos: [], reproductor: '', emblema: '', juego: '', ayuda: {}, libro: '', animacion: '', fotos: {}, archivos: [], partes: [], subido: '' };
   const subPartes = [];
   if (profundidad === 0) {
     for (const e of (await readdir(dirAbs, { withFileTypes: true })).sort((a, b) => ordenar(a.name, b.name))) {
@@ -154,7 +155,7 @@ async function leerCarpeta(seccion, carpeta, profundidad = 0) {
       Object.assign(item.titulo, info.titulo);
       Object.assign(item.texto, info.texto);
       Object.assign(item.ayuda, info.ayuda);
-      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto', 'reproductor', 'emblema', 'juego', 'libro']) if (info[k]) item[k] = info[k];
+      for (const k of ['fecha', 'enlace', 'portada', 'color', 'lista', 'portadaTexto', 'reproductor', 'emblema', 'juego', 'libro', 'animacion']) if (info[k]) item[k] = info[k];
       if (info.videos.length) item.videos = info.videos;
       if (info.directo) item.directo = true;
       Object.assign(item.demo, info.demo);
