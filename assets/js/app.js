@@ -337,7 +337,7 @@ function hito(h, { completo = true } = {}) {
         ${lugar ? `<p class="hito__lugar">${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(lugar)}</a>` : esc(lugar)}</p>` : ''}
         ${completo && h.descripcion ? `<div class="hito__desc">${textoRico(L(h.descripcion))}</div>` : ''}
         ${completo && h.enlaces && !conMonitor ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
-        ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
+        ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.embed || e.url)}" data-monitor-abrir-url="${esc(e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
       </div>
       ${conMonitor ? monitorMini(L(h.lugar), h.monitor) : ''}
     </li>`;
@@ -358,7 +358,7 @@ function monitorMini(titulo, tipo) {
             ${pc ? '<span class="mini-imac__win" aria-hidden="true"><i>&#8212;</i><i>&#9744;</i><i>&#10005;</i></span>' : ''}
           </div>
           <div class="mini-imac__vista">
-            <iframe title="${esc(titulo)}" tabindex="-1" referrerpolicy="no-referrer" data-w="1280" data-h="800"></iframe>
+            <iframe title="${esc(titulo)}" tabindex="-1" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen data-w="1280" data-h="800"></iframe>
             <div class="mini-imac__espera"><span>HAG</span><p>${esc(t('monitor_elegi'))}</p></div>
           </div>
         </div>
@@ -392,25 +392,27 @@ function activarMonitores() {
       mon.classList.add('mini-imac--cargando');
       f.src = u;
       f.tabIndex = 0;
-      let dominio = u;
-      try { const x = new URL(u, location.href); dominio = x.origin === location.origin ? x.pathname.split('/').pop() : x.host; } catch (_) { /* url rara */ }
+      const abrir = b.dataset.monitorAbrirUrl || u;
+      let dominio = abrir;
+      try { const x = new URL(abrir, location.href); dominio = x.origin === location.origin ? x.pathname.split('/').pop() : x.host; } catch (_) { /* url rara */ }
       $('[data-monitor-dominio]', mon).textContent = dominio;
-      $$('[data-monitor-abrir]', mon).forEach((a) => { a.href = u; a.hidden = false; });
+      $$('[data-monitor-abrir]', mon).forEach((a) => { a.href = abrir; a.hidden = false; });
       $('[data-monitor-pie]', mon).hidden = false;
       $$('[data-monitor-grande]', mon).forEach((g) => { g.hidden = false; });
       mon.dataset.titulo = b.textContent.trim();
+      mon.dataset.abrir = abrir;
       // En pantallas chicas el monitor queda debajo del texto: lo acercamos.
       if (window.matchMedia('(max-width: 860px)').matches) mon.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
     }));
     $$('[data-monitor-grande]', mon).forEach((g) => g.addEventListener('click', () => {
       const u = f.getAttribute('src');
-      if (u) verEnGrande(u, mon.dataset.titulo || '', g);
+      if (u) verEnGrande(u, mon.dataset.titulo || '', g, mon.dataset.abrir || u);
     }));
   });
 }
 
 /* Pantalla completa: muestra la app del monitor ocupando toda la ventana. */
-function verEnGrande(u, titulo, origen) {
+function verEnGrande(u, titulo, origen, abrir = u) {
   const capa = document.createElement('div');
   capa.className = 'grande';
   capa.setAttribute('role', 'dialog');
@@ -419,10 +421,10 @@ function verEnGrande(u, titulo, origen) {
   capa.innerHTML = `
     <div class="grande__barra">
       <span class="grande__titulo">${esc(titulo)}</span>
-      <a class="grande__boton" href="${esc(u)}" target="_blank" rel="noopener">${esc(t('abrir_pestana'))} ${icono('flecha')}</a>
+      <a class="grande__boton" href="${esc(abrir)}" target="_blank" rel="noopener">${esc(t('abrir_pestana'))} ${icono('flecha')}</a>
       <button class="grande__boton grande__cerrar" type="button" aria-label="${esc(t('cerrar'))}">✕</button>
     </div>
-    <iframe class="grande__app" src="${esc(u)}" title="${esc(titulo)}" referrerpolicy="no-referrer"></iframe>`;
+    <iframe class="grande__app" src="${esc(u)}" title="${esc(titulo)}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
   document.body.appendChild(capa);
   document.documentElement.classList.add('con-grande');
   const cerrarBtn = $('.grande__cerrar', capa);

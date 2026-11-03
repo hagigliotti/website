@@ -91,6 +91,18 @@
         {
           "texto": "Portale Personale",
           "url": "https://www.portalepersonale.it/portalepersonale/login.php"
+        },
+        {
+          "texto": {
+            "es": "Video institucional",
+            "en": "Institutional video",
+            "fr": "Vidéo institutionnelle",
+            "de": "Imagevideo",
+            "pt": "Vídeo institucional",
+            "it": "Video istituzionale"
+          },
+          "url": "https://www.youtube.com/watch?v=_vNtMD-afo4&t=121s",
+          "embed": "https://www.youtube-nocookie.com/embed/_vNtMD-afo4?start=121&rel=0"
         }
       ],
       "aptitudes": [
