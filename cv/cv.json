@@ -14,13 +14,26 @@
       "desde": "2024-11",
       "hasta": "actualidad",
       "descripcion": {
-        "es": "Programación web (HTML, Python, JavaScript, JSON) y programación 3Cad.",
-        "en": "Web programming (HTML, Python, JavaScript, JSON) and 3Cad programming.",
-        "fr": "Programmation web (HTML, Python, JavaScript, JSON) et programmation 3Cad.",
-        "de": "Webprogrammierung (HTML, Python, JavaScript, JSON) und 3Cad-Programmierung.",
-        "pt": "Programação web (HTML, Python, JavaScript, JSON) e programação 3Cad.",
-        "it": "Programmazione web (HTML, Python, JavaScript, JSON) e programmazione 3Cad."
+        "es": "Programación web (HTML, Python, JavaScript, JSON) y programación 3Cad.\n\nSimulador (demo) con datos ficticios: la información mostrada no es real.",
+        "en": "Web programming (HTML, Python, JavaScript, JSON) and 3Cad programming.\n\nSimulator (demo) with fictitious data: the information shown is not real.",
+        "fr": "Programmation web (HTML, Python, JavaScript, JSON) et programmation 3Cad.\n\nSimulateur (démo) avec des données fictives : les informations affichées ne sont pas réelles.",
+        "de": "Webprogrammierung (HTML, Python, JavaScript, JSON) und 3Cad-Programmierung.\n\nSimulator (Demo) mit fiktiven Daten: Die angezeigten Informationen sind nicht echt.",
+        "pt": "Programação web (HTML, Python, JavaScript, JSON) e programação 3Cad.\n\nSimulador (demo) com dados fictícios: as informações exibidas não são reais.",
+        "it": "Programmazione web (HTML, Python, JavaScript, JSON) e programmazione 3Cad.\n\nSimulatore (demo) con dati fittizi: le informazioni mostrate non sono reali."
       },
+      "enlaces": [
+        {
+          "texto": {
+            "es": "Ordini Tumidei (simulador)",
+            "en": "Ordini Tumidei (simulator)",
+            "fr": "Ordini Tumidei (simulateur)",
+            "de": "Ordini Tumidei (Simulator)",
+            "pt": "Ordini Tumidei (simulador)",
+            "it": "Ordini Tumidei (simulatore)"
+          },
+          "url": "https://claude.ai/artifact/LH6nu8gTMDG19CPKCvmdPL"
+        }
+      ],
       "aptitudes": [
         "Programación",
         "CAD"
