@@ -86,7 +86,8 @@
         },
         {
           "texto": "CBA Zucchetti",
-          "url": "https://smarthosting03.cba.it:4445/cba/login.html"
+          "url": "https://smarthosting03.cba.it:4445/cba/login.html",
+          "incrustable": false
         },
         {
           "texto": "Portale Personale",

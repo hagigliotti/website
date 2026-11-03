@@ -1926,3 +1926,12 @@ button.mini-imac__abrir { padding: 0; border: 0; background: none; cursor: point
 .mini-imac--pc .mini-imac__menton span { width: 0.25rem; height: 0.25rem; background: #e6e6e6; box-shadow: 0 0 4px rgba(255, 255, 255, 0.6); }
 .mini-imac--pc .mini-imac__cuello { width: 10%; height: 2.2rem; background: linear-gradient(90deg, #0d0e10, #2c2d31 50%, #0d0e10); clip-path: none; }
 .mini-imac--pc .mini-imac__base { width: 42%; height: 0.45rem; border-radius: 0.5rem 0.5rem 0.2rem 0.2rem; background: linear-gradient(180deg, #2c2d31, #0d0e10); }
+
+/* Sistemas que no se dejan mostrar dentro de otra página: tarjeta con botón para abrirlos */
+.mini-imac__externo { position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; justify-items: center; gap: 0.5rem; padding: 0.9rem; text-align: center; background: radial-gradient(circle at 50% 40%, #2a2d33, #121316 75%); color: var(--hueso); }
+.mini-imac__externo[hidden] { display: none; }
+.mini-imac__externo b { font-size: 0.95rem; }
+.mini-imac__externo p { margin: 0; max-width: 26ch; font-size: 0.7rem; line-height: 1.35; color: var(--gris); }
+.mini-imac__externo .mini-imac__grande { text-decoration: none; font-size: 0.75rem; padding: 0.4rem 0.8rem; }
+.mini-imac__externo .mini-imac__grande svg { width: 0.7rem; height: 0.7rem; }
+.mini-imac--externo .mini-imac__espera { opacity: 0; }
