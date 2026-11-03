@@ -1,0 +1,772 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Report Ordini Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+/* Desktop Windows simulato: console a sinistra (Campbell), finestre delle applicazioni a destra, barra delle applicazioni in basso. Tema unico. */
+:root{
+  --desk:#1f3b57; --task:#202020; --win:#f3f3f3; --wline:#c8c8c8; --title:#ffffff;
+  --c-bg:#0c0c0c; --c-fg:#cccccc; --c-blu:#3b78ff; --c-azz:#61d6d6; --c-ver:#16c60c; --c-gia:#f9f1a5; --c-ros:#e74856; --c-bia:#f2f2f2; --c-gri:#767676; --c-ara:#ff8700; --c-lav:#af87ff;
+  --mono:"Cascadia Mono","Cascadia Code",Consolas,"Lucida Console",Menlo,monospace; --ui:"Segoe UI",system-ui,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--desk);font-family:var(--ui);font-size:13px;color:#1b1b1b;overflow-x:hidden}
+button,input,select{font:inherit}
+:focus-visible{outline:2px solid #4cc2ff;outline-offset:1px}
+.scroller{overflow-x:auto;height:100%}
+.desk{min-width:1560px;height:100%;min-height:760px;display:flex;flex-direction:column;background:radial-gradient(ellipse at 70% 30%,#2d5b86 0,#1f3b57 55%,#152a3f 100%)}
+.top{display:flex;align-items:center;gap:12px;padding:7px max(16px,env(safe-area-inset-right,0px)) 7px max(16px,env(safe-area-inset-left,0px));background:rgba(0,0,0,.35);color:#e8eef4;font-size:12px}
+.fake{background:#f5c542;color:#2b2100;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.06em}
+.top a{color:#bcd6f0}
+.top .sp{flex:1}
+.main{flex:1;display:flex;gap:14px;padding:14px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));min-height:0}
+/* finestre */
+.w{background:var(--win);border:1px solid #6b6b6b;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.wt{height:32px;display:flex;align-items:center;gap:8px;padding:0 0 0 10px;background:#fff;font-size:12px;border-bottom:1px solid #e1e1e1;flex:none}
+.wt .ic{width:16px;height:16px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700}
+.wt .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wt .b{width:44px;height:32px;display:inline-flex;align-items:center;justify-content:center;color:#333}
+.wt .b.x:hover{background:#c42b1c;color:#fff}
+/* console */
+.cons{width:720px;flex:none;background:var(--c-bg);border-color:#3a3a3a}
+.cons .wt{background:#1f1f1f;color:#ddd;border-bottom-color:#2b2b2b}
+.cons .wt .b{color:#bbb}
+#out{flex:1;overflow-y:auto;padding:8px 10px 4px;font-family:var(--mono);font-size:13.2px;line-height:1.18;color:var(--c-fg);white-space:pre-wrap;word-break:break-word;cursor:text}
+#out .ln{min-height:1.32em}
+.k{background:#ffff55;color:#000;font-weight:700}
+.cB{color:var(--c-blu)}.cA{color:var(--c-azz)}.cV{color:var(--c-ver)}.cG{color:var(--c-gia)}.cR{color:var(--c-ros)}.cW{color:var(--c-bia)}.cX{color:var(--c-gri)}.cO{color:var(--c-ara)}.cL{color:var(--c-lav)}.bo{font-weight:700}
+.inrow{display:flex;align-items:center;font-family:var(--mono);font-size:13.2px;color:var(--c-fg);padding:0 10px 10px;background:var(--c-bg)}
+#prompt{white-space:pre}
+#inp{flex:1;background:transparent;border:none;color:var(--c-bia);font-family:var(--mono);font-size:13.2px;outline:none;caret-color:var(--c-bia);padding:2px 0}
+.chint{font-family:var(--ui);font-size:11px;color:#8a8a8a;background:#161616;padding:5px 10px;border-top:1px solid #262626}
+/* area applicazioni */
+.apps{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tbtn{background:#fff;border:1px solid #9aa9b8;border-radius:6px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;color:#1b1b1b}
+.tbtn:hover{background:#e8f1fb}
+.tbtn.pri{background:#0067c0;color:#fff;border-color:#0067c0;font-weight:600}
+.tbtn.pri:hover{background:#1975c5}
+.tbtn:disabled{opacity:.5;cursor:not-allowed}
+.tip{color:#d8e4ef;font-size:12px}
+.tip b{color:#fff}
+.app{flex:1;min-height:0}
+.app[hidden]{display:none!important}
+.wb{flex:1;overflow:auto;background:#fff;position:relative}
+.flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:80;transition:opacity .25s}
+.flash.on{opacity:.75;transition:none}
+/* barra applicazioni */
+.task{height:46px;background:rgba(32,32,32,.92);display:flex;align-items:center;gap:4px;padding:0 max(16px,env(safe-area-inset-right,0px)) env(safe-area-inset-bottom,0px) max(16px,env(safe-area-inset-left,0px));color:#fff;flex:none}
+.task button{background:transparent;border:none;color:#fff;height:38px;padding:0 12px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:12px;position:relative}
+.task button:hover{background:rgba(255,255,255,.08)}
+.task button.on{background:rgba(255,255,255,.12)}
+.task button.on::after{content:"";position:absolute;bottom:2px;left:30%;right:30%;height:3px;border-radius:2px;background:#4cc2ff}
+.task button[hidden]{display:none}
+.task .clock{margin-left:auto;text-align:right;font-size:11.5px;line-height:1.25}
+.ti{width:18px;height:18px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+/* CAD */
+.cad{width:916px;height:526px;background:#e9e9e9;font-family:Tahoma,Arial,sans-serif;font-size:12px;display:grid;grid-template-columns:416px 1fr;gap:6px;padding:6px;user-select:text}
+.cad .l{display:flex;flex-direction:column;gap:6px}
+.cad .num{display:flex;gap:6px;align-items:center}
+.cad .num .n{background:#ffff88;font-size:24px;font-weight:700;padding:2px 12px;border:1px solid #b9b9b9;min-width:150px}
+.cad .box{background:#fff;border:1px solid #bdbdbd;padding:6px}
+.cad .lab{color:#555;font-size:11px}
+.cad .mcal{background:#e8e8f4;border:1px solid #9a9ac0;font-size:10.5px}
+.cad .mcal .h{background:#3c3c5a;color:#fff;text-align:center;padding:2px;font-weight:700}
+.cad .mcal table{border-collapse:collapse;width:100%}
+.cad .mcal td,.cad .mcal th{text-align:center;padding:1px 0}
+.cad .mcal td.sel{outline:2px solid #c00;border-radius:50%;font-weight:700}
+.cad .mcal td.o{color:#999}
+.cad .tabs{display:flex;gap:0;border-bottom:1px solid #999}
+.cad .tabs button{border:1px solid #aaa;border-bottom:none;background:#ddd;padding:3px 12px;cursor:pointer;font-size:12px}
+.cad .tabs button.on{background:#fff;font-weight:700}
+.cad .props{border-collapse:collapse;width:100%;font-size:12px}
+.cad .props th{color:#fff;text-align:right;font-weight:400;padding:5px 8px;width:150px;background:#3a3a3a;border-bottom:1px solid #555}
+.cad .props td{padding:5px 8px;border-bottom:1px solid #e3e3e3;background:#fff}
+.cad .tb{display:flex;gap:4px;align-items:center;background:#d6d6d6;padding:3px 6px;border:1px solid #b3b3b3;grid-column:1/-1}
+.cad .tb button{font-size:11.5px;padding:2px 9px;cursor:pointer;border:1px solid #9a9a9a;background:#f2f2f2;border-radius:2px}
+.cad .tb .st{margin-left:auto;font-size:11px;color:#2e7d32}
+.cad .tb .st.no{color:#b00}
+.cfg{width:916px;height:526px;background:#2b2f36;color:#dfe5ea;font-family:Tahoma,Arial,sans-serif;font-size:12px;display:grid;grid-template-columns:1fr 300px}
+.cfg .vw{background:linear-gradient(#3b4250,#23272e);display:flex;align-items:center;justify-content:center}
+.cfg .side{background:#363b44;padding:10px;overflow:auto}
+.cfg table{border-collapse:collapse;width:100%;font-size:11.5px}
+.cfg td{border-bottom:1px solid #4a505b;padding:4px}
+/* supervisore */
+.sup{font-family:Tahoma,Arial,sans-serif;font-size:12px;width:1000px}
+.sup .bar{display:flex;gap:8px;align-items:center;padding:8px;background:#f0f0f0;border-bottom:1px solid #ccc}
+.sup .bar input{width:260px;padding:3px;border:1px solid #aaa}
+.sup table{border-collapse:collapse;width:100%}
+.sup th{background:#555;color:#fff;font-weight:400;text-align:left;padding:4px 6px;border-right:1px solid #777}
+.sup td{padding:3px 6px;border-bottom:1px solid #e6e6e6}
+.sup tr.ins td{background:#fffbd0}
+/* browser */
+.br .addr{display:flex;gap:8px;align-items:center;padding:6px 10px;background:#f7f7f7;border-bottom:1px solid #ddd}
+.br .addr span{flex:1;background:#fff;border:1px solid #ccc;border-radius:14px;padding:4px 12px;color:#444;font-size:12px}
+.br .pg{padding:14px 18px;font-family:Arial,sans-serif}
+.br h2{font-family:Impact,"Arial Black",sans-serif;font-weight:400;font-size:34px;letter-spacing:1px;text-align:center;margin:0 0 10px;border-bottom:3px solid #2c3e50;padding-bottom:6px}
+.br table{border-collapse:collapse;width:100%;font-size:12.5px}
+.br th{background:linear-gradient(180deg,#2c3e50,#1a252f);color:#fff;padding:7px;font-size:12px}
+.br td{border:1px solid #ddd;padding:7px;text-align:center}
+.br tbody tr:nth-child(even){background:#f4f6f8}
+.br td.code{font-weight:700;color:#5396ed;user-select:all;cursor:copy}
+.br .cp{border:1px solid #c5d3e2;background:#fff;border-radius:4px;font-size:11px;padding:1px 6px;cursor:pointer;margin-left:6px}
+/* esplora */
+.ex{display:grid;grid-template-columns:210px 1fr;height:100%}
+.ex .nav{background:#f9f9f9;border-right:1px solid #e5e5e5;padding:8px}
+.ex .nav button{display:block;width:100%;text-align:left;border:none;background:none;padding:6px 8px;border-radius:4px;cursor:pointer}
+.ex .nav button.on{background:#e5f1fb}
+.ex .path{padding:8px 12px;border-bottom:1px solid #eee;color:#444;font-family:var(--mono);font-size:12px}
+.ex .grid{display:flex;flex-wrap:wrap;gap:12px;padding:12px}
+.ex .f{width:150px;text-align:center;cursor:pointer;padding:6px;border-radius:4px;border:1px solid transparent}
+.ex .f:hover{background:#e5f1fb;border-color:#cce4f7}
+.ex .f img{max-width:138px;max-height:90px;border:1px solid #ddd;display:block;margin:0 auto 4px}
+.ex .f .pdf{width:60px;height:76px;margin:0 auto 4px;background:#fff;border:1px solid #ccc;position:relative;border-radius:2px}
+.ex .f .pdf::after{content:"PDF";position:absolute;bottom:6px;left:6px;right:6px;background:#d93025;color:#fff;font-size:10px;font-weight:700;border-radius:2px}
+.ex .f span{font-size:11.5px;word-break:break-all}
+.empty{color:#777;padding:20px}
+/* lettore pdf */
+.pdfv{background:#525659;min-height:100%;padding:16px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.pdfv .bar{color:#fff;font-size:12px}
+.page{width:842px;height:595px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.5);padding:28px;display:flex;flex-direction:column;align-items:center;flex:none}
+.page .nota{align-self:stretch;font-family:Calibri,Arial,sans-serif;font-size:14.6px;margin-bottom:4px;white-space:pre-wrap}
+.page img{max-width:766px;object-fit:contain}
+.page.p1 img{max-height:425px}
+.page.p2{justify-content:center}.page.p2 img{max-height:482px}
+/* database */
+.db{padding:10px;font-family:Calibri,Arial,sans-serif}
+.db h4{margin:10px 0 6px;color:#a4373a}
+.db table{border-collapse:collapse;font-size:12.5px;margin-bottom:8px}
+.db th{background:#f3e5e6;border:1px solid #d8b3b5;padding:4px 8px;font-weight:600}
+.db td{border:1px solid #ddd;padding:3px 8px}
+/* stampante */
+.toastp{position:fixed;right:24px;bottom:62px;background:#2b2b2b;color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.4);font-size:12.5px;z-index:90;max-width:360px}
+/* info */
+.info{padding:16px 24px;line-height:1.55;max-width:900px;font-size:13.5px}
+.info h3{margin:16px 0 4px;color:#1f3b57}
+.info p,.info li{max-width:80ch}
+.info code{background:#f0f0f0;padding:1px 4px;border-radius:3px;font-family:var(--mono);font-size:12px}
+.info .btn{background:#c42b1c;color:#fff;border:none;border-radius:5px;padding:7px 14px;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="scroller"><div class="desk">
+  <div class="top"><span class="fake">DATI FITTIZI</span><span>Simulatore del programma <b>«Catture → PDF → Stampa»</b> · azienda, ordini, clienti, operatori, percorsi e programmi inventati · <b>ningún dato es real</b></span><span class="sp"></span><a href="#" id="lnk-info">Privacidad y seguridad</a></div>
+  <div class="main">
+    <div class="w cons" id="console" aria-label="Console">
+      <div class="wt"><span class="ic" style="background:#3a3a3a">&gt;_</span><span class="t">Catture -&gt; PDF -&gt; Stampa</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div>
+      <div id="out" role="log" aria-live="polite"></div>
+      <div class="inrow" id="inrow"><span id="prompt"></span><input id="inp" autocomplete="off" spellcheck="false" aria-label="Input della console"></div>
+      <div class="chint" id="chint">Clicca qui e scrivi. Le lettere tra virgolette (<span class="k"> R </span>) si premono MAIUSCOLE.</div>
+    </div>
+    <div class="apps">
+      <div class="tools">
+        <button class="tbtn pri" id="stamp" title="Cattura della finestra attiva (come il tasto Stamp)">📷 Cattura finestra attiva</button>
+        <button class="tbtn" id="stamp-x" title="Simula una cattura annullata (file vuoto)">Cattura annullata</button>
+        <button class="tbtn" id="stamp-s" title="Simula un ritaglio troppo piccolo">Ritaglio troppo piccolo</button>
+        <span class="tip">Seleziona un testo in qualsiasi finestra e premi <b>Ctrl+C</b>: la console lo riceve come gli appunti di Windows.</span>
+      </div>
+      <div class="w app" id="app-cad"><div class="wt"><span class="ic" style="background:#b5462a">C</span><span class="t" id="cad-title">CAD Demo — nessun ordine aperto</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="cad-body"></div></div>
+      <div class="w app" id="app-sup" hidden><div class="wt"><span class="ic" style="background:#6b4fa0">S</span><span class="t">serverOrdini.exe — Supervisore ordini online</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="sup-body"></div></div>
+      <div class="w app" id="app-br" hidden><div class="wt"><span class="ic" style="background:#1a73e8">G</span><span class="t">Gestione Ordini — Browser</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb br" id="br-body"></div></div>
+      <div class="w app" id="app-ex" hidden><div class="wt"><span class="ic" style="background:#e8a33a">E</span><span class="t" id="ex-title">Esplora file</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="ex-body"></div></div>
+      <div class="w app" id="app-pdf" hidden><div class="wt"><span class="ic" style="background:#d93025">P</span><span class="t" id="pdf-title">Lettore PDF</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="pdf-body" style="background:#525659"></div></div>
+      <div class="w app" id="app-db" hidden><div class="wt"><span class="ic" style="background:#a4373a">A</span><span class="t">registro.accdb — Database (simulato)</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="db-body"></div></div>
+      <div class="w app" id="app-info" hidden><div class="wt"><span class="ic" style="background:#0f7b0f">i</span><span class="t">Privacidad y seguridad</span><span class="b">—</span><span class="b">☐</span><span class="b x">✕</span></div><div class="wb" id="info-body"></div></div>
+    </div>
+  </div>
+  <div class="task" id="task">
+    <button data-app="console" class="on" title="Console"><span class="ti" style="background:#3a3a3a">&gt;</span>Console</button>
+    <button data-app="cad" id="tb-cad" hidden><span class="ti" style="background:#b5462a">C</span>CAD Demo</button>
+    <button data-app="sup" id="tb-sup" hidden><span class="ti" style="background:#6b4fa0">S</span>serverOrdini</button>
+    <button data-app="br" id="tb-br" hidden><span class="ti" style="background:#1a73e8">G</span>Browser</button>
+    <button data-app="ex" id="tb-ex" hidden><span class="ti" style="background:#e8a33a">E</span>Esplora file</button>
+    <button data-app="pdf" id="tb-pdf" hidden><span class="ti" style="background:#d93025">P</span>Lettore PDF</button>
+    <button data-app="db" id="tb-db" hidden><span class="ti" style="background:#a4373a">A</span>Database</button>
+    <button data-app="info" id="tb-info" hidden><span class="ti" style="background:#0f7b0f">i</span>Privacidad</button>
+    <div class="clock" id="clock"></div>
+  </div>
+</div></div>
+<div class="flash" id="flash"></div>
+
+<script>
+"use strict";
+/* =====================================================================================================
+   UTILITÀ
+   ===================================================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ESC[c]);
+const pad = n => String(n).padStart(2, "0");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const now = () => new Date();
+const fmtDT = d => pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear() + " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+const fmtD = d => pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear();
+const durata = s => { s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + " h " : "") + (h || m ? m + " min " : "") + x + " s"; };
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+setInterval(() => { const d = now(); $("#clock").innerHTML = pad(d.getHours()) + ":" + pad(d.getMinutes()) + "<br>" + fmtD(d); }, 1000);
+
+/* =====================================================================================================
+   CONFIG (versione fittizia di config.py)
+   ===================================================================================================== */
+const CFG = {
+  CAPTURE_DIR: "C:\\Utenti\\operatore\\Immagini\\Screenshots",
+  OUTPUT_DIR: "\\\\SERVER-DEMO\\Controllo ordini",
+  LISTE_DIR: "\\\\SERVER-DEMO\\Controllo ordini\\Liste di scarico",
+  URL_ORDINI: "http://intranet-demo/ordini/", URL_CALENDARIO: "http://intranet-demo/ordini/calendario",
+  CODICE_FILTRO: "demo", PROGRAMMA_SERVER: "serverOrdini.exe", PROGRAMMA_CAD: "CAD Demo",
+  CATTURA_MINIMA: [200, 200], PRIMA_CATTURA_MINIMA: [800, 450],
+  SECONDI_RISPOSTA_STAMPA: 5, SECONDI_RISPOSTA_ALTRI_ORDINI: 10, SECONDI_CHIUSURA: 10, SECONDI_CHIUSURA_ANNULLATA: 5,
+  OPERATORI: ["Alba Ricci", "Bruno Fabbri", "Carla Neri", "Dario Conti", "Elena Galli", "Fabio Monti", "Giulia Serra", "Ivo Bassi", "Luca Ferri"],
+  STAMPANTE: "Stampante-Ufficio-Demo"
+};
+const LARGHEZZA_UI = 66;
+const SALUTI = ["Buon lavoro", "Buona giornata", "Buona continuazione", "Buon proseguimento", "Buon proseguimento di giornata", "Buona prosecuzione del lavoro"];
+
+/* =====================================================================================================
+   CONSOLE: stampa con colori (come console.py) e lettura degli input
+   ===================================================================================================== */
+const OUT = $("#out");
+const C = { RESET: "", BLU: "cB", AZZ: "cA", VER: "cV", GIA: "cG", ROS: "cR", BIA: "cW", GRI: "cX", ARA: "cO", LAV: "cL" };
+// segmenti: [testo, classe]; le lettere tra virgolette "R" diventano tasti evidenziati
+function seg(text, cls) { return [text, cls || ""]; }
+function hl(text, cls) {
+  const out = []; const re = /"([A-Z])"/g; let last = 0, m;
+  while ((m = re.exec(text))) { if (m.index > last) out.push([text.slice(last, m.index), cls]); out.push([" " + m[1] + " ", "k"]); last = m.index + 3; }
+  if (last < text.length) out.push([text.slice(last), cls]); return out;
+}
+function line(...segs) {
+  const d = document.createElement("div"); d.className = "ln";
+  // un segmento e' [testo, classe]; hl() restituisce una lista di segmenti; una stringa e' testo semplice
+  const add = s => {
+    if (typeof s === "string") s = [s, ""];
+    if (Array.isArray(s[0])) { s.forEach(add); return; }
+    const sp = document.createElement("span"); if (s[1]) sp.className = s[1]; sp.textContent = s[0]; d.appendChild(sp);
+  };
+  segs.forEach(add);
+  OUT.appendChild(d); while (OUT.children.length > 1500) OUT.firstChild.remove(); OUT.scrollTop = OUT.scrollHeight; return d;
+}
+const blank = () => line("");
+const ok = t => line(seg("  "), seg("✓", "cV"), seg(" "), hl(t));
+const attenzione = t => line(seg("  "), seg("⚠", "cG"), seg(" "), hl(t));
+const errore = t => line(seg("  "), seg("✗", "cR"), seg(" "), hl(t));
+const info = t => line(seg("  "), seg("●", "cA"), seg(" "), hl(t));
+const attesa = t => line(seg("  "), seg("⌛", "cG"), seg(" "), hl(t));
+const nota = t => line(hl(t, "cX"));
+function riga(testo, stile, col) { const sp = LARGHEZZA_UI - testo.length, s = Math.floor(sp / 2); return [seg("║", col), seg(" ".repeat(s)), seg(testo, stile), seg(" ".repeat(sp - s)), seg("║", col)]; }
+function titolo(t, col = "cB") { blank(); line(seg("╔" + "═".repeat(LARGHEZZA_UI) + "╗", col)); line(riga(t, "cW bo", col)); line(seg("╚" + "═".repeat(LARGHEZZA_UI) + "╝", col)); blank(); }
+const separatore = (t, col) => titolo(t, col);
+function sezione(t, col = "cB") { blank(); line(seg("  ┌─ ", col), seg(t, (col === "cB" ? "cW" : col) + " bo")); line(seg("  └" + "─".repeat(LARGHEZZA_UI - 4), col)); }
+function wrap(t, w) { const words = t.split(/\s+/); const out = []; let cur = ""; for (const x of words) { if (!cur) cur = x; else if ((cur + " " + x).length <= w) cur += " " + x; else { out.push(cur); cur = x; } } if (cur) out.push(cur); return out.length ? out : [""]; }
+function riquadro(col, righe) {
+  const interno = LARGHEZZA_UI - 4, lt = interno - 2;
+  blank(); line(seg("  ╭" + "─".repeat(interno) + "╮", col)); line(seg("  │", col), seg(" ".repeat(interno)), seg("│", col));
+  righe.forEach(([t, st]) => line(seg("  │", col), seg(" "), hl(t.padEnd(lt), st), seg(" "), seg("│", col)));
+  line(seg("  │", col), seg(" ".repeat(interno)), seg("│", col)); line(seg("  ╰" + "─".repeat(interno) + "╯", col)); blank();
+}
+const istruzione = (t, col = "cA") => riquadro(col, wrap(t, LARGHEZZA_UI - 6).map(r => [r, ""]));
+function istruzionePassi(intro, passi, col = "cA") {
+  const w = LARGHEZZA_UI - 6; const r = wrap(intro, w).map(x => [x, ""]); r.push(["", ""]);
+  passi.forEach((p, i) => { const pre = (i + 1) + ". "; wrap(p, w - pre.length).forEach((x, j) => r.push([(j ? " ".repeat(pre.length) : pre) + x, ""])); });
+  riquadro(col, r);
+}
+function attesaInput(tit, msg) { riquadro("cG", [["⌨  " + tit, "cG bo"]].concat(msg.split("\n").flatMap(p => wrap(p, LARGHEZZA_UI - 6).map(x => [x, "cG"]))).concat([["➜  In attesa del tuo inserimento...", "cG"]])); }
+
+/* ---------- coda eventi: righe, tasti, catture, appunti ---------- */
+const Q = []; let waiter = null;
+// Come l'originale: catture e copie fatte quando la console non le sta aspettando vengono ignorate.
+function push(ev) { if (waiter && waiter.types.includes(ev.type)) { const w = waiter; waiter = null; w.res(ev); } }
+function next(types, mode) {
+  setMode(mode || (types.includes("line") ? "line" : "key"));
+  const i = Q.findIndex(e => types.includes(e.type)); if (i >= 0) return Promise.resolve(Q.splice(i, 1)[0]);
+  return new Promise(res => { waiter = { types, res }; });
+}
+let MODE = "off";
+function setMode(m) { MODE = m; $("#inp").disabled = m === "off"; $("#chint").innerHTML = m === "line" ? "Scrivi la risposta e premi <b>INVIO</b>." : m === "key" ? 'La console aspetta: una cattura, gli appunti (Ctrl+C) o un tasto MAIUSCOLO (<span class="k"> R </span> <span class="k"> F </span> <span class="k"> N </span> <span class="k"> C </span>) con la console in primo piano.' : "Programma terminato."; }
+function setPrompt(p) { $("#prompt").textContent = p || ""; }
+const INP = $("#inp");
+INP.addEventListener("keydown", e => {
+  if (MODE === "key" && e.key.length === 1 && /[A-Za-z0-9]/.test(e.key) && !e.ctrlKey) { e.preventDefault(); push({ type: "key", key: e.key }); return; }
+  if (MODE === "line" && e.key === "Enter") { e.preventDefault(); const v = INP.value; INP.value = ""; const p = $("#prompt").textContent; line(seg(p), seg(v, "cW")); setPrompt(""); push({ type: "line", text: v }); }
+});
+INP.addEventListener("input", () => { if (MODE === "line" && waiter && waiter.types.includes("anykey")) { push({ type: "anykey" }); } });
+$("#console").addEventListener("mousedown", e => { if (e.target.closest("#out") && getSelection().toString()) return; setTimeout(() => INP.focus(), 0); });
+async function ask(prompt) { setPrompt(prompt); INP.focus(); const e = await next(["line"]); return e.text; }
+
+/* ---------- appunti: Ctrl+C in qualsiasi finestra dell'app ---------- */
+document.addEventListener("copy", () => {
+  const sel = getSelection(); const t = String(sel).trim(); const n = sel.anchorNode; const el = n && (n.nodeType === 1 ? n : n.parentElement);
+  if (t && !(el && el.closest("#console")) && document.activeElement !== INP) push({ type: "clip", text: t.slice(0, 2000) });
+});
+function copia(t) { push({ type: "clip", text: t }); try { navigator.clipboard.writeText(t).catch(() => {}); } catch (e) {} toastP("Copiato negli appunti: " + t); }
+
+/* =====================================================================================================
+   FINESTRE E BARRA DELLE APPLICAZIONI
+   ===================================================================================================== */
+let ACTIVE = "cad";
+function show(app) {
+  if (app === "console") { $$(".task button").forEach(b => b.classList.toggle("on", b.dataset.app === "console")); INP.focus(); return; }
+  ACTIVE = app; $$(".app").forEach(a => a.hidden = a.id !== "app-" + app); $("#tb-" + app).hidden = false;
+  $$(".task button").forEach(b => b.classList.toggle("on", b.dataset.app === app));
+}
+$$(".task button").forEach(b => b.onclick = () => show(b.dataset.app));
+// ✕ delle finestre: il lettore PDF chiude il documento (sblocca il file); le altre si riducono a icona
+$$(".app .wt .x").forEach(x => { x.style.cursor = "pointer"; x.title = "Chiudi"; x.onclick = () => {
+  const app = x.closest(".app").id.slice(4);
+  if (app === "pdf") { chiudiLettorePdf(); $("#tb-pdf").hidden = true; toastP("Lettore PDF chiuso: il file non e' piu' bloccato."); }
+  const vis = ["cad", "br", "sup", "ex", "db"].find(a => a !== app && !$("#tb-" + a).hidden); if (vis) show(vis);
+}; });
+function toastP(t) { const d = document.createElement("div"); d.className = "toastp"; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 3500); }
+$("#lnk-info").onclick = e => { e.preventDefault(); renderInfo(); show("info"); };
+
+/* =====================================================================================================
+   DATI FITTIZI: ordini online in attesa di scarico
+   ===================================================================================================== */
+const CLIENTI = ["ARREDAMENTI BELLANDI s.r.l.", "CASA CORSETTI s.n.c.", "INTERNI FABBRINI SRL", "STUDIO GUALTIERI s.a.s.", "MOBILI LANZONI SRL", "SPAZIO MAZZETTI s.r.l.", "ATELIER ORLANDINI", "LIVING PASQUALI s.r.l.", "HABITAT SERAFINI SRL", "FORME TOGNOLI s.n.c."];
+const CITTA = ["FORLI", "CESENA", "BOLOGNA", "RIMINI", "RAVENNA", "MODENA", "VERONA", "PADOVA"];
+const NOTE = ["CONSEGNA URGENTE", "Montaggio a cura del rivenditore", "Maniglie in finitura bronzo", "Verificare misure nicchia: 2450 mm", "Cliente chiede consegna al piano", "Anta specchio lato sinistro", ""];
+const PRODOTTI = [["Armadio Sistema", "battente 6 ante"], ["Cabina Allunga", "angolare"], ["Living Modulo", "parete attrezzata"], ["Armadio Orbita", "scorrevole 3 ante"], ["Cubo letto", "contenitore"]];
+const FINITURE = ["Rovere naturale", "Laccato bianco opaco", "Noce canaletto", "Grigio antracite", "Olmo termotrattato"];
+let PENDING = [];
+function genPending(n) {
+  const base = 202900 + rnd(0, 60);
+  PENDING = Array.from({ length: n }, (_, i) => {
+    const p = PRODOTTI[rnd(0, PRODOTTI.length - 1)];
+    return { n: base + i * rnd(1, 3), cli: String(rnd(100, 12999)).padStart(5, "0"), rs: CLIENTI[rnd(0, CLIENTI.length - 1)], citta: CITTA[rnd(0, CITTA.length - 1)], nota: NOTE[rnd(0, NOTE.length - 1)], rif: ["rif. cantiere Via Roma", "appartamento sig. Neri", "camera ragazzi", "Hotel Belvedere 101", "showroom esposizione"][rnd(0, 4)], prod: p, fin: FINITURE[rnd(0, FINITURE.length - 1)], L: rnd(18, 36) * 100, H: rnd(22, 26) * 100 + 58, P: [580, 620, 650][rnd(0, 2)], data: null, ref: "", salvato: false, scaricato: false };
+  });
+}
+let CUR = null, CADTAB = "dati";
+
+/* ---------- CAD ---------- */
+function miniCal(sel) {
+  const d = sel || new Date(); const y = d.getFullYear(), m = d.getMonth(); const first = new Date(y, m, 1); const st = new Date(y, m, 1 - ((first.getDay() + 6) % 7));
+  let h = `<div class="mcal"><div class="h">${["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"][m]} ${y}</div><table><tr><th></th>${["lun","mar","mer","gio","ven","sab","dom"].map(x => `<th>${x}</th>`).join("")}</tr>`;
+  for (let w = 0; w < 6; w++) { const wd = new Date(st.getFullYear(), st.getMonth(), st.getDate() + w * 7); h += `<tr><td style="color:#555">${w + 1}</td>`; for (let i = 0; i < 7; i++) { const x = new Date(wd.getFullYear(), wd.getMonth(), wd.getDate() + i); h += `<td class="${x.getMonth() !== m ? "o" : ""}${sel && x.toDateString() === sel.toDateString() ? " sel" : ""}">${x.getDate()}</td>`; } h += "</tr>"; }
+  return h + `</table><div style="color:#c00;padding:2px 4px;font-weight:700">Oggi: ${fmtD(new Date())}</div></div>`;
+}
+function renderCad() {
+  const b = $("#cad-body"); const o = CUR;
+  $("#cad-title").textContent = o ? `CAD Demo — Ordine ${o.n}${CADTAB === "cfg" ? " — Configuratore" : ""}` : "CAD Demo — nessun ordine aperto";
+  const tb = `<div class="tb"><select id="cad-open" style="font-size:11.5px"><option value="">Apri ordine…</option>${PENDING.map((p, i) => `<option value="${i}"${o === p ? " selected" : ""}>${p.n} · ${esc(p.rs)}${p.scaricato ? " ✓" : ""}</option>`).join("")}</select><button id="cad-dati" ${!o ? "disabled" : ""}>Ordine</button><button id="cad-cfg" ${!o ? "disabled" : ""}>Configuratore</button>${o ? `<button id="cad-oggi">Oggi</button><button id="cad-save">💾 Salva</button><span class="st ${o.salvato ? "" : "no"}">${o.salvato ? "Ordine salvato" : "Modifiche non salvate"}</span>` : ""}</div>`;
+  if (!o) { b.innerHTML = `<div id="cad-shot" class="cad">${tb}<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#777;font-size:14px">Nessun ordine aperto. Usa «Apri ordine…» qui sopra.</div></div>`; }
+  else if (CADTAB === "cfg") {
+    const s = 300 / Math.max(o.L, o.H); const w = o.L * s, h = o.H * s, ante = Math.max(2, Math.round(o.L / 600));
+    b.innerHTML = `<div style="display:flex;flex-direction:column"><div class="cad" style="height:auto;grid-template-columns:1fr;padding:6px 6px 0">${tb}</div><div id="cad-shot" class="cfg"><div class="vw"><svg width="520" height="440" viewBox="-60 -40 ${w + 140} ${h + 110}"><rect x="0" y="0" width="${w}" height="${h}" fill="${o.fin.includes("bianco") ? "#efefef" : o.fin.includes("Noce") ? "#7a5536" : o.fin.includes("antracite") ? "#555" : "#c8a77a"}" stroke="#111" stroke-width="2"/>${Array.from({ length: ante - 1 }, (_, i) => `<line x1="${w / ante * (i + 1)}" y1="0" x2="${w / ante * (i + 1)}" y2="${h}" stroke="#222" stroke-width="1.5"/>`).join("")}${Array.from({ length: ante }, (_, i) => `<rect x="${w / ante * (i + 1) - (i % 2 ? w / ante - 8 : 12)}" y="${h * .45}" width="4" height="${h * .12}" fill="#c9a24a"/>`).join("")}<rect x="0" y="${h}" width="${w}" height="10" fill="#333"/><line x1="0" y1="${h + 30}" x2="${w}" y2="${h + 30}" stroke="#9fd0ff"/><text x="${w / 2}" y="${h + 48}" fill="#9fd0ff" font-size="16" text-anchor="middle">L ${o.L} mm</text><line x1="${w + 30}" y1="0" x2="${w + 30}" y2="${h}" stroke="#9fd0ff"/><text x="${w + 40}" y="${h / 2}" fill="#9fd0ff" font-size="16">H ${o.H}</text></svg></div>
+      <div class="side"><b style="font-size:13px">${esc(o.prod[0])}</b><br><span style="color:#aab">${esc(o.prod[1])}</span><table style="margin-top:10px"><tr><td>Larghezza</td><td>${o.L} mm</td></tr><tr><td>Altezza</td><td>${o.H} mm</td></tr><tr><td>Profondità</td><td>${o.P} mm</td></tr><tr><td>Ante</td><td>${ante}</td></tr><tr><td>Finitura</td><td>${esc(o.fin)}</td></tr><tr><td>Maniglie</td><td>Bronzo spazzolato</td></tr><tr><td>Ripiani</td><td>${ante * 2}</td></tr><tr><td>Cassettiere</td><td>${Math.ceil(ante / 2)}</td></tr><tr><td>Codice config.</td><td>CFG-${o.n}-${ante}</td></tr></table><p style="color:#8a90a0;font-size:11px">Configurazione inventata generata per il simulatore.</p></div></div></div>`;
+  } else {
+    const R = (l, v, c) => `<tr><th style="background:${c || "#3a3a3a"}">${l}</th><td>${v}</td></tr>`;
+    b.innerHTML = `<div id="cad-shot" class="cad">${tb}<div class="l">
+      <div class="num"><span class="lab">n. Ordine</span><span class="n">${o.n}</span><span class="lab" style="margin-left:auto">Confermato ☐</span></div>
+      <div style="display:grid;grid-template-columns:1fr 175px;gap:6px"><div class="box" style="min-height:120px"><span class="lab">Riferimento</span><br>${esc(o.rif)}</div>${miniCal(o.data)}</div>
+      <div class="box"><span class="lab">Cliente</span> <b>${o.cli}</b><br><b>Indirizzo Cliente</b><br><span class="lab">Rag. Sociale</span> ${esc(o.rs)}<br><span class="lab">Località</span> ${esc(o.citta)}<br><span class="lab">Telefono</span> 0000 000000 <span class="lab">eMail</span> ordini@cliente.example</div>
+      <div class="box"><b>Indirizzo Consegna (se diverso)</b><br><span class="lab">Rag. Sociale</span> —<br><span class="lab">Località</span> —</div></div>
+      <div><div class="tabs">${["Dati", "Statistiche", "Agenti", "Agg Dest.", "Oper.", "Stati"].map(t => `<button class="${(t === "Dati" && CADTAB === "dati") || (t === "Oper." && CADTAB === "oper") ? "on" : ""}" data-tab="${t}">${t}</button>`).join("")}</div>
+      ${CADTAB === "oper" ? `<div class="box" style="border-top:none;height:430px"><b>Operatori dell'ordine</b><p><span class="lab">Referente</span> <select id="cad-ref"><option value="">—</option>${["NS", "ALBA", "BRUNO", "ELENA"].map(r => `<option${o.ref === r ? " selected" : ""}>${r}</option>`).join("")}</select></p><p class="lab">Seleziona il referente «NS», poi torna alla scheda «Dati».</p></div>` :
+      `<table class="props">${R("Nota Rivendit. 2", `<span style="user-select:text">${esc(o.nota) || "—"}</span>`, "#7b1fa2")}${R("Sostituzione", "0-NO", "#e65100")}${R("Causale", "VEN-VENDITA")}${R("Collezione", "999-NESSUNO", "#2e7d32")}${R("Tipo ordine", "4-ordine confermato")}${R("Avanzamento", "0-in corso")}${R("Controllo", "☐", "#9e9d24")}${R("Listino", "L26-LISTINO A 2026")}${R("Data Consegna Cliente", o.data ? fmtD(new Date(o.data.getFullYear(), o.data.getMonth(), o.data.getDate() + 45)) : "—", "#7b1fa2")}${R("Data Consegna", o.data ? fmtD(o.data) : "<span style='color:#b00'>da impostare</span>")}${R("Referente", o.ref || "<span style='color:#b00'>—</span>", "#8d4b00")}${R("Pagamento", "RB 60/90 gg.d.f.")}</table>`}</div></div>`;
+  }
+  const sel = $("#cad-open"); if (sel) sel.onchange = () => { CUR = sel.value === "" ? null : PENDING[Number(sel.value)]; CADTAB = "dati"; renderCad(); };
+  if ($("#cad-dati")) $("#cad-dati").onclick = () => { CADTAB = "dati"; renderCad(); };
+  if ($("#cad-cfg")) $("#cad-cfg").onclick = () => { CADTAB = "cfg"; renderCad(); };
+  if ($("#cad-oggi")) $("#cad-oggi").onclick = () => { CUR.data = new Date(); CUR.salvato = false; renderCad(); };
+  if ($("#cad-save")) $("#cad-save").onclick = () => { CUR.salvato = true; renderCad(); toastP("Ordine " + CUR.n + " salvato in CAD Demo."); };
+  $$("[data-tab]", b).forEach(t => t.onclick = () => { CADTAB = t.dataset.tab === "Oper." ? "oper" : "dati"; renderCad(); });
+  const rf = $("#cad-ref"); if (rf) rf.onchange = () => { CUR.ref = rf.value; CUR.salvato = false; };
+}
+
+/* ---------- supervisore ordini online ---------- */
+function renderSup() {
+  const old = Array.from({ length: 6 }, (_, i) => ({ n: 202800 + i * 7, d: new Date(Date.now() - (i + 3) * 86400000 * 30) }));
+  $("#sup-body").innerHTML = `<div id="sup-shot" class="sup"><div class="bar"><b>Cartella di destinazione</b><input value="ORDINI\\in_arrivo" readonly><button>…</button><span style="margin-left:auto">Filtro: <b>Inserito</b></span></div>
+    <table><thead><tr><th>cod.cliente</th><th>email</th><th>catalogo</th><th>download</th><th>n. server</th><th>revisione</th><th>stato ordine</th><th>bloccato</th><th>data</th></tr></thead><tbody>
+    ${PENDING.map(p => `<tr class="${p.scaricato ? "" : "ins"}"><td>${p.cli}</td><td>ordini@cliente.example</td><td>CATALOGO-DEMO</td><td>${p.scaricato ? "☐" : "☑"}</td><td>${p.n}</td><td>0</td><td>${p.scaricato ? "Scaricato" : "Inserito"}</td><td>${p.scaricato ? "☑" : "☐"}</td><td>${fmtD(new Date())}</td></tr>`).join("")}
+    ${old.map(o => `<tr><td>${String(rnd(100, 12999)).padStart(5, "0")}</td><td></td><td>CATALOGO-DEMO</td><td>☐</td><td>${o.n}</td><td>1</td><td>Scaricato</td><td>☑</td><td>${fmtD(o.d)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+/* ---------- browser: Gestione Ordini con filtro ---------- */
+let FILTRO = false;
+function renderBr() {
+  $("#br-body").innerHTML = `<div class="addr"><span>${CFG.URL_ORDINI}</span></div><div class="pg"><h2>GESTIONE ORDINI</h2>
+    <p style="font-size:12px;color:#555">${FILTRO ? `Filtro personale attivo (<b>${CFG.CODICE_FILTRO}</b>): ordini confermati di oggi.` : "Filtro personale non attivo."} Seleziona il numero d'ordine e premi <b>Ctrl+C</b> (oppure usa «copia»).</p>
+    <table><thead><tr><th>Numero Ordine</th><th>Data Registrazione</th><th>Cliente</th><th>Ragione Sociale</th><th>Riferimento</th><th>Commerciale</th><th>Tipo</th></tr></thead><tbody>
+    ${(FILTRO ? PENDING : []).map(p => `<tr><td class="code">${p.n}</td><td>${fmtD(new Date())}</td><td>${p.cli}</td><td style="text-align:left">${esc(p.rs)}</td><td style="text-align:left">${esc(p.rif)}</td><td>NS</td><td>Ordine confermato <button class="cp" data-c="${p.n}">copia</button></td></tr>`).join("") || `<tr><td colspan="7" style="color:#777;padding:18px">Nessun risultato.</td></tr>`}</tbody></table>
+    <p style="font-size:11.5px;color:#777;margin-top:10px">Per provare il controllo del codice puoi anche copiare un testo con lettere: <span style="user-select:all;background:#f3f3f3;padding:1px 4px">ORD-${PENDING[0]?.n || 0}</span></p></div>`;
+  $$(".cp", $("#br-body")).forEach(b => b.onclick = () => copia(b.dataset.c));
+}
+/* ---------- esplora file ---------- */
+const FS = { shots: [], pdf: {}, liste: [] }; let EXDIR = "shots";
+function renderEx() {
+  const dirs = { shots: ["Screenshots", CFG.CAPTURE_DIR], pdf: ["Controllo ordini", CFG.OUTPUT_DIR], liste: ["Liste di scarico", CFG.LISTE_DIR] };
+  $("#ex-title").textContent = "Esplora file — " + dirs[EXDIR][0];
+  let items = "";
+  if (EXDIR === "shots") items = FS.shots.map((s, i) => `<div class="f" data-i="${i}"><img src="${s.url}" alt=""><span>${esc(s.name)}<br>${s.w}×${s.h}</span></div>`).join("");
+  if (EXDIR === "liste") items = FS.liste.map((s, i) => `<div class="f" data-l="${i}"><img src="${s.url}" alt=""><span>${esc(s.name)}</span></div>`).join("");
+  if (EXDIR === "pdf") items = Object.keys(FS.pdf).sort().map(k => `<div class="f" data-p="${esc(k)}"><div class="pdf"></div><span>${esc(k)}</span></div>`).join("");
+  $("#ex-body").innerHTML = `<div class="ex"><div class="nav">${Object.entries(dirs).map(([k, [n]]) => `<button data-d="${k}" class="${k === EXDIR ? "on" : ""}">📁 ${n}</button>`).join("")}</div><div><div class="path">${esc(dirs[EXDIR][1])}</div><div class="grid">${items || '<div class="empty">Questa cartella è vuota.</div>'}</div></div></div>`;
+  $$("[data-d]", $("#ex-body")).forEach(b => b.onclick = () => { EXDIR = b.dataset.d; renderEx(); });
+  $$("[data-p]", $("#ex-body")).forEach(f => f.onclick = () => apriPdf(f.dataset.p));
+  $$("[data-i],[data-l]", $("#ex-body")).forEach(f => f.onclick = () => { const s = f.dataset.i != null ? FS.shots[f.dataset.i] : FS.liste[f.dataset.l]; $("#pdf-title").textContent = s.name + " — Foto"; $("#pdf-body").innerHTML = `<div class="pdfv"><img src="${s.url}" alt="" style="max-width:95%;background:#fff"></div>`; show("pdf"); });
+}
+/* ---------- lettore PDF ---------- */
+let PDF_OPEN = null;
+function apriPdf(name) {
+  const d = FS.pdf[name]; if (!d) return; PDF_OPEN = name;
+  $("#pdf-title").textContent = name + " — Lettore PDF";
+  $("#pdf-body").innerHTML = `<div class="pdfv"><div class="bar">${esc(CFG.OUTPUT_DIR)}\\${esc(name)} · 2 pagine · A4 orizzontale · creato ${esc(d.creato)}${d.stampato ? " · stampato" : ""}</div>
+    <div class="page p1"><div class="nota"><b>NOTA:</b>${d.nota ? " " + esc(d.nota) : ""}</div><img src="${d.img1}" alt="Prima cattura"></div>
+    <div class="page p2"><img src="${d.img2}" alt="Seconda cattura"></div>
+    <div class="bar">Documento simulato: le immagini sono catture delle finestre fittizie.</div></div>`;
+  show("pdf");
+}
+/* ---------- database ---------- */
+const DBT = { scarichi: [], ordini: [] };
+function renderDb() {
+  const T = (cols, rows) => `<table><thead><tr>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${cols.length}" style="color:#777">(nessun record)</td></tr>`}</tbody></table>`;
+  $("#db-body").innerHTML = `<div class="db"><h4>Tabella Scarichi</h4>${T(["Id", "Operatore", "Apertura", "Chiusura", "Durata", "Ordini", "ConsegnatoA", "Esito"], DBT.scarichi.map(s => [s.id, s.op, fmtDT(s.ap), s.ch ? fmtDT(s.ch) : "", s.ch ? durata((s.ch - s.ap) / 1000) : "", s.n, s.cons || "", s.esito]))}
+    <h4>Tabella ScarichiOrdini</h4>${T(["IdScarico", "Codice", "Stampato", "Inizio", "Fine", "Durata"], DBT.ordini.map(o => [o.id, o.codice, o.st ? "Sì" : "No", fmtDT(o.i), fmtDT(o.f), durata((o.f - o.i) / 1000)]))}
+    <p style="color:#777;font-size:12px">Database simulato in memoria: si svuota ricaricando la pagina.</p></div>`;
+}
+/* ---------- privacidad y seguridad ---------- */
+function renderInfo() {
+  $("#info-body").innerHTML = `<div class="info"><h3>Datos ficticios</h3><p>Este simulador reproduce el funcionamiento de un programa de consola interno. La información mostrada no es real: la empresa, los pedidos, los clientes, los operadores, las rutas de red, los programas y la impresora son inventados.</p>
+  <h3>Qué datos se recolectan y a quién se envían</h3><p>Ninguno. Todo ocurre en la memoria de tu navegador: las capturas son imágenes de las ventanas ficticias de esta página, los PDF son vistas previas y la base de datos es una tabla en memoria. No se usa almacenamiento local ni cookies, y nada se envía a un servidor. Al recargar la página se borra todo. La página carga la librería <code>html2canvas</code> desde cdnjs (Cloudflare) para hacer las capturas; ese servidor ve tu IP como cualquier sitio, pero no recibe ningún dato tuyo. La página está alojada en GitHub Pages (GitHub).</p>
+  <h3>Uso de inteligencia artificial</h3><p><b>Aviso:</b> el simulador se construyó con ayuda de inteligencia artificial (Claude, de Anthropic), bajo la dirección y revisión del autor. Durante el uso no se utiliza IA.</p>
+  <h3>Borrar mis datos</h3><p>El botón vacía capturas, PDF, base de datos y consola, y vuelve a empezar el programa.</p><button class="btn" id="wipe">Borrar todo y reiniciar</button> <span id="wres"></span>
+  <h3>Testimonios</h3><p>No se muestran testimonios ni reseñas; ningún nombre corresponde a una persona real.</p>
+  <h3>Seguridad y validación</h3><ul><li>El código del pedido acepta <b>solo cifras</b>: una copia con letras o símbolos se rechaza y la consola sigue esperando.</li><li>Las respuestas S/N, las letras de los menús y el número de pedidos se validan; las teclas de acción (R, F, C, N, S) se aceptan solo en MAYÚSCULA para evitar errores.</li><li>Las capturas vacías o demasiado chicas se ignoran (mínimo 800×450 para la primera, 200×200 para las demás).</li><li>Todo texto copiado se muestra escapado (sin HTML) y se limita a 2000 caracteres.</li><li>Errores: si el PDF está abierto en el lector y se intenta reemplazarlo, aparece el menú de error con S/N/R/C y no se pierde nada.</li></ul></div>`;
+  $("#wipe").onclick = () => { FS.shots = []; FS.pdf = {}; FS.liste = []; DBT.scarichi = []; DBT.ordini = []; OUT.innerHTML = ""; restart(); $("#wres").textContent = "Hecho: no queda ningún dato."; };
+}
+
+/* =====================================================================================================
+   CATTURE
+   ===================================================================================================== */
+let SHOTN = 0;
+function nomeCattura() { const d = now(); SHOTN++; return `Screenshot ${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}_${SHOTN}.png`; }
+async function cattura(tipo) {
+  const fl = $("#flash"); fl.classList.add("on"); setTimeout(() => fl.classList.remove("on"), 60);
+  let url = "", w = 0, h = 0;
+  if (tipo === "piccola") { const c = document.createElement("canvas"); c.width = 160; c.height = 90; const g = c.getContext("2d"); g.fillStyle = "#ddd"; g.fillRect(0, 0, 160, 90); url = c.toDataURL(); w = 160; h = 90; }
+  else if (tipo === "vuota") { url = ""; w = 0; h = 0; }
+  else {
+    const map = { cad: "#cad-shot", sup: "#sup-shot", br: "#br-body", ex: "#ex-body", pdf: "#pdf-body", db: "#db-body", info: "#info-body" };
+    const el = $(map[ACTIVE]); if (!el) return;
+    try {
+      if (!window.html2canvas) throw new Error("html2canvas non disponibile");
+      const c = await html2canvas(el, { scale: 1, backgroundColor: "#ffffff", logging: false, width: el.scrollWidth, height: el.scrollHeight, windowWidth: document.documentElement.scrollWidth });
+      url = c.toDataURL("image/png"); w = c.width; h = c.height;
+    } catch (e) {
+      const r = el.getBoundingClientRect(); const c = document.createElement("canvas"); c.width = Math.max(1, Math.round(el.scrollWidth)); c.height = Math.max(1, Math.round(el.scrollHeight)); const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.fillStyle = "#333"; g.font = "20px Arial"; g.fillText("Cattura simulata: " + ($("#" + "app-" + ACTIVE + " .t")?.textContent || ""), 20, 40); url = c.toDataURL(); w = c.width; h = c.height; void r;
+    }
+  }
+  const s = { name: nomeCattura(), url, w, h };
+  if (w) { FS.shots.push(s); if (EXDIR === "shots") renderEx(); }
+  push({ type: "capture", shot: s });
+}
+$("#stamp").onclick = () => cattura("normale");
+$("#stamp-x").onclick = () => cattura("vuota");
+$("#stamp-s").onclick = () => cattura("piccola");
+document.addEventListener("keydown", e => { if (e.key === "PrintScreen") { e.preventDefault(); cattura("normale"); } });
+
+/* =====================================================================================================
+   PROGRAMMA (porting di app.py / ordine.py / interazione.py / documento.py)
+   ===================================================================================================== */
+class Ricomincia extends Error {}
+class Fine extends Error {}
+class Annullata extends Error {}
+class Chiusura extends Error {}
+let RUN = 0;
+
+async function attendiCattura(opts) {
+  // opts: {minima, allowR, allowF, allowN, allowC}
+  const [mw, mh] = opts.minima || CFG.CATTURA_MINIMA; const run = RUN;
+  setPrompt("");
+  while (true) {
+    const ev = await next(["capture", "key"]); if (run !== RUN) throw new Chiusura();
+    if (ev.type === "key") {
+      const k = ev.key;
+      if (opts.allowR && k === "R") throw new Ricomincia();
+      if (opts.allowF && k === "F") throw new Fine();
+      if (opts.allowN && k === "N") return null;
+      if (opts.allowC && k === "C") throw new Annullata();
+      if ((opts.allowR && k === "r") || (opts.allowF && k === "f") || (opts.allowN && k === "n") || (opts.allowC && k === "c")) { attenzione(`Per sicurezza, premi "${k.toUpperCase()}" maiuscola.`); continue; }
+      continue;
+    }
+    const s = ev.shot;
+    if (!s.w) { attenzione("Cattura vuota o annullata: ignorata. In attesa della stessa cattura..."); continue; }
+    if (s.w < mw || s.h < mh) { attenzione(`Cattura troppo piccola (${s.w}×${s.h} px, minimo ${mw}×${mh}): ignorata. Rifai la cattura.`); continue; }
+    return s;
+  }
+}
+async function siNo(domanda, { ricomincia = false, secondi = null, predefinita = "S" } = {}) {
+  let msg = 'Rispondi utilizzando "S" oppure "N".'; if (ricomincia) msg += '\n"R" = ricomincia questo ordine.'; if (secondi) msg += `\nSenza risposta entro ${secondi} secondi: "${predefinita}".`;
+  while (true) {
+    attesaInput("INSERIMENTO DATI", msg);
+    let risposta;
+    if (secondi) {
+      const scad = Date.now() + secondi * 1000; let tick;
+      const timer = new Promise(res => { tick = setInterval(() => { const r = Math.ceil((scad - Date.now()) / 1000); if (r <= 0) { clearInterval(tick); res({ type: "timeout" }); } else setPrompt(`(${r}s) ${domanda.trim()}`); }, 100); });
+      setPrompt(`(${secondi}s) ${domanda.trim()}`); INP.focus();
+      const first = await Promise.race([timer, next(["line", "anykey"])]);
+      clearInterval(tick);
+      if (first.type === "timeout") { if (waiter) waiter = null; line(seg(`(0s) ${domanda.trim()}`)); info(`Nessuna risposta: si procede con "${predefinita}".`); setPrompt(""); return predefinita; }
+      setPrompt(domanda.trim() + " "); secondi = null;
+      risposta = first.type === "line" ? first.text : await ask(domanda.trim() + " ");
+    } else risposta = await ask(domanda.trim() + " ");
+    risposta = risposta.trim();
+    if (ricomincia && risposta === "R") throw new Ricomincia();
+    if (ricomincia && risposta === "r") { attenzione('Per sicurezza, premi "R" maiuscola per ricominciare l\'ordine.'); continue; }
+    if (["S", "N"].includes(risposta.toUpperCase())) return risposta.toUpperCase();
+    errore("Rispondi S (si) oppure N (no).");
+  }
+}
+async function lettera(domanda, lettere) {
+  while (true) { const r = (await ask(domanda)).trim(); if (lettere.includes(r)) return r; if (lettere.includes(r.toUpperCase())) { attenzione(`Per sicurezza, premi "${r.toUpperCase()}" maiuscola per confermare la scelta.`); continue; } errore("Scelta non valida. Usa una delle lettere: " + lettere.join(", ")); }
+}
+async function scegliNome(tit, istr, etichetta, conf) {
+  const ops = CFG.OPERATORI;
+  while (true) {
+    sezione(tit, "cO"); istruzione(istr, "cO"); blank();
+    const voci = ops.map((n, i) => [i + 1, n.split(" ")[0]]).concat([[0, "Altro"]]);
+    for (let i = 0; i < voci.length; i += 3) line(seg("  "), voci.slice(i, i + 3).flatMap(([n, t]) => [seg("[" + n + "]", "cO"), seg(" " + t.padEnd(21 - String(n).length - 3))]));
+    blank();
+    const s = (await ask(`Scelta [1-${ops.length}/0]: `)).trim(); let nome;
+    if (s === "0") { nome = (await ask(etichetta + ": ")).replace(/[^\p{L}\s'.-]/gu, "").split(/\s+/).filter(Boolean).map(x => x[0].toUpperCase() + x.slice(1).toLowerCase()).join(" ").slice(0, 40); if (!nome) { errore("Inserisci un nome valido."); continue; } ok("Nuovo operatore salvato nel database: " + nome); }
+    else if (/^\d+$/.test(s) && +s >= 1 && +s <= ops.length) nome = ops[+s - 1];
+    else { errore(`Scelta non valida. Inserisci un numero da 1 a ${ops.length} oppure 0 per Altro.`); continue; }
+    blank(); line(seg(conf + " " + nome, "cO")); blank(); return nome;
+  }
+}
+async function numeroOrdini() {
+  while (true) {
+    attesaInput("NUMERO DI ORDINI", "Inserisci il numero degli ordini da elaborare.");
+    const r = (await ask("Quanti ordini dobbiamo elaborare? Inserisci un numero: ")).trim();
+    if (r === "0") { if (await siNo("Sei sicuro di voler annullare l'operazione? [S/N]: ") === "S") throw new Annullata(); continue; }
+    if (/^\d{1,3}$/.test(r) && +r > 0) { if (+r > 50) { errore("Massimo 50 ordini per volta nel simulatore."); continue; } return +r; }
+    errore("Devi inserire un numero intero maggiore di zero.");
+  }
+}
+async function leggiCodice() {
+  Q.splice(0, Q.length, ...Q.filter(e => e.type !== "clip"));
+  blank(); line("Inserisci il codice a mano e premi INVIO, oppure copialo con Ctrl+C dal browser. Dopo una copia la console tornera' automaticamente in primo piano.");
+  info('"R" = ricomincia questo ordine da capo.');
+  while (true) {
+    setPrompt("> "); INP.focus();
+    const ev = await next(["clip", "line"], "line");
+    if (ev.type === "clip") {
+      setPrompt(""); INP.focus();
+      if (/^\d{1,12}$/.test(ev.text)) { line(seg("> " + ev.text, "cW")); return ev.text; }
+      errore("Codice copiato non valido. Deve contenere SOLO numeri."); continue;
+    }
+    const t = ev.text.trim();
+    if (t === "R") throw new Ricomincia();
+    if (t === "r") { attenzione('Per sicurezza, premi "R" maiuscola per ricominciare l\'ordine.'); continue; }
+    if (/^\d{1,12}$/.test(t)) { if (await siNo(`Il codice ${t} e' corretto? [S/N]: `) === "S") return t; continue; }
+    errore("Codice non valido. Deve contenere SOLO numeri.");
+  }
+}
+const prossimoPdf = c => { if (!FS.pdf[c + ".pdf"]) return c + ".pdf"; let n = 2; while (FS.pdf[`${c}_${n}.pdf`]) n++; return `${c}_${n}.pdf`; };
+async function scegliPdf(codice) {
+  const base = codice + ".pdf"; if (!FS.pdf[base]) return base;
+  blank(); attenzione("Il file esiste gia':"); line("  " + CFG.OUTPUT_DIR + "\\" + base); blank();
+  line("  [1] Sostituire il file esistente"); line("  [2] Creare un nuovo file (_2, _3, ...)"); line("  [3] Inserire un altro codice"); line(seg("  "), hl('"R" = ricomincia questo ordine da capo'));
+  while (true) {
+    attesaInput("FILE GIA' ESISTENTE", "Scegli cosa vuoi fare con il PDF esistente.");
+    const s = (await ask("Scelta [1/2/3/R]: ")).trim();
+    if (s === "R") throw new Ricomincia();
+    if (s === "1") { if (PDF_OPEN === base) attenzione(`${base} e' aperto in un altro programma (lettore PDF): chiudilo prima del salvataggio, altrimenti non potra' essere sostituito.`); return base; }
+    if (s === "2") { const n = prossimoPdf(codice); info("Verra' creato: " + n); return n; }
+    if (s === "3") return null;
+    errore("Scelta non valida. Inserisci solamente 1, 2 oppure 3.");
+  }
+}
+async function menuErrore(numero, totale, err, salvataggio) {
+  const compl = numero - 1, manc = totale - compl;
+  separatore(`ERRORE NELL'ORDINE ${numero} DI ${totale}`);
+  errore(err.name + ": " + err.message); blank();
+  if (err.occupato) { attenzione("Il PDF e' aperto in un altro programma (di solito il lettore PDF che il programma ha aperto dopo averlo salvato)."); attenzione('Chiudi la finestra di quel PDF, poi scegli "S" per riprovare.'); }
+  else attenzione("Controlla il messaggio qui sopra prima di scegliere.");
+  sezione("SITUAZIONE");
+  info(`Ordini completati e registrati: ${compl} di ${totale}.`);
+  info(manc > 1 ? `Mancano: ${manc} (dall'ordine ${numero} al ${totale}).` : `Manca: 1 (l'ordine ${numero}).`);
+  info(`Ordine ${numero}: nel database non e' stato scritto nulla.`);
+  if (salvataggio) { info("Le catture di questo ordine sono pronte: riprovando il salvataggio non devi rifarle."); info("Il PDF precedente con lo stesso nome non e' stato toccato."); }
+  const op = (salvataggio ? [["S", "riprova a salvare il PDF (dopo averlo chiuso)"], ["N", "salva con un nuovo nome (_2, _3, ...)"]] : []).concat([["R", `ricomincia l'ordine ${numero} da capo`], ["C", `chiudi il programma: ${manc} ordini NON elaborati`]]);
+  attesaInput("COME VUOI CONTINUARE?", "Solo lettere MAIUSCOLE + INVIO.");
+  op.forEach(([l, t]) => line(seg("  "), hl(`"${l}" = ${t}`))); blank();
+  const s = await lettera(`Scelta [${op.map(o => o[0]).join("/")}]: `, op.map(o => o[0]));
+  if (s === "C") { blank(); attenzione(`Mancano ${manc} ordini, ma il programma verra' chiuso.`); if (compl) info(`Ti verra' chiesto a chi consegnare i ${compl} ordini completati.`); }
+  return s;
+}
+function chiudiLettorePdf() { PDF_OPEN = null; $("#pdf-body").innerHTML = '<div class="pdfv"><div class="bar">Nessun documento aperto.</div></div>'; $("#pdf-title").textContent = "Lettore PDF"; }
+async function salvaPdf(nome, doc, stampa) {
+  await sleep(500);
+  if (FS.pdf[nome] && PDF_OPEN === nome) { const e = new Error(`[WinError 32] Impossibile accedere al file. Il file e' utilizzato da un altro processo: '${CFG.OUTPUT_DIR}\\${nome}'`); e.name = "PermissionError"; e.occupato = true; throw e; }
+  FS.pdf[nome] = Object.assign({}, doc, { creato: fmtDT(now()), stampato: stampa });
+  if (EXDIR === "pdf") renderEx();
+  if (stampa) toastP(`🖨 ${nome} inviato a ${CFG.STAMPANTE}`);
+  apriPdf(nome);
+  return stampa ? CFG.STAMPANTE : null;
+}
+async function eseguiOrdine(numero, totale, inizio) {
+  separatore(`ORDINE ${numero} DI ${totale}`, "cL");
+  if (numero > 1) await sleep(600);
+  show("cad");
+  istruzione("Apri un nuovo ordine esistente in CAD Demo.", "cO");
+  sezione("PRIMA CATTURA [INTESTAZIONE]");
+  istruzionePassi("Prima di fare la cattura, modifica e salva l'ordine così:", ['Scheda "Dati": seleziona la data corretta oppure clicca "Oggi".', 'Scheda "Oper": seleziona il referente "NS".', 'Torna alla scheda "Dati", così potrai copiare il testo se necessario.', "Salva l'ordine."], "cO");
+  attesa("In attesa della prima cattura...");
+  const manc = totale - numero + 1;
+  info('"F" (console in primo piano) = gli ordini sono finiti: ' + (manc > 1 ? `i ${manc} rimanenti non esistono.` : "questo ordine non esiste.") + " Si passa alla consegna e alla chiusura.");
+  const img1 = await attendiCattura({ minima: CFG.PRIMA_CATTURA_MINIMA, allowF: true });
+  ok("Prima cattura ricevuta: " + img1.name);
+  if (CUR && (!CUR.salvato || !CUR.data || CUR.ref !== "NS")) attenzione("Nota del simulatore: l'ordine in CAD non sembra pronto (data, referente NS o salvataggio). Il programma reale non lo controlla: continua comunque.");
+  sezione("TESTO OPZIONALE + SECONDA CATTURA [CONFIGURATORE]");
+  istruzione("Se devi aggiungere testo alla NOTA, selezionalo e premi Ctrl+C. Puoi farlo tutte le volte che vuoi. Quando hai terminato il testo, esegui la seconda cattura.");
+  Q.splice(0, Q.length, ...Q.filter(e => e.type !== "clip"));
+  attesa("In attesa del testo e/o della seconda cattura...");
+  info('"R" (console in primo piano) = ricomincia questo ordine da capo.');
+  const testi = []; let img2; const [mw, mh] = CFG.CATTURA_MINIMA; const run = RUN;
+  while (true) {
+    const ev = await next(["clip", "capture", "key"]); if (run !== RUN) throw new Chiusura();
+    if (ev.type === "clip") { testi.push(ev.text); ok(`Testo copiato (${testi.length}): ${ev.text.length > 60 ? ev.text.slice(0, 57) + "..." : ev.text}`); continue; }
+    if (ev.type === "key") { if (ev.key === "R") throw new Ricomincia(); if (ev.key === "r") attenzione('Per sicurezza, premi "R" maiuscola per ricominciare l\'ordine.'); continue; }
+    const s = ev.shot; if (!s.w) { attenzione("Cattura vuota o annullata: ignorata. In attesa della stessa cattura..."); continue; }
+    if (s.w < mw || s.h < mh) { attenzione(`Cattura troppo piccola (${s.w}×${s.h} px, minimo ${mw}×${mh}): ignorata.`); continue; }
+    img2 = s; break;
+  }
+  ok("Seconda cattura ricevuta: " + img2.name);
+  const testo = testi.join("\n");
+  if (testi.length) ok(`Testo aggiuntivo ricevuto: ${testi.length} elemento/i.`); else info("Nessun testo aggiuntivo rilevato. La seconda cattura e' stata comunque ricevuta.");
+  // codice
+  show("br"); separatore("CODICE NUMERICO");
+  let codice, nome;
+  while (true) {
+    istruzione("Inserisci il codice numerico a mano e premi INVIO, oppure copialo con Ctrl+C. Il codice scritto a mano verra' confermato prima di continuare.");
+    attesa("In attesa del codice numerico...");
+    codice = await leggiCodice(); ok("Codice ricevuto: " + codice);
+    nome = await scegliPdf(codice); if (nome) break; blank(); info("Inserisci un altro codice numerico.");
+  }
+  separatore("CREAZIONE PDF E STAMPA"); attesa("Creazione del documento PDF...");
+  const doc = { nota: testo, img1: img1.url, img2: img2.url };
+  sezione("STAMPA");
+  const stampa = (await siNo("Vuoi stampare questo ordine? [S/N/R]: ", { ricomincia: true, secondi: CFG.SECONDI_RISPOSTA_STAMPA })) === "S";
+  let stampante;
+  while (true) {
+    try { stampante = await salvaPdf(nome, doc, stampa); break; }
+    catch (e) {
+      if (!e.occupato) throw e;
+      const s = await menuErrore(numero, totale, e, true);
+      if (s === "N") { nome = prossimoPdf(codice); info("Verra' creato: " + nome); }
+      else if (s === "R") throw new Ricomincia();
+      else if (s === "C") throw new Chiusura();
+      attesa("Nuovo tentativo di salvataggio...");
+    }
+  }
+  ok("PDF salvato: " + CFG.OUTPUT_DIR + "\\" + nome);
+  if (stampa) ok("PDF stampato su: " + stampante); else info("PDF creato senza stampa.");
+  const p = PENDING.find(x => String(x.n) === codice); if (p) { p.scaricato = true; renderSup(); }
+  blank(); ok(`ORDINE ${numero} DI ${totale} COMPLETATO.`);
+  return { codice, stampato: stampa, inizio, fine: now() };
+}
+async function elaboraOrdine(numero, totale) {
+  const inizio = now();
+  while (true) {
+    try { return await eseguiOrdine(numero, totale, inizio); }
+    catch (e) { if (!(e instanceof Ricomincia)) throw e; blank(); attenzione(`Ordine ${numero} di ${totale} ricominciato da capo: le catture e il testo raccolti finora vengono ignorati.`); }
+  }
+}
+class Registro {
+  constructor(op, ap) { this.op = op; this.ap = ap; this.rec = null; }
+  registra(r) {
+    if (!this.rec) { this.rec = { id: DBT.scarichi.length + 1, op: this.op, ap: this.ap, ch: null, n: 0, cons: "", esito: "Completato" }; DBT.scarichi.push(this.rec); ok(`Scarico registrato nel database (n. ${this.rec.id}).`); }
+    DBT.ordini.push({ id: this.rec.id, codice: r.codice, st: r.stampato, i: r.inizio, f: r.fine }); this.rec.n++; renderDb(); ok(`Ordine ${r.codice} registrato nel database.`);
+  }
+  chiudi(cons, esito) { if (!this.rec) return; this.rec.ch = now(); this.rec.cons = cons; this.rec.esito = esito; renderDb(); info("Tempo totale: " + durata((this.rec.ch - this.ap) / 1000)); }
+}
+async function conteggio(sec) { for (let s = sec; s > 0; s--) { setPrompt(""); const l = OUT.lastChild && OUT.lastChild.dataset.cd ? OUT.lastChild : line(""); l.dataset.cd = "1"; l.innerHTML = `  <span class="cG">●</span> Chiusura tra ${String(s).padStart(2)} secondi...`; await sleep(1000); } OUT.lastChild.remove(); }
+async function chiusura(reg, cons, annullata, esito) {
+  show("br"); separatore("CHIUSURA DEL PROGRAMMA");
+  if (annullata) { attenzione("Operazione annullata: non c'e' nulla da consegnare."); info(`Esplora file, ${CFG.PROGRAMMA_SERVER} e questa console verranno chiusi al termine del conteggio.`); }
+  else info("La finestra si chiudera' al termine del conteggio.");
+  await conteggio(annullata ? CFG.SECONDI_CHIUSURA_ANNULLATA : CFG.SECONDI_CHIUSURA);
+  info(`Chiusura delle cartelle Screenshots e Controllo ordini, di ${CFG.PROGRAMMA_SERVER} e di ${CFG.PROGRAMMA_CAD}...`);
+  ["cad", "sup", "ex"].forEach(a => { $("#tb-" + a).hidden = true; });
+  show("br");
+  ok("Le catture restano nella cartella Screenshots.");
+  reg.chiudi(cons, esito);
+  if (!annullata) { info("Chiusura del programma in corso..."); blank(); nota("NOTA: la pagina 'Gestione Ordini' si aggiorna automaticamente ogni 15 minuti."); }
+  istruzione(`Grazie ${reg.op.split(" ")[0]}! ${SALUTI[rnd(0, SALUTI.length - 1)]}!`, "cV");
+  $("#tb-db").hidden = false;
+}
+async function main() {
+  const run = RUN; setMode("off");
+  blank(); line(seg("  Data e ora: ", "cA"), seg(fmtDT(now())));
+  separatore("REPORT ORDINI SCARICATI DA CAD - SERVER ORDINI");
+  sezione("CONFIGURAZIONE");
+  nota("  Verra' utilizzata la cartella locale degli screenshot."); line(seg("  Catture:", "cA")); line(seg("  " + CFG.CAPTURE_DIR, "cX")); blank();
+  nota("  Questa cartella e' accessibile solo da questo PC o dal server."); line(seg("  PDF:", "cA")); line(seg("  " + CFG.OUTPUT_DIR, "cX")); blank();
+  info("La cartella Screenshots verra' mantenuta senza file sciolti."); info("Le eventuali sottocartelle non verranno eliminate.");
+  const op = await scegliNome("IDENTIFICAZIONE DELL'OPERATORE", "Seleziona il tuo nome dall'elenco oppure scegli [0] Altro per scriverlo.", "Nome", "Benvenuto");
+  const reg = new Registro(op, now());
+  // preparazione dell'ambiente
+  const n0 = FS.shots.length; FS.shots = []; info(`Cartella Screenshots pulita (${n0} file sciolti eliminati).`);
+  genPending(rnd(3, 6)); CUR = null; FILTRO = false; renderSup(); renderBr(); renderCad();
+  info("Apertura delle pagine nel browser..."); show("br"); await sleep(700); FILTRO = true; renderBr(); ok(`Filtro personale attivato ("${CFG.CODICE_FILTRO}").`);
+  info("Apertura delle cartelle in Esplora file..."); EXDIR = "shots"; renderEx(); $("#tb-ex").hidden = false; await sleep(300);
+  info(`Avvio di ${CFG.PROGRAMMA_SERVER}...`); show("sup"); await sleep(500); ok(`${CFG.PROGRAMMA_SERVER} avviato.`); info(`Avvio anticipato di ${CFG.PROGRAMMA_CAD}...`); $("#tb-cad").hidden = false;
+  let annullata = false, interrotto = false, elaborati = 0;
+  while (true) {
+    if (run !== RUN) return;
+    separatore("LISTA ORDINI DA SCARICARE"); show("sup");
+    istruzione(`Fai una cattura dell'elenco degli ordini da scaricare. La schermata verra' archiviata nella cartella 'Liste di scarico' e puo' essere utile per ritrovare un eventuale ordine smarrito. Con la console in primo piano: premi "N" per continuare senza fare la cattura; premi "C" per chiudere la procedura (se non ci sono ordini): tutto verra' chiuso automaticamente.`, "cO");
+    attesa("In attesa della cattura della lista ordini..."); info('"N" = continua senza fare la cattura'); info('"C" = chiudi la procedura');
+    try {
+      const s = await attendiCattura({ allowN: true, allowC: true });
+      if (!s) info("Acquisizione della lista ordini saltata.");
+      else { FS.shots = FS.shots.filter(x => x !== s); const d = now(); const nm = `Lista ordini ${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}.${pad(d.getMinutes())}.png`; FS.liste.push({ name: nm, url: s.url }); renderEx(); ok("Lista ordini archiviata: " + nm); info("Cartella archivio: " + CFG.LISTE_DIR); }
+    } catch (e) { if (e instanceof Annullata) { annullata = true; break; } throw e; }
+    separatore("NUMERO DI ORDINI");
+    let totale; try { totale = await numeroOrdini(); } catch (e) { if (e instanceof Annullata) { annullata = true; break; } throw e; }
+    ok("Ordini da elaborare: " + totale);
+    info(`Apertura di ${CFG.PROGRAMMA_CAD}...`); show("cad"); separatore("INIZIO ELABORAZIONE");
+    let stato = "completo", n = 1;
+    while (n <= totale) {
+      let r;
+      try { r = await elaboraOrdine(n, totale); }
+      catch (e) {
+        if (e instanceof Fine) { separatore("ELABORAZIONE TERMINATA"); ok(`Ordini elaborati: ${n - 1} (ne erano stati indicati ${totale}).`); info(`Gli ultimi ${totale - n + 1} non esistevano: nessun problema.`); stato = "finito"; break; }
+        if (e instanceof Chiusura) { if (run !== RUN) return; stato = "interrotto"; break; }
+        if (run !== RUN) return;
+        if (await menuErrore(n, totale, e, false) === "C") { stato = "interrotto"; break; }
+        blank(); attenzione(`Ordine ${n} di ${totale} ricominciato da capo.`); continue;
+      }
+      elaborati++; reg.registra(r);
+      if (n < totale) { blank(); info(`Passaggio all'ordine ${n + 1} di ${totale}...`); }
+      n++;
+    }
+    if (stato === "completo") { separatore("ELABORAZIONE TERMINATA"); ok(`Tutti i ${totale} ordini sono stati elaborati.`); blank(); line(seg("  PDF:", "cA")); line(seg("  " + CFG.OUTPUT_DIR, "cX")); }
+    interrotto = stato === "interrotto";
+    if (stato !== "completo") break;
+    if (await siNo("Vuoi elaborare altri ordini? [S/N]: ", { secondi: CFG.SECONDI_RISPOSTA_ALTRI_ORDINI, predefinita: "N" }) !== "S") break;
+    genPending(rnd(2, 4)); renderSup(); renderBr(); renderCad();
+  }
+  if (elaborati === 0) { await chiusura(reg, null, true); return fine(); }
+  if (annullata) attenzione("Operazione annullata dall'utente.");
+  if (interrotto) attenzione("Elaborazione interrotta dopo un errore.");
+  const cons = await scegliNome("DESTINATARIO DELLA CONSEGNA", "Seleziona il nome della persona a cui verra' consegnato il lavoro oppure scegli [0] Altro per scriverlo.", "Consegnato a", "Sara' consegnato a:");
+  await chiusura(reg, cons, false, interrotto ? "Errore" : "Completato");
+  fine();
+}
+function fine() { blank(); line(seg("[Processo terminato] Scrivi ", "cX"), seg("riavvia", "cW"), seg(" e premi INVIO per eseguire di nuovo Nuovo_report_ordini.bat.", "cX")); waitRestart(); }
+async function waitRestart() { const run = RUN; while (run === RUN) { const t = (await ask("C:\\Report ordini> ")).trim().toLowerCase(); if (run !== RUN) return; if (t === "riavvia" || t === "nuovo_report_ordini.bat") { restart(); return; } line(seg(`'${t.slice(0, 40)}' non e' riconosciuto. Scrivi "riavvia".`, "cX")); } }
+function restart() { RUN++; if (waiter) waiter = null; Q.length = 0; chiudiLettorePdf(); ["cad", "sup", "br", "pdf"].forEach(a => $("#tb-" + a).hidden = true); blank(); line(seg("C:\\Report ordini> Nuovo_report_ordini.bat", "cX")); main().catch(errFatal); }
+function errFatal(e) { if (e instanceof Chiusura) return; blank(); line(seg("================================================================", "cR")); line(seg("ERRORE DI ESECUZIONE", "cR")); line(seg("================================================================", "cR")); errore(String(e && e.message || e)); fine(); }
+
+/* AVVIO */
+chiudiLettorePdf(); renderDb(); renderEx(); renderInfo(); renderCad();
+line(seg("C:\\Report ordini> Nuovo_report_ordini.bat", "cX"));
+main().catch(errFatal);
+INP.focus();
+</script>
+
+</body></html>

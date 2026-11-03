@@ -352,6 +352,7 @@ function monitorMini(titulo) {
           <div class="mini-imac__barra">
             <span class="mini-imac__luces" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="mini-imac__url" data-monitor-dominio>—</span>
+            <button class="mini-imac__abrir" type="button" data-monitor-grande hidden aria-label="${esc(t('ver_grande'))}" title="${esc(t('ver_grande'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
             <a class="mini-imac__abrir" data-monitor-abrir href="#" target="_blank" rel="noopener" hidden aria-label="${esc(t('abrir_pestana'))}" title="${esc(t('abrir_pestana'))}">${icono('flecha')}</a>
           </div>
           <div class="mini-imac__vista">
@@ -363,7 +364,7 @@ function monitorMini(titulo) {
       </div>
       <div class="mini-imac__cuello"></div>
       <div class="mini-imac__base"></div>
-      <figcaption class="mini-imac__pie" data-monitor-pie hidden>${esc(t('monitor_falla'))} <a data-monitor-abrir href="#" target="_blank" rel="noopener">${icono('flecha')}</a></figcaption>
+      <figcaption class="mini-imac__pie" data-monitor-pie hidden><button type="button" class="mini-imac__grande" data-monitor-grande>${esc(t('ver_grande'))}</button><span>${esc(t('monitor_falla'))} <a data-monitor-abrir href="#" target="_blank" rel="noopener">${icono('flecha')}</a></span></figcaption>
     </figure>`;
 }
 
@@ -390,14 +391,49 @@ function activarMonitores() {
       f.src = u;
       f.tabIndex = 0;
       let dominio = u;
-      try { dominio = new URL(u).host; } catch (_) { /* url rara */ }
+      try { const x = new URL(u, location.href); dominio = x.origin === location.origin ? x.pathname.split('/').pop() : x.host; } catch (_) { /* url rara */ }
       $('[data-monitor-dominio]', mon).textContent = dominio;
       $$('[data-monitor-abrir]', mon).forEach((a) => { a.href = u; a.hidden = false; });
       $('[data-monitor-pie]', mon).hidden = false;
+      $$('[data-monitor-grande]', mon).forEach((g) => { g.hidden = false; });
+      mon.dataset.titulo = b.textContent.trim();
       // En pantallas chicas el monitor queda debajo del texto: lo acercamos.
       if (window.matchMedia('(max-width: 860px)').matches) mon.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
     }));
+    $$('[data-monitor-grande]', mon).forEach((g) => g.addEventListener('click', () => {
+      const u = f.getAttribute('src');
+      if (u) verEnGrande(u, mon.dataset.titulo || '', g);
+    }));
   });
+}
+
+/* Pantalla completa: muestra la app del monitor ocupando toda la ventana. */
+function verEnGrande(u, titulo, origen) {
+  const capa = document.createElement('div');
+  capa.className = 'grande';
+  capa.setAttribute('role', 'dialog');
+  capa.setAttribute('aria-modal', 'true');
+  capa.setAttribute('aria-label', titulo);
+  capa.innerHTML = `
+    <div class="grande__barra">
+      <span class="grande__titulo">${esc(titulo)}</span>
+      <a class="grande__boton" href="${esc(u)}" target="_blank" rel="noopener">${esc(t('abrir_pestana'))} ${icono('flecha')}</a>
+      <button class="grande__boton grande__cerrar" type="button" aria-label="${esc(t('cerrar'))}">✕</button>
+    </div>
+    <iframe class="grande__app" src="${esc(u)}" title="${esc(titulo)}" referrerpolicy="no-referrer"></iframe>`;
+  document.body.appendChild(capa);
+  document.documentElement.classList.add('con-grande');
+  const cerrarBtn = $('.grande__cerrar', capa);
+  const cerrar = () => {
+    capa.remove();
+    document.documentElement.classList.remove('con-grande');
+    document.removeEventListener('keydown', alTeclado);
+    if (origen) origen.focus();
+  };
+  const alTeclado = (e) => { if (e.key === 'Escape') cerrar(); };
+  cerrarBtn.addEventListener('click', cerrar);
+  document.addEventListener('keydown', alTeclado);
+  cerrarBtn.focus();
 }
 const hitoBreve = (h) => hito(h, { completo: false });
 

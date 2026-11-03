@@ -1877,3 +1877,36 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .ciudad__paquetes line { stroke-dashoffset: 50; }
   .ciudad__ondas path:first-child { opacity: .8; }
 }
+
+/* Mini iMac del CV: gris plata (aluminio), marco negro y círculo negro en el mentón */
+.mini-imac__cuerpo { background: linear-gradient(180deg, #e9eaec, #c4c6ca); }
+.mini-imac__pantalla { background: #0d0d0f; }
+.mini-imac__menton span { width: 0.6rem; height: 0.6rem; background: radial-gradient(circle at 40% 35%, #2a2b2e, #050506 70%); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.5); }
+.mini-imac__cuello { background: linear-gradient(90deg, #9fa2a7, #e6e7e9 50%, #9fa2a7); }
+.mini-imac__base { background: linear-gradient(180deg, #e2e3e5, #a9acb1); }
+button.mini-imac__abrir { padding: 0; border: 0; background: none; cursor: pointer; }
+.mini-imac__pie { display: grid; justify-items: center; gap: 0.5rem; }
+.mini-imac__grande {
+  display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem;
+  border: 1px solid var(--naranja); border-radius: 999px; background: var(--naranja);
+  color: var(--negro); font: 700 0.8125rem/1 var(--f-texto); cursor: pointer;
+  transition: transform 160ms var(--ease-out), filter 160ms var(--ease-out);
+}
+.mini-imac__grande:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .mini-imac__grande:hover { filter: brightness(1.08); } }
+.mini-imac__grande:focus-visible { outline: 2px solid var(--naranja); outline-offset: 3px; }
+
+/* Vista en grande: la app ocupa toda la ventana */
+.con-grande { overflow: hidden; }
+.grande { position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column; background: #0b0c0e; animation: grande-entra 220ms var(--ease-out); }
+.grande__barra { display: flex; align-items: center; gap: 0.75rem; padding: max(0.5rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.5rem max(1rem, env(safe-area-inset-left)); background: #1d1e21; color: var(--hueso); }
+.grande__titulo { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; font-size: 0.9375rem; }
+.grande__boton { display: inline-flex; align-items: center; gap: 0.35rem; height: 2.5rem; padding: 0 0.9rem; border: 0; border-radius: 999px; background: #2b2d31; color: var(--hueso); font: 600 0.875rem/1 var(--f-texto); cursor: pointer; text-decoration: none; }
+.grande__boton svg { width: 0.85rem; height: 0.85rem; }
+.grande__cerrar { width: 2.5rem; justify-content: center; padding: 0; background: var(--naranja); color: var(--negro); font-size: 1rem; font-weight: 800; }
+@media (hover: hover) and (pointer: fine) { .grande__boton:hover { filter: brightness(1.15); } }
+.grande__boton:focus-visible { outline: 2px solid var(--naranja); outline-offset: 2px; }
+.grande__app { flex: 1; width: 100%; border: 0; background: #fff; }
+@media (max-width: 560px) { .grande__barra a.grande__boton { font-size: 0; gap: 0; padding: 0; width: 2.5rem; justify-content: center; } }
+@keyframes grande-entra { from { opacity: 0; transform: scale(0.98); } }
+@media (prefers-reduced-motion: reduce) { .grande { animation: none; } }

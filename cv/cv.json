@@ -14,24 +14,36 @@
       "desde": "2024-11",
       "hasta": "actualidad",
       "descripcion": {
-        "es": "Programación web (HTML, Python, JavaScript, JSON) y programación 3Cad.\n\nSimulador (demo) con datos ficticios: la información mostrada no es real.",
-        "en": "Web programming (HTML, Python, JavaScript, JSON) and 3Cad programming.\n\nSimulator (demo) with fictitious data: the information shown is not real.",
-        "fr": "Programmation web (HTML, Python, JavaScript, JSON) et programmation 3Cad.\n\nSimulateur (démo) avec des données fictives : les informations affichées ne sont pas réelles.",
-        "de": "Webprogrammierung (HTML, Python, JavaScript, JSON) und 3Cad-Programmierung.\n\nSimulator (Demo) mit fiktiven Daten: Die angezeigten Informationen sind nicht echt.",
-        "pt": "Programação web (HTML, Python, JavaScript, JSON) e programação 3Cad.\n\nSimulador (demo) com dados fictícios: as informações exibidas não são reais.",
-        "it": "Programmazione web (HTML, Python, JavaScript, JSON) e programmazione 3Cad.\n\nSimulatore (demo) con dati fittizi: le informazioni mostrate non sono reali."
+        "es": "Programación web (HTML, Python, JavaScript, JSON) y programación 3Cad.\n\nProyectos (simuladores con datos ficticios, la información mostrada no es real):",
+        "en": "Web programming (HTML, Python, JavaScript, JSON) and 3Cad programming.\n\nProjects (simulators with fictitious data, the information shown is not real):",
+        "fr": "Programmation web (HTML, Python, JavaScript, JSON) et programmation 3Cad.\n\nProjets (simulateurs avec des données fictives, les informations affichées ne sont pas réelles) :",
+        "de": "Webprogrammierung (HTML, Python, JavaScript, JSON) und 3Cad-Programmierung.\n\nProjekte (Simulatoren mit fiktiven Daten, die angezeigten Informationen sind nicht echt):",
+        "pt": "Programação web (HTML, Python, JavaScript, JSON) e programação 3Cad.\n\nProjetos (simuladores com dados fictícios, as informações exibidas não são reais):",
+        "it": "Programmazione web (HTML, Python, JavaScript, JSON) e programmazione 3Cad.\n\nProgetti (simulatori con dati fittizi, le informazioni mostrate non sono reali):"
       },
+      "monitor": true,
       "enlaces": [
         {
           "texto": {
-            "es": "Ordini Tumidei (simulador)",
-            "en": "Ordini Tumidei (simulator)",
-            "fr": "Ordini Tumidei (simulateur)",
-            "de": "Ordini Tumidei (Simulator)",
-            "pt": "Ordini Tumidei (simulador)",
-            "it": "Ordini Tumidei (simulatore)"
+            "es": "Ordini Tumidei – Gestión de pedidos",
+            "en": "Ordini Tumidei – Order management",
+            "fr": "Ordini Tumidei – Gestion des commandes",
+            "de": "Ordini Tumidei – Auftragsverwaltung",
+            "pt": "Ordini Tumidei – Gestão de pedidos",
+            "it": "Ordini Tumidei – Gestione ordini"
           },
-          "url": "https://claude.ai/artifact/LH6nu8gTMDG19CPKCvmdPL"
+          "url": "cv/demos/ordini-tumidei.html"
+        },
+        {
+          "texto": {
+            "es": "Report Ordini – Capturas → PDF → Impresión",
+            "en": "Report Ordini – Screenshots → PDF → Print",
+            "fr": "Report Ordini – Captures → PDF → Impression",
+            "de": "Report Ordini – Screenshots → PDF → Druck",
+            "pt": "Report Ordini – Capturas → PDF → Impressão",
+            "it": "Report Ordini – Catture → PDF → Stampa"
+          },
+          "url": "cv/demos/report-ordini.html"
         }
       ],
       "aptitudes": [
