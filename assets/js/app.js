@@ -222,9 +222,48 @@ function fechaCorta(f = '') {
   if (!m) return String(f);
   return new Date(Number(m[1]), Number(m[2]) - 1, 15).toLocaleDateString(locale(), { month: 'short', year: 'numeric' }).replace('.', '');
 }
-// Emblema repetido sobre cada franja de color de la portada.
-function emblemas(src, cantidad) {
-  return `<span class="emblemas" style="--n:${cantidad}" aria-hidden="true">${Array.from({ length: cantidad }, () => `<img src="${esc(src)}" alt="" loading="lazy" onerror="this.parentNode.remove()">`).join('')}</span>`;
+// Portada de cada proyecto en la lista de inicio. Dos portadas están armadas en vivo:
+// - Grupo con partes y emblema (Conquistadores): cada clase es un libro en el estante, con su emblema centrado.
+// - Reproductor (Mis Cantos): el disco gira con su púa y las barritas siguen la música.
+function fotoProyecto(p) {
+  if (p.emblema && p.partes && p.partes.length) return `<div class="proyecto__foto proyecto__foto--libros">${portadaLibros(p)}</div>`;
+  if (p.reproductor) return `<div class="proyecto__foto">${portadaDisco(p)}</div>`;
+  return `<div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos, idLista(p.lista)) : ''}</div>`;
+}
+
+function portadaLibros(p) {
+  const libros = p.partes.map((x, i) => `
+    <span class="lomo" style="${colorDe(x.color).estilo};--i:${i}">
+      <img class="lomo__emblema" src="${esc(p.emblema)}" alt="" loading="lazy" onerror="this.remove()">
+      <b class="lomo__nombre">${esc(tituloDe(x))}</b>
+    </span>`).join('');
+  return `
+    <div class="viva libros" data-paralaje-x role="img" aria-label="${esc(tituloDe(p))}" style="--n:${p.partes.length}">
+      <span class="libros__estante">${libros}</span>
+      <span class="libros__banda" style="--largo:${[...tituloDe(p)].length}"><b>${esc(tituloDe(p))}</b></span>
+      <span class="libros__pastilla">${esc(t('clases_prog'))}</span>
+    </div>`;
+}
+
+function portadaDisco(p) {
+  const base = `${url(p.ruta)}/_portada`;
+  return `
+    <div class="viva tocadiscos" data-paralaje-x role="img" aria-label="${esc(tituloDe(p))}">
+      <img class="tocadiscos__fondo" src="${base}/fondo.jpg" alt="" loading="lazy">
+      <span class="vinilo"><span class="vinilo__giro"><span class="vinilo__etiqueta"></span></span><span class="vinilo__brillo"></span></span>
+      <svg class="pua" viewBox="0 0 1200 1500" preserveAspectRatio="none" aria-hidden="true">
+        <g class="pua__brazo">
+          <circle cx="1112" cy="196" r="46" fill="#2a2b2f"/><circle cx="1112" cy="196" r="30" fill="#4a4c52"/><circle cx="1112" cy="196" r="11" fill="#c9cbd0"/>
+          <rect x="1094" y="120" width="36" height="44" rx="8" fill="#3a3c41"/>
+          <path d="M1112 196 L1100 520 Q1097 602 1016 652" fill="none" stroke="#d9dbdf" stroke-width="11" stroke-linecap="round"/>
+          <path d="M1112 196 L1100 520 Q1097 602 1016 652" fill="none" stroke="#8d9097" stroke-width="3" stroke-linecap="round" transform="translate(3 2)"/>
+          <rect x="978" y="638" width="62" height="34" rx="6" fill="#1b1c1f" transform="rotate(-33 1009 655)"/>
+          <rect x="984" y="643" width="22" height="24" rx="3" fill="#ff7a00" transform="rotate(-33 1009 655)"/>
+        </g>
+      </svg>
+      <img class="tocadiscos__tapa" src="${base}/tapa.jpg" alt="" loading="lazy">
+      <span class="eq-portada">${'<i></i>'.repeat(8)}</span>
+    </div>`;
 }
 
 // Miniaturas de videos de YouTube sobre la portada (se cargan en el navegador de quien visita).
@@ -370,7 +409,7 @@ function vistaInicio() {
       <div class="pista" data-pista>
         ${proyectos.map((p) => `
           <a class="proyecto revela" ${p.directo && p.enlace ? `href="${esc(p.enlace)}" target="_blank" rel="noopener"` : `href="${enlace(p.ruta)}"`}>
-            <div class="proyecto__foto">${p.portada ? `<img data-paralaje-x src="${url(p.portada)}" alt="${esc(tituloDe(p))}" loading="lazy">` : ''}${p.portadaTexto ? `<span class="proyecto__sobre" aria-hidden="true">${esc(marcadores(p.portadaTexto))}</span>` : ''}${p.videos && p.videos.length ? mosaicoVideos(p.videos, idLista(p.lista)) : ''}${p.emblema && p.partes && p.partes.length ? emblemas(p.emblema, p.partes.length) : ''}</div>
+            ${fotoProyecto(p)}
             <div class="proyecto__pie"><span><b>${esc(tituloDe(p))}</b>${anio(p) ? `, ${esc(anio(p))}` : ''}</span><span class="proyecto__ir">${esc(p.directo && p.enlace ? etiquetaEnlace(p.enlace) : t('ver_proyecto'))}${p.directo ? ' ↗' : ''}</span></div>
           </a>`).join('')}
       </div>` : `<div class="envoltura">${vacio('Projects')}</div>`}

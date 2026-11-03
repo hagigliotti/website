@@ -1693,3 +1693,106 @@ body.con-mini .pie { padding-bottom: 6rem; }
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cpath d='M26 18Q38 10 50 22Q38 28 26 18ZM94 18Q82 10 70 22Q82 28 94 18Z' fill='%23ff8a2a'/%3E%3Cpath d='M38 14.5v10M82 14.5v10' stroke='%231a0603' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
   filter: drop-shadow(0 0 6px rgba(255, 110, 30, 0.8));
 }
+
+/* ==========================================================================
+   Portadas en vivo de la lista de proyectos
+   ========================================================================== */
+.viva { position: absolute; inset: 0; overflow: hidden; }
+.proyecto__foto .viva img { transform: none !important; transition: none; }
+
+/* Conquistadores: cada clase es un libro que sale y vuelve a entrar en el estante */
+.libros__estante {
+  position: absolute; inset: 0; display: grid; grid-template-columns: repeat(var(--n), 1fr);
+  background: linear-gradient(180deg, #1a1b1e, #0b0b0d);
+}
+.lomo {
+  position: relative; z-index: 1;
+  background: linear-gradient(180deg, var(--c1), var(--c2));
+  color: var(--tinta);
+  box-shadow: inset 0.35cqw 0 0 rgba(255, 255, 255, 0.16), inset -0.6cqw 0 0 rgba(0, 0, 0, 0.22);
+  animation: lomo-sale 12s cubic-bezier(0.45, 0, 0.2, 1) calc(var(--i) * 2s + 0.6s) infinite both;
+}
+.lomo::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 12px); }
+.lomo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.32)); }
+.proyecto__foto .lomo__emblema {
+  position: absolute; height: auto; z-index: 1; top: 7cqw; left: 0; right: 0; margin: 0 auto;
+  width: 64%; aspect-ratio: 1; object-fit: contain;
+  filter: drop-shadow(0 0.5cqw 1cqw rgba(0, 0, 0, 0.35));
+}
+.lomo__nombre {
+  position: absolute; z-index: 1; left: 50%; bottom: 40cqw; max-height: 62cqw; overflow: hidden;
+  writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg);
+  font-family: var(--f-display); font-weight: 900; text-transform: uppercase;
+  font-size: 6.6cqw; line-height: 1; letter-spacing: 0.01em; white-space: nowrap;
+}
+@keyframes lomo-sale {
+  0%, 22%, 100% { transform: none; z-index: 1; filter: none; }
+  2% { z-index: 3; }
+  7%, 13% { transform: translateY(-9%) scale(1.035); z-index: 3; filter: drop-shadow(0 2cqw 2.5cqw rgba(0, 0, 0, 0.55)); }
+  20% { transform: translateY(0.6%); z-index: 3; filter: drop-shadow(0 0.5cqw 1cqw rgba(0, 0, 0, 0.3)); }
+}
+.libros__banda {
+  position: absolute; z-index: 4; left: 0; right: 0; top: 71.3%; height: 13%;
+  display: grid; place-items: center; background: #ff7a00; color: #121315;
+  box-shadow: 0 1.2cqw 3cqw rgba(0, 0, 0, 0.45);
+}
+.libros__banda b { font-family: var(--f-display); font-weight: 900; text-transform: uppercase; font-size: min(14.2cqw, calc(158cqw / var(--largo, 14))); line-height: 0.9; letter-spacing: -0.005em; white-space: nowrap; transform: translateY(0.4cqw); }
+.libros__pastilla {
+  position: absolute; z-index: 4; left: 50%; top: 88%; transform: translateX(-50%);
+  padding: 1.3cqw 4.2cqw; border-radius: 999px; background: #121315; color: #ff7a00;
+  font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 4.3cqw; line-height: 1; white-space: nowrap;
+}
+/* Borde rojo de la portada */
+.proyecto__foto--libros::after { content: ""; position: absolute; inset: 0; z-index: 5; border-radius: inherit; box-shadow: inset 0 0 0 max(4px, 1.2cqw) #d32630; pointer-events: none; }
+
+/* Mis Cantos: disco girando con su púa y barritas al ritmo */
+.proyecto__foto .tocadiscos__fondo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vinilo {
+  position: absolute; left: 33.667%; top: 12.267%; width: 56%; aspect-ratio: 1; border-radius: 50%;
+  background: #0d0d0f; box-shadow: 0 2cqw 5cqw rgba(0, 0, 0, 0.55);
+}
+.vinilo__giro {
+  position: absolute; inset: 0; border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, rgba(255, 255, 255, 0.03), transparent 18%, rgba(255, 255, 255, 0.025) 40%, transparent 62%, rgba(255, 255, 255, 0.03)),
+    repeating-radial-gradient(circle, #121214 0 0.55cqw, #1d1d20 0.55cqw 0.75cqw);
+  animation: vinilo-gira 1.8s linear infinite;
+}
+.vinilo__etiqueta {
+  position: absolute; inset: 0; margin: auto; width: 31%; aspect-ratio: 1; border-radius: 50%;
+  background:
+    radial-gradient(circle, #0d0d0f 0 5%, transparent 5.5%),
+    radial-gradient(circle, transparent 0 34%, rgba(0, 0, 0, 0.18) 34.5% 36%, transparent 36.5%),
+    conic-gradient(from 0deg, #ff7a00 0 70%, #e56a00 70% 82%, #ff7a00 82%);
+  box-shadow: 0 0 0 0.5cqw #b85600;
+}
+.vinilo__etiqueta::after { content: ""; position: absolute; left: 50%; top: 14%; width: 30%; height: 7%; border-radius: 999px; background: #121315; opacity: 0.85; transform: translateX(-50%); }
+.vinilo__brillo {
+  position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: conic-gradient(from 20deg, transparent 0 4%, rgba(255, 255, 255, 0.13) 9%, transparent 15% 50%, rgba(255, 255, 255, 0.09) 56%, transparent 63%);
+  -webkit-mask: radial-gradient(circle, transparent 0 16.5%, #000 17%); mask: radial-gradient(circle, transparent 0 16.5%, #000 17%);
+}
+@keyframes vinilo-gira { to { transform: rotate(360deg); } }
+.pua { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0.8cqw 0.8cqw rgba(0, 0, 0, 0.5)); }
+.pua__brazo { transform-box: view-box; transform-origin: 1112px 196px; animation: pua-sigue 3.6s ease-in-out infinite alternate; }
+@keyframes pua-sigue { from { transform: rotate(0deg); } 50% { transform: rotate(-0.6deg); } to { transform: rotate(-1.4deg); } }
+.proyecto__foto .tocadiscos__tapa {
+  position: absolute; left: 9.1667%; top: 13.333%; width: 53.333%; height: auto; aspect-ratio: 1; object-fit: cover;
+  border-radius: 1.7cqw; box-shadow: 0 3cqw 6cqw -1cqw rgba(0, 0, 0, 0.6);
+}
+.eq-portada { position: absolute; left: 5.833%; top: 60.667%; width: 19%; height: 10%; display: flex; justify-content: space-between; align-items: flex-end; }
+.eq-portada i { display: block; width: 7.9%; height: 40%; border-radius: 999px; background: #ff7a00; animation: eq-portada 1s ease-in-out infinite alternate; }
+.eq-portada i:nth-child(1) { animation-duration: 0.82s; animation-delay: -0.3s; }
+.eq-portada i:nth-child(2) { animation-duration: 0.64s; animation-delay: -0.1s; }
+.eq-portada i:nth-child(3) { animation-duration: 0.93s; animation-delay: -0.55s; }
+.eq-portada i:nth-child(4) { animation-duration: 0.71s; animation-delay: -0.2s; }
+.eq-portada i:nth-child(5) { animation-duration: 0.88s; animation-delay: -0.7s; }
+.eq-portada i:nth-child(6) { animation-duration: 0.58s; animation-delay: -0.4s; }
+.eq-portada i:nth-child(7) { animation-duration: 0.77s; animation-delay: -0.05s; }
+.eq-portada i:nth-child(8) { animation-duration: 0.69s; animation-delay: -0.5s; }
+@keyframes eq-portada { 0% { height: 28%; } 30% { height: 92%; } 55% { height: 50%; } 80% { height: 100%; } 100% { height: 36%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lomo, .vinilo__giro, .pua__brazo, .eq-portada i { animation: none; }
+  .eq-portada i:nth-child(odd) { height: 70%; }
+}
