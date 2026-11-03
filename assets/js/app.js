@@ -339,21 +339,23 @@ function hito(h, { completo = true } = {}) {
         ${completo && h.enlaces && !conMonitor ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
         ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
       </div>
-      ${conMonitor ? monitorMini(L(h.lugar)) : ''}
+      ${conMonitor ? monitorMini(L(h.lugar), h.monitor) : ''}
     </li>`;
 }
 
 /* Monitor tipo iMac, chico, al lado de un puesto del CV: los enlaces se abren en su pantalla. */
-function monitorMini(titulo) {
+function monitorMini(titulo, tipo) {
+  const pc = tipo === 'windows';
   return `
-    <figure class="mini-imac" data-monitor>
+    <figure class="mini-imac${pc ? ' mini-imac--pc' : ''}" data-monitor>
       <div class="mini-imac__cuerpo">
         <div class="mini-imac__pantalla">
           <div class="mini-imac__barra">
-            <span class="mini-imac__luces" aria-hidden="true"><i></i><i></i><i></i></span>
+            ${pc ? '' : '<span class="mini-imac__luces" aria-hidden="true"><i></i><i></i><i></i></span>'}
             <span class="mini-imac__url" data-monitor-dominio>—</span>
             <button class="mini-imac__abrir" type="button" data-monitor-grande hidden aria-label="${esc(t('ver_grande'))}" title="${esc(t('ver_grande'))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
             <a class="mini-imac__abrir" data-monitor-abrir href="#" target="_blank" rel="noopener" hidden aria-label="${esc(t('abrir_pestana'))}" title="${esc(t('abrir_pestana'))}">${icono('flecha')}</a>
+            ${pc ? '<span class="mini-imac__win" aria-hidden="true"><i>&#8212;</i><i>&#9744;</i><i>&#10005;</i></span>' : ''}
           </div>
           <div class="mini-imac__vista">
             <iframe title="${esc(titulo)}" tabindex="-1" referrerpolicy="no-referrer" data-w="1280" data-h="800"></iframe>

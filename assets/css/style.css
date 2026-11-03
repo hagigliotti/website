@@ -1217,7 +1217,7 @@ svg { width: 1em; height: 1em; }
 .hito__punto { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: currentColor; opacity: 0.5; }
 .hito__sistema[aria-pressed="true"] .hito__punto { opacity: 1; background: #1c8a3e; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15); }
 
-.mini-imac { margin: 0; width: 100%; position: sticky; top: 7rem; }
+.mini-imac { margin: 0; width: 100%; }
 .mini-imac__cuerpo { border-radius: 0.7rem; overflow: hidden; background: linear-gradient(180deg, #ffb066, #ff7a00); box-shadow: 0 30px 50px -28px rgba(0, 0, 0, 0.95); }
 .mini-imac__pantalla { margin: 0.35rem 0.35rem 0; padding: 0.3rem; border-radius: 0.45rem; background: #0b0c0e; }
 .mini-imac__barra { display: flex; align-items: center; gap: 0.4rem; height: 1.15rem; padding: 0 0.35rem; border-radius: 0.25rem 0.25rem 0 0; background: #1d1e21; }
@@ -1910,3 +1910,19 @@ button.mini-imac__abrir { padding: 0; border: 0; background: none; cursor: point
 @media (max-width: 560px) { .grande__barra a.grande__boton { font-size: 0; gap: 0; padding: 0; width: 2.5rem; justify-content: center; } }
 @keyframes grande-entra { from { opacity: 0; transform: scale(0.98); } }
 @media (prefers-reduced-motion: reduce) { .grande { animation: none; } }
+
+/* Los monitores del CV quedan fijos en su lugar (no siguen el scroll) */
+.mini-imac { position: static; }
+
+/* Monitor de oficina negro con ventana estilo Windows 11 (puesto IT System Manager) */
+.mini-imac--pc .mini-imac__cuerpo { border-radius: 0.4rem; background: #141518; box-shadow: 0 30px 50px -28px rgba(0, 0, 0, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.mini-imac--pc .mini-imac__pantalla { margin: 0.3rem 0.3rem 0; padding: 0; border-radius: 0.15rem; background: #202020; overflow: hidden; }
+.mini-imac--pc .mini-imac__barra { height: 1.25rem; padding: 0 0 0 0.5rem; gap: 0.35rem; border-radius: 0; background: #f3f3f3; }
+.mini-imac--pc .mini-imac__url { text-align: left; padding: 0; background: none; color: #1b1b1b; font-size: 0.6rem; }
+.mini-imac--pc .mini-imac__abrir { color: #1b1b1b; }
+.mini-imac__win { display: flex; height: 100%; }
+.mini-imac__win i { display: grid; place-items: center; width: 1.4rem; height: 100%; font-style: normal; font-size: 0.55rem; color: #1b1b1b; }
+.mini-imac--pc .mini-imac__menton { height: 0.9rem; display: flex; justify-content: flex-end; align-items: center; padding-right: 0.7rem; }
+.mini-imac--pc .mini-imac__menton span { width: 0.25rem; height: 0.25rem; background: #e6e6e6; box-shadow: 0 0 4px rgba(255, 255, 255, 0.6); }
+.mini-imac--pc .mini-imac__cuello { width: 10%; height: 2.2rem; background: linear-gradient(90deg, #0d0e10, #2c2d31 50%, #0d0e10); clip-path: none; }
+.mini-imac--pc .mini-imac__base { width: 42%; height: 0.45rem; border-radius: 0.5rem 0.5rem 0.2rem 0.2rem; background: linear-gradient(180deg, #2c2d31, #0d0e10); }
