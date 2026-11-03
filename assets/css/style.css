@@ -1201,6 +1201,55 @@ svg { width: 1em; height: 1em; }
 .hito__enlaces { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin: 0.6rem 0 0; }
 .hito__enlaces a { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--naranja); font-weight: 600; font-size: 0.9375rem; }
 
+/* Puesto del CV con monitor tipo iMac: los enlaces se ven en su pantalla */
+.hito--monitor { grid-template-columns: 7.5rem minmax(0, 1fr) clamp(15rem, 24vw, 19rem); column-gap: clamp(1rem, 3vw, 2.5rem); align-items: start; }
+.hito__enlaces--monitor { gap: 0.5rem; margin-top: 1rem; }
+.hito__sistema {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(255, 122, 0, 0.45); border-radius: 999px; background: transparent;
+  color: var(--naranja); font: 600 0.9375rem/1.1 var(--f-texto); cursor: pointer;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
+}
+.hito__sistema:active { transform: scale(0.97); }
+.hito__sistema[aria-pressed="true"] { background: var(--naranja); border-color: var(--naranja); color: var(--negro); }
+@media (hover: hover) and (pointer: fine) { .hito__sistema:hover:not([aria-pressed="true"]) { background: rgba(255, 122, 0, 0.12); } }
+.hito__sistema:focus-visible { outline: 2px solid var(--naranja); outline-offset: 3px; }
+.hito__punto { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: currentColor; opacity: 0.5; }
+.hito__sistema[aria-pressed="true"] .hito__punto { opacity: 1; background: #1c8a3e; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15); }
+
+.mini-imac { margin: 0; width: 100%; position: sticky; top: 7rem; }
+.mini-imac__cuerpo { border-radius: 0.7rem; overflow: hidden; background: linear-gradient(180deg, #ffb066, #ff7a00); box-shadow: 0 30px 50px -28px rgba(0, 0, 0, 0.95); }
+.mini-imac__pantalla { margin: 0.35rem 0.35rem 0; padding: 0.3rem; border-radius: 0.45rem; background: #0b0c0e; }
+.mini-imac__barra { display: flex; align-items: center; gap: 0.4rem; height: 1.15rem; padding: 0 0.35rem; border-radius: 0.25rem 0.25rem 0 0; background: #1d1e21; }
+.mini-imac__luces { display: flex; gap: 0.2rem; }
+.mini-imac__luces i { width: 0.36rem; height: 0.36rem; border-radius: 50%; background: #ff5f57; }
+.mini-imac__luces i + i { background: #febc2e; }
+.mini-imac__luces i + i + i { background: #28c840; }
+.mini-imac__url { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0.05rem 0.4rem; border-radius: 0.2rem; background: #2b2d31; color: var(--gris); font-size: 0.6rem; text-align: center; }
+.mini-imac__abrir { display: grid; place-items: center; width: 0.9rem; height: 0.9rem; color: var(--naranja); }
+.mini-imac__abrir[hidden] { display: none; }
+.mini-imac__abrir svg { width: 0.7rem; height: 0.7rem; }
+.mini-imac__vista { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0b0c0e; }
+.mini-imac__vista iframe { position: absolute; top: 0; left: 0; border: 0; transform-origin: 0 0; background: #fff; opacity: 0; transition: opacity 400ms ease; }
+.mini-imac--lista .mini-imac__vista iframe { opacity: 1; }
+.mini-imac__espera { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.35rem; padding: 0.75rem; text-align: center; background: radial-gradient(circle at 50% 45%, #2a1608, #0b0c0e 70%); transition: opacity 300ms ease; }
+.mini-imac__espera span { font-family: var(--f-display); font-weight: 900; font-size: 1.6rem; color: var(--naranja); }
+.mini-imac__espera p { margin: 0; font-size: 0.75rem; color: var(--gris); }
+.mini-imac--cargando .mini-imac__espera span { animation: latido 1.4s ease-in-out infinite; }
+.mini-imac--cargando .mini-imac__espera p { visibility: hidden; }
+.mini-imac--lista .mini-imac__espera { opacity: 0; pointer-events: none; }
+.mini-imac__menton { height: 1.6rem; display: grid; place-items: center; }
+.mini-imac__menton span { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: rgba(0, 0, 0, 0.18); }
+.mini-imac__cuello { width: 22%; height: 2.4rem; margin: 0 auto; background: linear-gradient(90deg, #d86200, #ff9a3a 50%, #d86200); clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%); }
+.mini-imac__base { width: 36%; height: 0.35rem; margin: 0 auto; border-radius: 0 0 0.3rem 0.3rem; background: linear-gradient(180deg, #ff9a3a, #c45800); }
+.mini-imac__pie { margin-top: 0.75rem; text-align: center; font-size: 0.75rem; color: var(--gris); }
+.mini-imac__pie[hidden] { display: none; }
+.mini-imac__pie a { display: inline-flex; vertical-align: middle; color: var(--naranja); }
+.mini-imac__pie svg { width: 0.8rem; height: 0.8rem; }
+@media (max-width: 1100px) and (min-width: 861px) { .hito--monitor { grid-template-columns: 7.5rem minmax(0, 1fr); } .hito--monitor .mini-imac { grid-column: 2; max-width: 20rem; position: static; } }
+@media (max-width: 860px) { .hito--monitor { grid-template-columns: 1fr; } .mini-imac { position: static; max-width: 20rem; margin: 1rem auto 0; } }
+@media (prefers-reduced-motion: reduce) { .mini-imac--cargando .mini-imac__espera span { animation: none; } }
+
 /* ==========================================================================
    Reproductor de música (Mis Cantos)
    ========================================================================== */

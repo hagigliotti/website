@@ -52,13 +52,35 @@
       "desde": "2022-04",
       "hasta": "2025-12",
       "descripcion": {
-        "es": "Gestión de la red local y de los equipos informáticos. Filmé y edité el video institucional por los 40 años de la casa.",
-        "en": "Management of the local network and IT equipment. I filmed and edited the institutional video for the home’s 40th anniversary.",
-        "fr": "Gestion du réseau local et du parc informatique. J’ai filmé et monté la vidéo institutionnelle des 40 ans de la maison.",
-        "de": "Verwaltung des lokalen Netzwerks und der IT-Geräte. Ich habe das Imagevideo zum 40-jährigen Bestehen des Hauses gedreht und geschnitten.",
-        "pt": "Gestão da rede local e dos equipamentos de informática. Filmei e editei o vídeo institucional dos 40 anos da casa.",
-        "it": "Gestione della rete locale e delle apparecchiature informatiche. Ho girato e montato il video istituzionale per i 40 anni della casa."
+        "es": "- Administración y gestión de los equipos informáticos, los sistemas y la infraestructura de red.\n- Soporte técnico de niveles A, B y C para todo el personal.\n- Capacitación del personal en los sistemas informáticos que usa la casa.\n- Filmé y edité el video institucional por los 40 años de la casa.",
+        "en": "- Administration and management of computers, systems and network infrastructure.\n- Level A, B and C technical support for all staff.\n- Staff training on the IT systems used by the home.\n- I filmed and edited the institutional video for the home’s 40th anniversary.",
+        "fr": "- Administration et gestion du parc informatique, des systèmes et de l’infrastructure réseau.\n- Support technique de niveaux A, B et C pour tout le personnel.\n- Formation du personnel aux systèmes informatiques utilisés par la maison.\n- J’ai filmé et monté la vidéo institutionnelle des 40 ans de la maison.",
+        "de": "- Administration und Verwaltung der IT-Geräte, Systeme und Netzwerkinfrastruktur.\n- Technischer Support der Stufen A, B und C für das gesamte Personal.\n- Schulung des Personals in den im Haus genutzten IT-Systemen.\n- Ich habe das Imagevideo zum 40-jährigen Bestehen des Hauses gedreht und geschnitten.",
+        "pt": "- Administração e gestão dos equipamentos de informática, dos sistemas e da infraestrutura de rede.\n- Suporte técnico de níveis A, B e C para toda a equipe.\n- Capacitação da equipe nos sistemas de informática usados pela casa.\n- Filmei e editei o vídeo institucional dos 40 anos da casa.",
+        "it": "- Amministrazione e gestione delle apparecchiature informatiche, dei sistemi e dell’infrastruttura di rete.\n- Supporto tecnico di livello A, B e C per tutto il personale.\n- Formazione del personale sui sistemi informatici usati dalla struttura.\n- Ho girato e montato il video istituzionale per i 40 anni della casa."
       },
+      "monitor": true,
+      "enlaces": [
+        {
+          "texto": {
+            "es": "Sitio web (WordPress)",
+            "en": "Website (WordPress)",
+            "fr": "Site web (WordPress)",
+            "de": "Website (WordPress)",
+            "pt": "Site (WordPress)",
+            "it": "Sito web (WordPress)"
+          },
+          "url": "https://casamiaforli.it/"
+        },
+        {
+          "texto": "CBA Zucchetti",
+          "url": "https://smarthosting03.cba.it:4445/cba/login.html"
+        },
+        {
+          "texto": "Portale Personale",
+          "url": "https://www.portalepersonale.it/portalepersonale/login.php"
+        }
+      ],
       "aptitudes": [
         "Redes LAN",
         "Gestión de redes",

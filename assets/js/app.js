@@ -328,16 +328,76 @@ function hito(h, { completo = true } = {}) {
   const desde = fechaCorta(h.desde);
   const fechas = desde && hasta && desde !== hasta ? `${desde} – ${hasta}` : (desde || hasta || '');
   const lugar = L(h.lugar);
+  const conMonitor = completo && h.monitor && h.enlaces && h.enlaces.length;
   return `
-    <li class="hito revela">
+    <li class="hito revela${conMonitor ? ' hito--monitor' : ''}">
       <div class="hito__fechas">${esc(fechas)}</div>
       <div>
         <h3 class="hito__puesto">${esc(L(h.puesto))}</h3>
         ${lugar ? `<p class="hito__lugar">${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(lugar)}</a>` : esc(lugar)}</p>` : ''}
         ${completo && h.descripcion ? `<div class="hito__desc">${textoRico(L(h.descripcion))}</div>` : ''}
-        ${completo && h.enlaces ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
+        ${completo && h.enlaces && !conMonitor ? `<p class="hito__enlaces">${h.enlaces.map((e) => `<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(L(e.texto))} ${icono('flecha')}</a>`).join('')}</p>` : ''}
+        ${conMonitor ? `<div class="hito__enlaces hito__enlaces--monitor" role="group">${h.enlaces.map((e) => `<button type="button" class="hito__sistema" data-monitor-url="${esc(e.url)}" aria-pressed="false"><span class="hito__punto" aria-hidden="true"></span>${esc(L(e.texto))}</button>`).join('')}</div>` : ''}
       </div>
+      ${conMonitor ? monitorMini(L(h.lugar)) : ''}
     </li>`;
+}
+
+/* Monitor tipo iMac, chico, al lado de un puesto del CV: los enlaces se abren en su pantalla. */
+function monitorMini(titulo) {
+  return `
+    <figure class="mini-imac" data-monitor>
+      <div class="mini-imac__cuerpo">
+        <div class="mini-imac__pantalla">
+          <div class="mini-imac__barra">
+            <span class="mini-imac__luces" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="mini-imac__url" data-monitor-dominio>—</span>
+            <a class="mini-imac__abrir" data-monitor-abrir href="#" target="_blank" rel="noopener" hidden aria-label="${esc(t('abrir_pestana'))}" title="${esc(t('abrir_pestana'))}">${icono('flecha')}</a>
+          </div>
+          <div class="mini-imac__vista">
+            <iframe title="${esc(titulo)}" tabindex="-1" referrerpolicy="no-referrer" data-w="1280" data-h="800"></iframe>
+            <div class="mini-imac__espera"><span>HAG</span><p>${esc(t('monitor_elegi'))}</p></div>
+          </div>
+        </div>
+        <div class="mini-imac__menton"><span></span></div>
+      </div>
+      <div class="mini-imac__cuello"></div>
+      <div class="mini-imac__base"></div>
+      <figcaption class="mini-imac__pie" data-monitor-pie hidden>${esc(t('monitor_falla'))} <a data-monitor-abrir href="#" target="_blank" rel="noopener">${icono('flecha')}</a></figcaption>
+    </figure>`;
+}
+
+function activarMonitores() {
+  $$('.hito').forEach((hito) => {
+    const mon = $('[data-monitor]', hito);
+    if (!mon) return;
+    const vista = $('.mini-imac__vista', mon);
+    const f = $('iframe', vista);
+    const W = Number(f.dataset.w);
+    f.style.width = `${W}px`;
+    f.style.height = `${f.dataset.h}px`;
+    const escalar = () => { f.style.transform = `scale(${vista.clientWidth / W})`; };
+    escalar();
+    new ResizeObserver(escalar).observe(vista);
+    f.addEventListener('load', () => { if (f.getAttribute('src')) mon.classList.add('mini-imac--lista'); });
+    const botones = $$('[data-monitor-url]', hito);
+    botones.forEach((b) => b.addEventListener('click', () => {
+      const u = b.dataset.monitorUrl;
+      botones.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      if (f.getAttribute('src') === u) return;
+      mon.classList.remove('mini-imac--lista');
+      mon.classList.add('mini-imac--cargando');
+      f.src = u;
+      f.tabIndex = 0;
+      let dominio = u;
+      try { dominio = new URL(u).host; } catch (_) { /* url rara */ }
+      $('[data-monitor-dominio]', mon).textContent = dominio;
+      $$('[data-monitor-abrir]', mon).forEach((a) => { a.href = u; a.hidden = false; });
+      $('[data-monitor-pie]', mon).hidden = false;
+      // En pantallas chicas el monitor queda debajo del texto: lo acercamos.
+      if (window.matchMedia('(max-width: 860px)').matches) mon.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'nearest' });
+    }));
+  });
 }
 const hitoBreve = (h) => hito(h, { completo: false });
 
@@ -963,6 +1023,7 @@ function activarVista(ctx) {
   }
 
   activarDispositivos();
+  activarMonitores();
   activarVideos();
   activarMezclas();
   if (ctx.item && ctx.item.reproductor) activarMusica(ctx.item); else salirDeMusica();
