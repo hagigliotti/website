@@ -270,27 +270,37 @@ function portadaDisco(p) {
 
 // Portada animada de LSM Ciudad Inteligente: una colina con edificios que crecen,
 // nodos que laten, paquetes que viajan por la red y una antena que emite desde la plaza.
-function portadaCiudad(p) {
-  const colina = (x) => 330 - 120 * Math.exp(-(((x - 200) / 210) ** 2) * 2.6);
-  const nodos = [34, 100, 162, 232, 300, 366].map((x, i) => ({ x, y: Math.round(colina(x) - 16 - (i % 2) * 14) }));
-  const enlaces = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [0, 2], [2, 4], [1, 3], [3, 5]];
+// ancha = true dibuja la versión apaisada para la página del proyecto (llena el marco, sin bandas negras).
+function portadaCiudad(p, ancha = false, sufijo = '') {
+  const W = ancha ? 1200 : 400, H = ancha ? 560 : 500;
+  const cima = ancha ? 0.62 : 0.66, alto = ancha ? 0.3 : 0.24;
+  const colina = (x) => H * cima - H * alto * Math.exp(-(((x - W / 2) / (W * 0.525)) ** 2) * 2.6);
+  const cuantos = ancha ? 11 : 6;
+  const nodos = Array.from({ length: cuantos }, (_, i) => { const x = Math.round(W * (0.085 + i * (0.83 / (cuantos - 1)))); return { x, y: Math.round(colina(x) - 16 - (i % 2) * 14) }; });
+  const enlaces = [];
+  for (let a = 0; a < cuantos - 1; a++) enlaces.push([a, a + 1]);
+  for (let a = 0; a < cuantos - 2; a += 2) enlaces.push([a, a + 2]);
+  for (let a = 1; a < cuantos - 2; a += 2) enlaces.push([a, a + 2]);
+  const iPlaza = Math.floor(cuantos / 2) - (ancha ? 0 : 1);
   let edificios = '', x = 2, i = 0;
-  while (x < 398) {
-    const ancho = 16 + ((i * 37) % 22), alto = 26 + ((i * 53) % 64), base = colina(x + ancho / 2) + 20;
-    const ventanas = Array.from({ length: Math.floor(alto / 14) }, (_, k) => (k + i) % 3 ? `<rect x="${x + 5}" y="${base - alto + 7 + k * 14}" width="4" height="5"/>` : '').join('');
-    edificios += `<g class="ciudad__edif" style="--i:${i}"><rect x="${x}" y="${base - alto}" width="${ancho}" height="${520 - base + alto}"/><g class="ciudad__ventanas">${ventanas}</g></g>`;
+  while (x < W - 2) {
+    const ancho = 16 + ((i * 37) % 22), altoE = 26 + ((i * 53) % 64), base = colina(x + ancho / 2) + 20;
+    const ventanas = Array.from({ length: Math.floor(altoE / 14) }, (_, k) => (k + i) % 3 ? `<rect x="${x + 5}" y="${base - altoE + 7 + k * 14}" width="4" height="5"/>` : '').join('');
+    edificios += `<g class="ciudad__edif" style="--i:${i % 40}"><rect x="${x}" y="${base - altoE}" width="${ancho}" height="${H + 20 - base + altoE}"/><g class="ciudad__ventanas">${ventanas}</g></g>`;
     x += ancho + 3; i++;
   }
   const lineas = enlaces.map(([a, b]) => `<line x1="${nodos[a].x}" y1="${nodos[a].y}" x2="${nodos[b].x}" y2="${nodos[b].y}"/>`).join('');
   const paquetes = enlaces.map(([a, b], k) => `<line pathLength="100" style="--k:${k}" ${k % 2 ? `x1="${nodos[b].x}" y1="${nodos[b].y}" x2="${nodos[a].x}" y2="${nodos[a].y}"` : `x1="${nodos[a].x}" y1="${nodos[a].y}" x2="${nodos[b].x}" y2="${nodos[b].y}"`} class="${k % 3 ? '' : 'naranja'}"/>`).join('');
-  const puntos = nodos.map((n, k) => `<g class="ciudad__nodo${k === 2 ? ' ciudad__nodo--plaza' : ''}" style="--k:${k}"><circle class="ciudad__halo" cx="${n.x}" cy="${n.y}" r="9"/><circle cx="${n.x}" cy="${n.y}" r="6"/></g>`).join('');
-  const plaza = nodos[2];
-  const colinaPath = `M0 ${colina(0)} ${Array.from({ length: 21 }, (_, k) => `L${k * 20} ${colina(k * 20).toFixed(1)}`).join(' ')}`;
+  const puntos = nodos.map((n, k) => `<g class="ciudad__nodo${k === iPlaza ? ' ciudad__nodo--plaza' : ''}" style="--k:${k}"><circle class="ciudad__halo" cx="${n.x}" cy="${n.y}" r="9"/><circle cx="${n.x}" cy="${n.y}" r="6"/></g>`).join('');
+  const plaza = nodos[iPlaza];
+  const pasos = ancha ? 60 : 20;
+  const colinaPath = `M0 ${colina(0)} ${Array.from({ length: pasos + 1 }, (_, k) => `L${(k * W) / pasos} ${colina((k * W) / pasos).toFixed(1)}`).join(' ')}`;
+  const id = `ciudad-cielo${ancha ? '-ancho' : ''}${sufijo}`;
   return `
-    <div class="viva ciudad" data-paralaje-x role="img" aria-label="${esc(tituloDe(p))}">
-      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <defs><radialGradient id="ciudad-cielo" cx="50%" cy="100%" r="90%"><stop offset="0" stop-color="#1f5c43"/><stop offset=".65" stop-color="#0d1f18"/></radialGradient></defs>
-        <rect width="400" height="500" fill="url(#ciudad-cielo)"/>
+    <div class="viva ciudad${ancha ? ' ciudad--ancha' : ''}" ${ancha ? '' : 'data-paralaje-x'} role="img" aria-label="${esc(tituloDe(p))}">
+      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs><radialGradient id="${id}" cx="50%" cy="100%" r="90%"><stop offset="0" stop-color="#1f5c43"/><stop offset=".65" stop-color="#0d1f18"/></radialGradient></defs>
+        <rect width="${W}" height="${H}" fill="url(#${id})"/>
         <g class="ciudad__edificios">${edificios}</g>
         <path class="ciudad__colina" d="${colinaPath}"/>
         <g class="ciudad__ondas">${[0, 1, 2].map((k) => `<path style="--k:${k}" d="M${plaza.x - 22} ${plaza.y - 12} a 26 26 0 0 1 44 0"/>`).join('')}</g>
@@ -819,7 +829,8 @@ function vistaDetalle(seccion, it) {
       </div>
     </header>
     ${idLista(it.lista) ? `<h2 class="subtitulo">${esc(t('ultimos_videos'))}</h2>${listaDeVideos(it, tituloDe(it))}<div style="height:clamp(3rem,6vw,5rem)"></div>` : ''}
-    ${esProyecto && it.portada && !idLista(it.lista) ? `<div class="portada-grande"><img src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
+    ${esProyecto && it.animacion === 'ciudad' ? `<div class="portada-grande portada-grande--viva"><div class="solo-ancho">${portadaCiudad(it, true)}</div><div class="solo-alto">${portadaCiudad(it, false, '-alto')}</div></div>`
+      : esProyecto && it.portada && !idLista(it.lista) ? `<div class="portada-grande"><img class="portada-grande__fondo" src="${url(it.portada)}" alt="" aria-hidden="true"><img class="portada-grande__img" src="${url(it.portada)}" alt="${esc(tituloDe(it))}"></div>` : ''}
     ${docs.length ? estante(it, docs, imgs) : ''}
     ${imgsAlbum.length ? `${docs.length || esProyecto ? `<h2 class="subtitulo">${esc(t('imagenes'))}</h2>` : ''}${galeria(it, imgsAlbum)}` : ''}
     ${siguiente && siguiente !== it ? `<div style="margin-top:3rem">${botonFlecha(enlace(siguiente.ruta), `${t('siguiente')}: ${tituloDe(siguiente)}`)}</div>` : ''}
