@@ -1861,7 +1861,7 @@ body.con-mini .pie { padding-bottom: 6rem; }
   .eq-portada i:nth-child(odd) { height: 70%; }
 }
 
-/* LSM Ciudad Inteligente: la colina se llena de edificios y la red se enciende */
+/* LSM, una ciudad inteligente: la colina se llena de edificios y la red se enciende */
 .ciudad { background: #0d1f18; container-type: inline-size; }
 .ciudad svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ciudad__edif { transform-box: fill-box; transform-origin: 50% 100%; animation: ciudad-crece 1.4s var(--ease-out, cubic-bezier(.2,.8,.2,1)) both; animation-delay: calc(var(--i) * 70ms); }

@@ -225,7 +225,7 @@ function fechaCorta(f = '') {
 // Portada de cada proyecto en la lista de inicio. Dos portadas están armadas en vivo:
 // - Grupo con partes y emblema (Conquistadores): cada clase es un libro en el estante, con su emblema centrado.
 // - Reproductor (Mis Cantos): el disco gira con su púa y las barritas siguen la música.
-// - "Animación: ciudad" (LSM Ciudad Inteligente): la colina se llena de edificios y la red se enciende.
+// - "Animación: ciudad" (LSM, una ciudad inteligente): la colina se llena de edificios y la red se enciende.
 function fotoProyecto(p) {
   if (p.animacion === 'ciudad') return `<div class="proyecto__foto">${portadaCiudad(p)}</div>`;
   if (p.emblema && p.partes && p.partes.length) return `<div class="proyecto__foto proyecto__foto--libros">${portadaLibros(p)}</div>`;
@@ -268,7 +268,7 @@ function portadaDisco(p) {
     </div>`;
 }
 
-// Portada animada de LSM Ciudad Inteligente: una colina con edificios que crecen,
+// Portada animada de «Libertador San Martín, una ciudad inteligente»: una colina con edificios que crecen,
 // nodos que laten, paquetes que viajan por la red y una antena que emite desde la plaza.
 // ancha = true dibuja la versión apaisada para la página del proyecto (llena el marco, sin bandas negras).
 function portadaCiudad(p, ancha = false, sufijo = '') {
@@ -308,7 +308,7 @@ function portadaCiudad(p, ancha = false, sufijo = '') {
         <g class="ciudad__paquetes">${paquetes}</g>
         ${puntos}
       </svg>
-      <span class="ciudad__marca"><b>LSM</b><i>Ciudad inteligente</i></span>
+      <span class="ciudad__marca"><b>LSM</b><i>una ciudad inteligente</i></span>
       <span class="ciudad__años"><b>2009</b><i></i><b>2026</b></span>
     </div>`;
 }

@@ -48,7 +48,7 @@ Descrizione in italiano.
 ```
 
 - Las primeras líneas (`Título:`, `Fecha:`, `Enlace:`, `Portada:`) son opcionales.
-- `Animación: ciudad` arma una portada animada en vivo (colina, edificios que crecen y red que se enciende), como en *LSM Ciudad Inteligente*.
+- `Animación: ciudad` arma una portada animada en vivo (colina, edificios que crecen y red que se enciende), como en *LSM, una ciudad inteligente*.
 - El texto sin marca vale para todos los idiomas. Si agregás bloques `[en]`, `[fr]`, `[de]`, `[pt]`, `[it]`, cada visitante ve el suyo. También podés poner `Título:` dentro de un bloque.
 - Si no ponés `Título:`, se usa el nombre de la carpeta (`SanMarino` se muestra como "San Marino").
 
